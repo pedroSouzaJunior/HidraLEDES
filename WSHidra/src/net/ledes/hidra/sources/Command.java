@@ -530,11 +530,22 @@ public class Command {
 
         mgCmd.include(hidra.getGit().getRepository().getRef(branch));
         MergeResult res = mgCmd.call();
+        System.out.println(res.getMergeStatus());
+        
         if (res.getMergeStatus().equals(MergeResult.MergeStatus.CONFLICTING)) {
             System.out.println(res.getConflicts().toString());
+            return false;
+        }
+        
+        else if(res.getMergeStatus().equals(MergeResult.MergeStatus.FAILED)){
+            System.out.println(res.getFailingPaths());
+            
+            
+             return false;
         }
         return true;
 
+        
     }
 
     public boolean checkout(String branch) {
