@@ -21,3 +21,5 @@ Sobre o mecanismo de armazenamento:
 
 Implementar classe para manipulação de arquivos de configuração
 	A classe properties pode facilitar isso: https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html
+
+Consultar gc.ledes.net para referência dos comandos git
