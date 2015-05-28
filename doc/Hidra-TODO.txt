@@ -22,4 +22,54 @@ Sobre o mecanismo de armazenamento:
 Implementar classe para manipulação de arquivos de configuração
 	A classe properties pode facilitar isso: https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html
 
+Implementar classe para log
+
 Consultar gc.ledes.net para referência dos comandos git
+
+
+EM RESUMO:
+
+Escopo:
+	Implementação
+		hidra.Asset: Classe que representa a Estrutura Lógica de Dados RAS
+			se necessário mais de uma classe, adotar o seguinte padrão:
+			hidra.assets.Profile
+		
+		hidra.AssetConfig: Classe responsável pela Gerência de Configuração do Ativo: versionar estrutura de diretório do Ativo (usar jGit)
+			métodos para Salvar, Atualizar, Restaurar (etc.)
+		
+		hidra.Repository: Classe responsável por manipular o repositório
+			métodos para Criar repositório, clonar repositório, exportar conteúdo completo do repositório, excluir repositório
+			
+		hidra.ws.Asset: Classe que abstrai os métodos das classes Asset e AssetConfig em webservices (REST)
+		hidra.ws.Repository: Classe que abstrai os métodos da classe Repository em webservices (REST)
+	Texto:
+		Abstract
+		Indrodução
+		Embasamento Teórico e Trabalhos Relacionados
+		Ferramentas e Tecnologias
+			jGit
+			WebServices (explicitar o que foi usado)
+		Hidra
+			Requisitos Funcionais
+			Padrão RAS
+			Funcionalidades Implementadas
+		Conclusão e Trabalhos Futuros
+		REFERÊNCIAS
+CRONOGRAMA
+
+28/05 - Reunão de definição final (fechamento do escopo)
+31/05 - Seção Hidra v1
+		Derivação dos requisitos da biblioteca Hidra a partir dos requisios arquiteturais da Cambuci
+07/06 - [entrega de implementação] hidra.Asset
+07/06 - Seção Hidra v2
+	Requisitos Funcionais + Padrão RAS + Funcionalidades implementadas (inicial)
+14/06 - [entrega de implementação] hidra.AssetConfig
+14/06 - Ferramentas e Tecnologias
+14/06 - Embasamento Teórico (Geraldo)
+21/06 - [entrega de implementação] hidra.Repository
+21/06 - introdução, conclusão(e trabalhos futuros) e abstract + Seção Hidra v3 (completa)
+21/06 - Entrega da versão final do texto
+23/06 - Entrega da versão final do texto corrigida
+28/06 - [entrega de implementação] hidra.ws.Asset, hidra.ws.Repository
+30/06 - Banca
