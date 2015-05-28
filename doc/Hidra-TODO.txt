@@ -1,0 +1,23 @@
+Hidra-TODO.txt
+
+Adotar LaTeX para escrita do trabalho
+
+Derivar Requisitos Funcionais para Biblioteca Hidra a partir dos Requisitos Arquiteturais
+	- Quadro 5.19 da Seção 5.3.1 - Dissertação Márcio Osshiro: Cambuci
+	- Quadro 5.20 da Seção 5.3.2 - Dissertação Márcio Osshiro: Cambuci
+
+
+Classe Java para manipulação de XML (considerar a possibilidade de usar JSON)
+
+Padrão RAS para armazenamento de Ativos Reusáveis de Software
+	capítulo 5.1.1 da Dissertação do Henrique Rocha
+	conferir especificações do RAS:
+		http://www.omg.org/cgi-bin/doc?ptc/2004-06-06
+		http://www.omg.org/spec/RAS/2.2/ (**considerar este aqui**)
+
+Sobre o mecanismo de armazenamento:
+	Segunda abordagem para armazenamento: descompactado
+	implementar classes mínimas de compatibilidade com RAS (pg. 151)
+
+Implementar classe para manipulação de arquivos de configuração
+	A classe properties pode facilitar isso: https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html
