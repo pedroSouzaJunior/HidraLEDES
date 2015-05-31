@@ -1,4 +1,7 @@
---- Hidra ---
+Hidra
+---
+Uma Biblioteca para Desenvolvimento de Repositórios de Ativos de Software Reutilizáveis
+---
 Escrver aqui instruçoes uteis como, por exemplo,  para importaçao da biblioteca no projeto
 
 ---
@@ -11,3 +14,6 @@ Obs.: pacote faz download de aproximadamente 2.5GB de arquivos.
 
 Instruções para construir o PDF do texto:
 $ sh compile.sh
+
+Obs.: Para evitar o versionamento de arquivos desnecessário, antes de commitar o texto adicione apenas os arquivos .tex e .bib no commit (e outros realmente necessários).
+Vejam o arquivo .gitignore da pasta monografia para mais informações.
