@@ -1,0 +1,109 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[portuguese,brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage[none]{hyphenat}
+\usepackage{multirow}
+%\usepackage{verbatim}
+
+% fonts
+%\usepackage{palatino}
+%\usepackage{courier}
+
+% math
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{latexsym}
+\newtheorem{teor}{Teorema}
+\newtheorem{definicao}[teor]{Definição}
+\newtheorem{equacao}[teor]{Equação}
+
+% algorithms
+\usepackage[ruled,chapter]{algorithm}
+\usepackage[]{algpseudocode}
+\algrenewcommand{\algorithmiccomment}[1]{\hskip0em$\rightarrow$ #1}
+\renewcommand{\listalgorithmname}{Lista de Algoritmos}
+
+% hiperlinks
+\usepackage[pdfpagemode=UseOutlines,colorlinks=true,
+a4paper,breaklinks=true,hyperindex,linkcolor=black,
+anchorcolor=black,citecolor=black,filecolor=magenta,
+menucolor=black,urlcolor=blue,bookmarks=true,
+bookmarksopen=true,pdfpagelayout=SinglePage,
+pdfpagetransition=Dissolve]{hyperref}
+
+% format
+\setlength{\parskip}{0.2cm}
+\setlength{\textwidth}{17.0cm}
+\setlength{\textheight}{25.3cm}
+\setlength{\hoffset}{-2.0cm}
+\setlength{\voffset}{-2.0cm}
+
+% blank page
+\newcommand{\blankpage}{
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+}
+
+\sloppy
+\begin{document}
+
+\pagestyle{empty}
+\input capa.tex
+\newpage
+
+%\blankpage
+
+\renewcommand{\abstractname}{Resumo}
+\begin{abstract}
+\thispagestyle{plain}
+\pagenumbering{roman}
+\setcounter{page}{2}
+Escreva o resumo aqui.
+
+\vspace{1cm}
+\hspace{-\parindent}Palavras-chave: Java, SOA, Webservices, Repositório, Ativos Reusáveis de Software.
+\end{abstract}
+
+%\blankpage
+
+\renewcommand{\abstractname}{Abstract}
+\begin{abstract}
+\thispagestyle{plain}
+\pagenumbering{roman}
+\setcounter{page}{3}
+Write the abstract here.
+
+\vspace{1cm}
+\hspace{-\parindent}Keywords: Java, SOA, Webservices, Repository, Software Reusable Assets.
+\end{abstract}
+
+%\blankpage
+
+\pagestyle{plain}
+\pagenumbering{roman}
+\setcounter{page}{4}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\listofalgorithms
+\newpage
+
+\pagestyle{plain}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\include{1_introducao}
+\include{2_embasamento}
+\include{3_ferramentas}
+\include{4_hidra}
+\include{5_conlusao}
+
+\bibliographystyle{plain}
+\bibliography{referencias}
+
+\end{document}
