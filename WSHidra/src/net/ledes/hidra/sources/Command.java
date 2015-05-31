@@ -9,11 +9,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.MergeResult;
+import org.eclipse.jgit.api.MergeResult.MergeStatus;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.RebaseResult;
@@ -220,12 +219,7 @@ public class Command {
                 // System.out.println(element);
                 logs = "Author: " + rev.getAuthorIdent().getName()
                         + "\nMessage: " + rev.getFullMessage();
-                /*
-                 * System.out.println("Author: " +
-                 * rev.getAuthorIdent().getName()); //$NON-NLS-1$
-                 * System.out.println("Message: " + rev.getFullMessage());
-                 * //$NON-NLS-1$ System.out.println();
-                 */
+
                 return logs;
             }
 
@@ -260,30 +254,20 @@ public class Command {
         if (hidra == null) {
             System.err.println("Repositorio nao inicializado");
         } else {
+
             try {
                 hidra.getGit().branchCreate().setName(nameBranch).call();
-
-            } catch (RefAlreadyExistsException e1) {
-
-                e1.printStackTrace();
-            } catch (RefNotFoundException e1) {
-
-                e1.printStackTrace();
-            } catch (InvalidRefNameException e1) {
-
-                e1.printStackTrace();
-            } catch (GitAPIException e1) {
-
-                e1.printStackTrace();
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             List<org.eclipse.jgit.lib.Ref> call = null;
+
             try {
                 call = new Git(hidra.getGit().getRepository()).branchList()
                         .call();
-            } catch (GitAPIException e) {
-
-                e.printStackTrace();
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             for (org.eclipse.jgit.lib.Ref ref : call) {
@@ -341,17 +325,14 @@ public class Command {
 
         try {
             it = pc.call().iterator();
-            return true;
-        } catch (TransportException e) {
-
-            e.printStackTrace();
-        } catch (GitAPIException e) {
-
-            e.printStackTrace();
+            if (it.hasNext()) {
+                System.out.println(it.next().toString());
+                return true;
+            }
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (it.hasNext()) {
-            System.out.println(it.next().toString());
-        }
+
         return false;
     }
 
@@ -364,16 +345,20 @@ public class Command {
         AbstractTreeIterator newTreeParser = prepareTreeParser(repo,
                 "refs/heads/" + branch2);
 
-        List<DiffEntry> diff = null;
+        List<DiffEntry> diff;
+        
         try {
             diff = new Git(repo).diff().setOldTree(oldTreeParser)
                     .setNewTree(newTreeParser).call();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-        for (DiffEntry entry : diff) {
+             for (DiffEntry entry : diff) {
             System.out.println("Entry: " + entry);
+             }
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
         }
+      
+        
+       
 
         repo.close();
     }
@@ -382,25 +367,17 @@ public class Command {
             String ref) {
 
         Ref head = null;
-
-        try {
-            head = repository.getRef(ref);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         RevWalk walk = new RevWalk(repository);
         RevCommit commit = null;
 
+        
         try {
-            commit = walk.parseCommit(head.getObjectId());
-        } catch (MissingObjectException e) {
-            e.printStackTrace();
-        } catch (IncorrectObjectTypeException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            head = repository.getRef(ref);
+             commit = walk.parseCommit(head.getObjectId());
+        } catch (IOException ex) {
+            Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
+        }     
+                
 
         RevTree tree = null;
 
@@ -524,6 +501,37 @@ public class Command {
         String url = config.getString("remote", "origin", "url");
         return url != null;
     }
+    
+    public void resolveConflictsMerge(MergeResult conflict){
+        
+        switch(conflict.getMergeStatus()){
+            case CONFLICTING:
+                System.out.println("CONFLICT (content): Merge conflict in: adicionar arquivo que tem conflito"
+                        + "Automatic merge failed; fix conflicts and then commit the result.");
+                System.out.println(conflict.getConflicts());
+                break;
+            case FAILED:
+                System.out.println("FAILED: " + conflict.getFailingPaths());
+                break;
+            case ABORTED:
+                System.out.println("ABORTED: ");
+                break;
+            case ALREADY_UP_TO_DATE:
+                System.out.println("ALREADY UP TO DATE: ");
+                break;
+            case CHECKOUT_CONFLICT:
+                System.out.println("CHECKOUT_CONFLICT: meaning that nothing could be merged, "
+                        + "as the pre-scan for the trees already failed for certain files");
+                break;
+           default:
+               System.out.println("Unsuccessfully");
+        
+        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+    
+    
+    
+    }
 
     public boolean merge(String branch) throws IOException, GitAPIException {
         MergeCommand mgCmd = hidra.getGit().merge();
@@ -532,28 +540,29 @@ public class Command {
         MergeResult res = mgCmd.call();
         System.out.println(res.getMergeStatus());
         
-        if (res.getMergeStatus().equals(MergeResult.MergeStatus.CONFLICTING)) {
-            System.out.println(res.getConflicts().toString());
+        if(!res.getMergeStatus().isSuccessful()){
+            resolveConflictsMerge(res);
             return false;
         }
-        
-        else if(res.getMergeStatus().equals(MergeResult.MergeStatus.FAILED)){
-            System.out.println(res.getFailingPaths());
-            
-            
-             return false;
-        }
-        return true;
+        else
+            return true;
 
+//        if (res.getMergeStatus().equals(MergeResult.MergeStatus.CONFLICTING)) {
+//            System.out.println(res.getConflicts().toString());
+//            return false;
+//        } else if (res.getMergeStatus().equals(MergeResult.MergeStatus.FAILED)) {
+//            System.out.println(res.getFailingPaths());
+//
+//            return false;
+//        }
         
+
     }
 
     public boolean checkout(String branch) {
 
-       
         try {
             hidra.getGit().checkout().setName(branch).call();
-           
 
             return true;
         } catch (GitAPIException ex) {
@@ -575,9 +584,9 @@ public class Command {
         }
         return false;
     }
-    
-    public boolean createLightTag(String tagName, String tagMsg){
-        
+
+    public boolean createLightTag(String tagName, String tagMsg) {
+
         try {
             hidra.getGit().tag().setName(tagName).setMessage(tagMsg).call();
             return true;
@@ -585,60 +594,55 @@ public class Command {
             Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-    
-    
+
     }
-    
-    public boolean createAnnotatedTag(String tagName, String tagMgs){
-    
+
+    public boolean createAnnotatedTag(String tagName, String tagMgs) {
+
         try {
             hidra.getGit().tag().setName(tagName).setAnnotated(true).setMessage(tagName).call();
             return true;
         } catch (GitAPIException ex) {
             Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
         }
-    return false;
+        return false;
     }
-    
-    public boolean listTags(){
+
+    public boolean listTags() {
         try {
-            for (org.eclipse.jgit.lib.Ref ref :hidra.getGit().tagList().call()) {
-                
+            for (org.eclipse.jgit.lib.Ref ref : hidra.getGit().tagList().call()) {
+
                 System.out.println(ref.getName());
-                
-                
+
             }
-            
-     
-           
+
             return true;
         } catch (GitAPIException ex) {
             Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    return false;
+
+        return false;
     }
-    
-    
-    public boolean tagDelete(String nameTags){
+
+    public boolean tagDelete(String nameTags) {
         try {
             hidra.getGit().tagDelete().setTags(nameTags).call();
             return true;
         } catch (GitAPIException ex) {
             Logger.getLogger(Command.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-     
-   
+
         return false;
     }
-    
-    public boolean showTags(String nameTag){
-        
+
+    public boolean showTags(String nameTag) {
+
         System.out.println(hidra.getGit().getRepository().getTags());
-     
+
         return true;
-    
+
     }
+
     
-}   
+
+}

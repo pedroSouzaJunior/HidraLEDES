@@ -1,6 +1,6 @@
 net/ledes/hidra/sources/Command.class
 net/ledes/hidra/sources/Hidra.class
-net/ledes/hidra/sources/FileComparator.class
-net/ledes/hidra/sources/Main.class
 net/ledes/hidra/services/IHidra.class
+net/ledes/hidra/util/Main.class
 net/ledes/hidra/services/HidraServices.class
+net/ledes/hidra/util/FileComparator.class

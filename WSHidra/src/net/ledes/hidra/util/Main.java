@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.ledes.hidra.sources;
+package net.ledes.hidra.util;
 
 
+import net.ledes.hidra.util.FileComparator;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
