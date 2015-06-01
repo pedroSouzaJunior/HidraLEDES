@@ -24,7 +24,8 @@ Implementar classe para manipulação de arquivos de configuração
 
 Implementar classe para log
 
-Consultar gc.ledes.net para referência dos comandos git
+Consultar https://git-scm.com/book/pt-br/v1/Git-no-Servidor-Configurando-Git-no-Servidor
+	para referência sobre instalação e configuração de um repositório git em um servidor.
 
 
 EM RESUMO:
