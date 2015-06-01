@@ -1,4 +1,7 @@
 /home/danielli/projetoHidraLEDES/WSHidra/src/net/ledes/hidra/sources/Command.java
+/home/danielli/projetoHidraLEDES/WSHidra/src/net/ledes/hidra/config/Logger.java
+/home/danielli/projetoHidraLEDES/WSHidra/src/net/ledes/hidra/config/Hidra.java
+/home/danielli/projetoHidraLEDES/WSHidra/src/test/java/net/ledes/hidra/config/HidraTest.java
 /home/danielli/projetoHidraLEDES/WSHidra/src/net/ledes/hidra/services/HidraServices.java
 /home/danielli/projetoHidraLEDES/WSHidra/src/net/ledes/hidra/util/Main.java
 /home/danielli/projetoHidraLEDES/WSHidra/src/net/ledes/hidra/util/FileComparator.java
