@@ -20,7 +20,7 @@ package ledes.hidra;
  * 
  *        Obs.1: se for o caso, herdar as características do Repository.
  *        Obs.2: se for necessário criar mais classes para sua implementação,
- *          colocá-las no pacote net.ledes.hidra.repository
+ *          colocá-las no pacote ledes.hidra.repository
  *          (deixar apenas Hidra, Asset, Repository e LocalRepository na raiz).
  * 
  * @author Danielli Urbieta e Pedro Souza Junior
