@@ -25,6 +25,13 @@ package ledes.hidra;
  * 
  * @author Danielli Urbieta e Pedro Souza Junior
  */
-public class LocalRepository {
+public class LocalRepository extends Repository{
+
+    public LocalRepository(String localPath, String remotePath) {
+        super(localPath, remotePath);
+    }
+
+   
+    
     
 }
