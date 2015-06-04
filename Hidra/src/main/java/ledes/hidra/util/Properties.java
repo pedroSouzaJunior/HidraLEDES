@@ -97,7 +97,8 @@ public class Properties {
         defaults.setProperty("ApplicationType", "Client");
         defaults.setProperty("LocalDirectory", ".");
         defaults.setProperty("RemoteURI", "");
-        defaults.setProperty("User", "default");
+        defaults.setProperty("UserName", "default");
+        defaults.setProperty("UserEmail", "default@domain.com");
         defaults.setProperty("Password", "");
         
         return defaults;
