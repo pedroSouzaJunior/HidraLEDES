@@ -1,11 +1,11 @@
-\begin{longtable}{ | l | p{6cm} | p{6cm} |}
+\begin{longtable}{ | l | p{9cm} | p{3cm} |}
 \caption{Tabela de Requisitos Hidra}\\
 \hline
 \textbf{ID} & \textbf{Requisito Original} & \textbf{Requisito Derivado}  \\
 \hline
 \endfirsthead
 \multicolumn{3}{c}%
-{\tablename\ \thetable\ -- \textit{Tabela de Requisitos Hidra}} \\
+{\tablename\ \thetable\ -- \textit{Tabela de Requisitos Arquiteturais Cambuci}} \\
 \hline
 \textbf{ID} & \textbf{Requisito Original} & \textbf{Requisito Derivado}  \\
 \hline
@@ -36,102 +36,121 @@
 
     RA-AS[6] 
     & A arquitetura de referência deve possibilitar que repositórios de ativos de software notifiquem os interessados sobre mudanças que aconteçam no ativo. 
-    & A biblioteca deve oferecer informações relevantes a todos os interessados, sobre mudanças que aconteçam no ativo de software, como por exemplo, data de alteração e autor da alteração.
- \\ \hline
+    & RF-09
+ 	\\ \hline
  
     RA-AS[7] 
     & A arquitetura de referência deve possibilitar que  repositórios de ativos de software permitam realizar  buscas e recuperação dos ativos 
-    & A busca e recuperação de ativos não será abordada dentro do escopo inicial do desenvolvimento da biblioteca Hidra, podendo ser implementada futuramente. ) \\ \hline
+    & RF-10, RF-11, RF-12
+    \\ \hline
     
     RA-AS[8] 
     & A arquitetura de referência deve possibilitar que  repositórios de ativos de software permitam a  navegação entre ativos 
-    & Não derivado para a versão atual da \textit{Hidra} (Trabalho Futuro). \\ \hline
+    & Não derivado para a versão atual da \textit{Hidra} (Trabalho Futuro). 
+    \\ \hline
     
     RA-AS[9] 
     & A arquitetura de referência deve possibilitar que  repositórios de ativos de software aceite múltiplas  fontes de origem de ativos, com o objetivo de facilitar  a integração entre equipes e entre repositórios  diferentes.  
-    & RN-01. \\ \hline
+    & RN-01
+    \\ \hline
  
     RA-AS[10]
     & A arquitetura de referência deve possibilitar que  repositórios de ativos de software criem e armazenem  múltiplas versões de um mesmo ativo.
-    & RN-02. \\ \hline
-    
+    & RN-02
+    \\ \hline
+
     RA-AS[11] 
     & A arquitetura de referência deve possibilitar que  repositórios de ativos de software gerencie a  configuração, como por exemplo, a definição dos itens  do ativo que são configuráveis, o controle de  mudanças dos itens do ativo que são configuráveis.
-    & RN-03. \\ \hline
+    & RN-03
+    \\ \hline
     
     RA-AS[12] 
     &A arquitetura de referência deve possibilitar que  repositórios de ativos de software permita o registro de  impressões dos usuários a respeito da versão do ativo  que eles utilizaram. 
-    & Não derivado para a versão atual da \textit{Hidra} (Trabalho Futuro). \\ \hline
+    & Não derivado para a versão atual da \textit{Hidra} (Trabalho Futuro).
+    \\ \hline
 
     RA-AS[13] 
     & A arquitetura de referência deve possibilitar que  repositórios de ativos de software registrem métricas  coletadas sobre a utilização do ativo.
-    & Fora do escopo da \textit{Hidra} (Trabalho Futuro). \\ \hline
+    & Fora do escopo da \textit{Hidra} (Trabalho Futuro).
+    \\ \hline
 
     RA-AS[14] 
     & A arquitetura de referência deve possibilitar que  repositórios de ativos de software ofereçam  informações relativas ao reúso, iniciativas de reúso,  ativos mais usados, etc.
-    & Fora do escopo da \textit{Hidra} (Trabalho Futuro). \\ \hline
+    & Fora do escopo da \textit{Hidra} (Trabalho Futuro). 
+    \\ \hline
     
     RA-AS[15] 
     & A arquitetura de referência deve possibilitar que  repositórios de ativos de software permitam o acesso de acordo com o papel que o usuário assume.
-    & Não derivado para a versão atual da \textit{Hidra} (Trabalho Futuro). \\ \hline
-    
-    RA-AS[16] & A arquitetura de referência deve possibilitar que  repositórios de ativos de software garantam a  integridade dos ativos, ou seja, que eles não sofram  alterações não autorizadas.
-    & RN-04. \\ \hline
-%
-% continuar a partir daqui.
-%
+    & Não derivado para a versão atual da \textit{Hidra} (Trabalho Futuro). 
+    \\ \hline
+
+    RA-AS[16] 
+    & A arquitetura de referência deve possibilitar que  repositórios de ativos de software garantam a  integridade dos ativos, ou seja, que eles não sofram  alterações não autorizadas.
+    & RN-04
+    \\ \hline
+
     RA-AS[17] 
     & A arquitetura de referência deve possibilitar que  repositórios de ativos de software realizem o  gerenciamento de transação, garantindo a atomicidade,  consistência, isolamento e durabilidade.
-    & A biblioteca de controle deve fornecer mecanismos que garantem a atomicidade, consistência e isolamento de transações de controle de ativos de software. \\ \hline
+    & RF-13 
+    \\ \hline
 
-	RAS[1] e RAS[2] 
-	& A arquitetura de referência de possibilitar que repositórios de  ativos de software desenvolvidos para persistir diferentes tipos  de ativos possam ser facilmente integrados.
+    RAS[1]
+    & A arquitetura de referência de possibilitar que repositórios de  ativos de software desenvolvidos para persistir diferentes tipos  de ativos possam ser facilmente integrados.
+    & RF-14
+    \\ \hline
 
-	A arquitetura de referência deve possibilitar que repositórios de ativos de software implementados em linguagens de  programação distintas e sob diferentes plataformas possam ser  facilmente integrados.
-    &  A biblioteca de controle de ativos de software deve fornecer mecanismos de integração que permitem a persistencia de diferentes tipos de ativos implementados em diferentes linguagens de programação. \\ \hline
- 
-	RAS[3] 
-	& A arquitetura de referência deve prover mecanismos para que  repositórios de ativos de software na forma de serviços possam  ser publicados e posteriormente descobertos por aplicações  cliente.
-	& A biblioteca de controle de ativos deve prover mecanismos para que suas funcionalidades sejam executadas na forma de serviços, que serão publicados e posteriormente descobertos por aplicações clientes. \\ \hline
-	
-  RAS[4] & 
-A arquitetura de referência de prover mecanismos para que  repositórios de ativos de software orientados a serviço possam  ser compostos por processos de negócio ou utilizados por  aplicações cliente. & Requisitos não-funcionais 1: A biblioteca de controle de ativos de software deve permitir acesso externo de maneira automatizada
-2: A biblioteca de controle de ativos de software deve permitir que serviços sejam usados por meio de orquestração (Camada de webservice permitirá isso).
+    RAS[2] 
+    & A arquitetura de referência deve possibilitar que repositórios de ativos de software implementados em linguagens de  programação distintas e sob diferentes plataformas possam ser  facilmente integrados.
+    & RF-15 
+    \\ \hline
 
+    RAS[3] 
+    & A arquitetura de referência deve prover mecanismos para que  repositórios de ativos de software na forma de serviços possam  ser publicados e posteriormente descobertos por aplicações  cliente.
+    & RN-01 
+    \\ \hline
+    
+    RAS[4] & 
+    A arquitetura de referência de prover mecanismos para que  repositórios de ativos de software orientados a serviço possam  ser compostos por processos de negócio ou utilizados por  aplicações cliente. 
+    & RN-01
+    
+    e RN-04 
+    \\ \hline
 
- \\ \hline
-  RAS[5] & 
-A arquitetura de referência deve viabilizar o desenvolvimento  de repositórios de ativos de software que disponibilizem  informações sobre suas características e direções normativas de  uso, por meio de descrições padronizadas.
- & A biblioteca de controle 
-deve garantir que o desenvolvimento de repositórios de ativos informem suas características  e direções normativas de uso por meio de descrições padronizadas de suas funcionalidades.
+    RAS[5] & 
+    A arquitetura de referência deve viabilizar o desenvolvimento  de repositórios de ativos de software que disponibilizem  informações sobre suas características e direções normativas de  uso, por meio de descrições padronizadas.
+    & RF-16
+    \\ \hline
 
- \\ \hline
-RAS[6] & 
-A arquitetura de referência deve viabilizar o desenvolvimento  de repositório de ativos de software que disponibilizem  descrições semânticas, permitindo assim sua classificação nos  repositórios de serviço. & O escopo inicial do desenvolvimento da biblioteca hidra tem como foco os requisitos fundamentais de repositorio de ativos de software, transportando o requisito RAS[6] para uma abordagem futura em uma nova análise de escopo
-\\ \hline
-RAS[7] & 
-A arquitetura de referência deve viabilizar o desenvolvimento  de repositório de ativos de software que tenham à disposição  informações e documentos relacionados às suas características  de qualidade. & O escopo inicial do desenvolvimento da biblioteca hidra tem como foco os requisitos fundamentais de repositorio de ativos de software, transportando o requisito RAS[7] para uma abordagem futura em uma nova análise de escopo.
- \\ \hline 
+    RAS[6] 
+    & A arquitetura de referência deve viabilizar o desenvolvimento  de repositório de ativos de software que disponibilizem  descrições semânticas, permitindo assim sua classificação nos  repositórios de serviço.
+    & RF-17
+    \\ \hline
 
-RAS[8] & 
-A arquitetura de referência deve prover mecanismos para a  captura, monitoramento, registro e sinalização do não  cumprimento de requisitos de qualidade estabelecidos entre  serviços provedores e serviços clientes. & O escopo inicial do desenvolvimento da biblioteca hidra tem como foco os requisitos fundamentais de repositorio de ativos de software, transportando o requisito RAS[8] para uma abordagem futura em uma nova análise de escopo.
- \\ \hline 
+    RAS[7] 
+    & A arquitetura de referência deve viabilizar o desenvolvimento  de repositório de ativos de software que tenham à disposição  informações e documentos relacionados às suas características  de qualidade. 
+    & RF-18
+    \\ \hline 
 
-RAS[9] & 
-A arquitetura de referência deve viabilizar o desenvolvimento
-de repositório de ativos de software escalável, capaz de evoluir 
-de maneira incremental, por meio da composição de novas 
-funcionalidades disponíveis na forma de serviços. & A biblioteca de controle deve prover mecanismos a fim de permitir a adição de novas funcionalidades a biblioteca de controle, por meio de serviços de serivços.
- \\ \hline 
- RAS[10] & 
-A arquitetura de referência deve possibilitar que serviços de  repositório de ativos de software e composições desses  serviços sejam tratados uniformemente, ou seja, possam ser  publicados, localizados e utilizados da mesma forma. & A biblioteca de serviços deve prover mecanismos que permitam a seus serviços serem publicados, localizados e utilizados da mesma forma.
- \\ \hline 
- 
- RAS[11] & 
+    RAS[8] 
+    & A arquitetura de referência deve prover mecanismos para a  captura, monitoramento, registro e sinalização do não  cumprimento de requisitos de qualidade estabelecidos entre  serviços provedores e serviços clientes. 
+    & RF-19
+    \\ \hline 
+    RAS[9] 
+	& A arquitetura de referência deve viabilizar o desenvolvimento
+	de repositório de ativos de software escalável, capaz de evoluir 
+	de maneira incremental, por meio da composição de novas 
+	funcionalidades disponíveis na forma de serviços. 
+	& RN-05
+	\\ \hline 
 
-A arquitetura de referência deve possibilitar que serviços do  repositório de ativos de software possam interagir diretamente  ou por meio do uso de barramentos de serviço. & 
-A biblioteca de controle deve ter uma camada de abstração que permita a integração entre aplicativos, ou que se comuniquem diretamente.
+	RAS[10] 
+	& A arquitetura de referência deve possibilitar que serviços de  repositório de ativos de software e composições desses  serviços sejam tratados uniformemente, ou seja, possam ser  publicados, localizados e utilizados da mesma forma. 
+	& RN-01
+	\\ \hline 
 
- \\ \hline 
+	RAS[11] 
+	& A arquitetura de referência deve possibilitar que serviços do  repositório de ativos de software possam interagir diretamente  ou por meio do uso de barramentos de serviço. 
+	& RN-01
+	\\ \hline 
 
 \end{longtable}

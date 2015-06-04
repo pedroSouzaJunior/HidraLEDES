@@ -1,11 +1,11 @@
-\begin{longtable}{ | l | p{4cm} | p{4cm} | p{4cm} |}
+\begin{longtable}{ | l | p{4cm} | p{2cm} | p{6cm} |}
 \caption{Requisitos Não-Funcionais Hidra}\\
 \hline
 \textbf{ID} & \textbf{Requisito} & \textbf{RA Cambuci} & \textbf{Solução}  \\
 \hline
 \endfirsthead
 \multicolumn{4}{c}%
-{\tablename\ \thetable\ -- \textit{Requisitos Funcionais Hidra}} \\
+{\tablename\ \thetable\ -- \textit{Requisitos Não-funcionais Hidra}} \\
 \hline
 \textbf{ID} & \textbf{Requisito} & \textbf{RA Cambuci} & \textbf{Solução}  \\
 \hline
@@ -15,31 +15,41 @@
 \hline
 \endlastfoot
 	RN-01
-  & A biblioteca \textit{Hidra} deve fornecer mecanismos para que repositórios de ativos de software aceitem múltiplas fontes de origem de ativos.
-  & RA-AS[9] 
-  & Requisito é atendido por meio da camada de serviço provida pela biblioteca, que segue o padrão REST, que permitirá ao repositório desenvolvido, tendo como base a \textit{Hidra}, fácil acesso e integração a múltiplas ferramentas.
-  \\ \hline
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos para que repositórios de ativos de software aceitem múltiplas fontes de origem de ativos, por meio de serviços web que possam ser publicados, localizados e utilizados de maneira uniforme.
+	& RA-AS[9],
 
-  RN-02
-  & RA-AS[10]
-  & A biblioteca \textit{Hidra} deve fornecer mecanismos de versionamento aos ativos de software.
-  & Requisito é atendido por meio da camada de persistência provida pela biblioteca, que utiliza a API jGit para manipulação das operações de Gerenciamento de Configuração sobre um repositório Git, e permitirá que o repositório armazene múltiplas versões de um mesmo ativo.
-  \\ \hline
+	RAS[3],
 
-  RN-03
-  & A biblioteca \textit{Hidra} deve oferecer mecanismos  para  gerenciamento da configuração de ativos de software.
-  & RA-AS[11] 
-  & Requisito é atendido por meio da camada de persistência provida pela biblioteca, que utiliza a API jGit para manipulação das operações de Gerenciamento de Configuração sobre um repositório Git, e permitirá que o repositório gerencie configurações de ativos de software.
-  \\ \hline
+	RAS[4], 
 
-  RN-04
-  & A biblioteca \textit{Hidra} permitir que repositórios garantam que seus ativos de software não sofram alterações não autorizadas.
-  & RA-AS[16] 
-  & Requisito é atendido por meio do controle de usuários da camada de persistência provida pela biblioteca, que utiliza a API jGit para manipulação das operações de Gerenciamento de Configuração sobre um repositório Git. Na versão inicial, a biblioteca utiliza um usuário padrão informado no seu arquivo de propriedades (hidra.properties).
-  \\ \hline
+	RAS[10]
+	& Requisito é atendido por meio da camada de serviço provida pela biblioteca, que segue o padrão REST, que permitirá ao repositório desenvolvido, tendo como base a \textit{Hidra}, fácil acesso e integração a múltiplas ferramentas.
+	\\ \hline
 
-%
-% continuar a partir daqui.
-%
+	RN-02
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos de versionamento aos ativos de software.
+	& RA-AS[10]
+	& Requisito é atendido por meio da camada de persistência provida pela biblioteca, que utiliza a API jGit para manipulação das operações de Gerenciamento de Configuração sobre um repositório Git, e permitirá que o repositório armazene múltiplas versões de um mesmo ativo.
+	\\ \hline
+
+	RN-03
+	& A biblioteca \textit{Hidra} deve oferecer mecanismos  para  gerenciamento da configuração de ativos de software.
+	& RA-AS[11] 
+	& Requisito é atendido por meio da camada de persistência provida pela biblioteca, que utiliza a API jGit para manipulação das operações de Gerenciamento de Configuração sobre um repositório Git, e permitirá que o repositório gerencie configurações de ativos de software.
+	\\ \hline
+
+	RN-04
+	& A biblioteca \textit{Hidra} permitir que repositórios garantam que seus ativos de software não sofram alterações não autorizadas.
+	& RA-AS[16],
+
+	RAS[4]
+	& Requisito é atendido por meio do controle de usuários da camada de persistência provida pela biblioteca, que utiliza a API jGit para manipulação das operações de Gerenciamento de Configuração sobre um repositório Git. Na versão inicial, a biblioteca utiliza um usuário padrão informado no seu arquivo de propriedades (hidra.properties).
+	\\ \hline
+
+	RN-05
+	& A biblioteca \textit{Hidra} deve ser extensível de modo a viabilizar o desenvolvimento de repositório de ativos de software escalável, capaz de evoluir de maneira incremental, por meio da composição de novas funcionalidades disponíveis na forma de serviços.
+	& RAS[9] 
+	& Requisito é atendido por meio dos padrões adotados para a implementação da biblioteca: i) Padrão RAS para representação e manipulação de Ativos de Software Reusáveis; ii) Divisão dos recursos providos em camadas (jGit para persistência, Hidra para regras de negócio, HidraService para fornecimento de serviços; iii) Padrões de Projeto (tanto padrões GRASP quanto padrões GoF) adotados na implementação, como por exemplo, Singleton, Facade, Strategy, Especialista na Informação).
+ \\ \hline 
 
 \end{longtable}
