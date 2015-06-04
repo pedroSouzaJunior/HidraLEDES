@@ -14,7 +14,7 @@ package ledes.hidra;
  *        seguindo o padrão RAS.
  *        
  *        Obs.: se for necessário criar mais classes para sua implementação,
- *          colocá-las no pacote net.ledes.hidra.asset
+ *          colocá-las no pacote ledes.hidra.asset
  *          (deixar apenas Hidra, Asset, Repository e LocalRepository na raiz).
  * 
  * @author Danielli Urbieta e Pedro Souza Junior
