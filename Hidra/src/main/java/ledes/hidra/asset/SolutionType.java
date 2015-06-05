@@ -276,10 +276,11 @@ public class SolutionType {
          * {@link ArtifactType }
          * 
          * 
+         * @return 
          */
         public List<ArtifactType> getArtifact() {
             if (artifact == null) {
-                artifact = new ArrayList<ArtifactType>();
+                artifact = new ArrayList<>();
             }
             return this.artifact;
         }
