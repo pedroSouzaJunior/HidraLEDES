@@ -116,22 +116,58 @@ public class Repository {
         }
     }
 
+    /**
+     * Reponsavel por adicionar um Ativo de software ao repositorio. A operacao
+     * consiste de uma validacao do ativo, antes de efetuar a adicao do mesmo ao
+     * repositorio. Caso o ativo esteja condisente com o padrao RAS, ele podera
+     * entao ser adicionado ao repositorio.
+     *
+     * @param Asset
+     */
     boolean addAsset(Asset asset) {
+        //@TODO: Utilizacao do metodo validateAsset.
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Responsavel por retornar ao usuario a forma representativa dos artefatos
+     * que fazem parte do ativo
+     *
+     * @param assetId que representa o id de um ativo de software.
+     */
     SolutionType getSolution(String assetId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Responsavel por alterar a solucao que compoe um ativo de software
+     *
+     * @param assetId representa o id de um ativo de software.
+     * @param solution representa a solucao que compoe o ativo de software.
+     */
     boolean setSolutionType(String assetId, SolutionType solution) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Responsavel pela validacao de uma ativo de software. Este metodo e
+     * utilizado para validacao de um ativo dentro das normativas do padrao RAS.
+     *
+     * @param asset representa uma ativo de software que sera validado.
+     *
+     */
     boolean validateAsset(Asset asset) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Responsavel por Dado o id de um ativo, retornar ao usuario um objeto
+     * Classification que representa a Lista de um conjunto de descritores para
+     * classificação de ativos, bem como uma descrição do contexto para o qual o
+     * ativo é relevante.
+     *
+     * @param assetId representa o id de um ativo de software.
+     */
     ClassificationType getClassification(String assetId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
