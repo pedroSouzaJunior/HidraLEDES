@@ -1,6 +1,7 @@
 package ledes.hidra.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -11,20 +12,19 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Config;
 
 /**
- * This class is a Facade Pattern to jGit features.
- * Its aim is to simplify access to JGit features in order to achieve repository
- * objectives.
- * 
+ * This class is a Facade Pattern to jGit features. Its aim is to simplify
+ * access to JGit features in order to achieve repository objectives.
+ *
  * @see http://pt.wikipedia.org/wiki/Fa%C3%A7ade
- * 
+ *
  * @TODO Transferir das classes net.ledes.hidra.sources.Hidra e
- *       net.ledes.hidra.sources.Command, todos os métodos de 
- *       pura manipulação jGit para cá.
- * 
+ * net.ledes.hidra.sources.Command, todos os métodos de pura manipulação jGit
+ * para cá.
+ *
  * @TODO Documentar todos membros da classe (atributos, métodos, construtores),
- *        independente do modificador de acesso (public, protected, private),
- *        imediatamente assim que criá-los.
- * 
+ * independente do modificador de acesso (public, protected, private),
+ * imediatamente assim que criá-los.
+ *
  * @author Danielli Urbieta e Pedro Souza Junior
  */
 public class GitFacade {
@@ -33,11 +33,21 @@ public class GitFacade {
      * @param Git - Used to get the Git commands api
      */
     private Git assistant;
+    
+    private final String localPath;
 
+    
+    public GitFacade(String localPath){
+        super();
+        this.localPath = localPath;
+    }
     /**
      * Method responsible for creating or starting a repository.
+     *
      * @param directory
      */
+    
+   
     public final void start(File directory) {
 
         try {
@@ -79,12 +89,19 @@ public class GitFacade {
     }
 
     /**
+     * Pensando em utilizar apenas no GitFacade
      *
      * @return returns true if repository initialized
      */
     public boolean isRepositoryInitialized() {
 
-        return !assistant.getRepository().isBare();
+        try {
+            assistant = Git.open(new F‌ile(localPath + "/.git" ));
+            return true;
+        } catch (IOException ex) {
+            Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
 
     }
 
@@ -147,8 +164,8 @@ public class GitFacade {
     }
 
     /**
-     *  Remove remote repository.
-     * 
+     * Remove remote repository.
+     *
      */
     public void unSetConfigRemote() {
 
@@ -156,9 +173,9 @@ public class GitFacade {
         config.unset("remote", "origin", "url");
     }
 
-    
     /**
      * Return url of the remote repository.
+     *
      * @return String url
      */
     public String getConfigRemote() {
@@ -173,7 +190,7 @@ public class GitFacade {
     }
 
     /**
-     * 
+     *
      * @return true, if there are remote repository configured
      */
     public boolean hasRemoteRepository() {
@@ -182,5 +199,17 @@ public class GitFacade {
         String url = config.getString("remote", "origin", "url");
         return url != null;
     }
-    
+
+    /**
+     * Método responsável pela adição de um arquivo na área de seleção do
+     * repositório.
+     *
+     * @param fileName - recebe como parâmetro uma String com o nome do arquivo.
+     * @throws GitAPIException - exceção padrão da API Git
+     */
+    public void add(String fileName) throws GitAPIException {
+
+        assistant.add().addFilepattern(fileName).call();
+
+    }
 }

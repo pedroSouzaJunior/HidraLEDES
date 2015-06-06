@@ -1,6 +1,7 @@
 package ledes.hidra;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,6 +9,7 @@ import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
+import org.xml.sax.SAXException;
 
 /**
  * This class provides all operation of a repository, by manipulating Repository
@@ -29,25 +31,34 @@ public class Hidra {
      * @param repository
      */
     private Repository repository;
-
-    public Repository getRepository() {
-        return repository;
+    
+    public void startRepository(String localPath){
+        repository = new Repository(localPath);
+        repository.init();  
+           
     }
 
-    public void setRepository(Repository repository) {
-        this.repository = repository;
+    public boolean  startSynchronizedRepository(String localPath, String remotePath){
+        repository = new Repository(localPath, remotePath);
+        return repository.cloneRepository();
     }
-
+    
+    
+    //Provavelmente sairá daqui
+    public boolean isRepository(){
+        
+       return repository.isRepository();
+    }
     /**
      * RF-01
      *
-     * @param asset
+     * @param assetPath
      * @return
      */
-    public boolean addAsset(Asset asset) {
+    public boolean addAsset(String assetPath) {
         try {
-            return repository.addAsset(asset);
-        } catch (Exception ex) {
+            return repository.addAsset(assetPath);
+        } catch (SAXException | IOException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
@@ -77,11 +88,16 @@ public class Hidra {
     /**
      * RF-04
      * 
-     * @param asset
+     * @param assetPath 
      * @return 
      */
-    public boolean validateAsset(Asset asset) {
-        return repository.validateAsset(asset);
+    public boolean validateAsset(String assetPath) {
+        try {
+            return repository.validateAsset(assetPath);
+        } catch (SAXException | IOException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return false;
     }
     
     /**
