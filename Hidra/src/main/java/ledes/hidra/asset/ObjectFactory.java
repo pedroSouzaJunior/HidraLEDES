@@ -1,11 +1,3 @@
-//
-// Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
-// Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: PM.06.04 às 04:13:36 PM AMT 
-//
-
-
 package ledes.hidra.asset;
 
 import javax.xml.bind.annotation.XmlRegistry;
@@ -61,11 +53,75 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ClassificationType }
+     * 
+     */
+    public ClassificationType createClassificationType() {
+        return new ClassificationType();
+    }
+
+    /**
+     * Create an instance of {@link UsageType }
+     * 
+     */
+    public UsageType createUsageType() {
+        return new UsageType();
+    }
+
+    /**
+     * Create an instance of {@link ArtifactActivy }
+     * 
+     */
+    public ArtifactActivy createArtifactActivy() {
+        return new ArtifactActivy();
+    }
+
+    /**
+     * Create an instance of {@link DescriptionGroup }
+     * 
+     */
+    public DescriptionGroup createDescriptionGroup() {
+        return new DescriptionGroup();
+    }
+
+    /**
      * Create an instance of {@link ArtifactType }
      * 
      */
     public ArtifactType createArtifactType() {
         return new ArtifactType();
+    }
+
+    /**
+     * Create an instance of {@link Context }
+     * 
+     */
+    public Context createContext() {
+        return new Context();
+    }
+
+    /**
+     * Create an instance of {@link ContextReference }
+     * 
+     */
+    public ContextReference createContextReference() {
+        return new ContextReference();
+    }
+
+    /**
+     * Create an instance of {@link VariabilityPointBinding }
+     * 
+     */
+    public VariabilityPointBinding createVariabilityPointBinding() {
+        return new VariabilityPointBinding();
+    }
+
+    /**
+     * Create an instance of {@link Activity }
+     * 
+     */
+    public Activity createActivity() {
+        return new Activity();
     }
 
     /**

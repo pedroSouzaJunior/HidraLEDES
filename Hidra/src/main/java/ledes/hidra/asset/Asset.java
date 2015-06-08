@@ -1,11 +1,3 @@
-//
-// Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
-// Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: PM.06.07 às 07:40:41 PM AMT 
-//
-
-
 package ledes.hidra.asset;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,38 +10,12 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
-/**
- * <p>Classe Java de anonymous complex type.
- * 
- * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
- * 
- * <pre>
- * &lt;complexType>
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="profile" type="{}profileType"/>
- *         &lt;element name="solution" type="{}solutionType"/>
- *         &lt;element name="classification" type="{}classificationType"/>
- *       &lt;/sequence>
- *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="id" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="date" type="{http://www.w3.org/2001/XMLSchema}date" />
- *       &lt;attribute name="state" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="version" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="short-description" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "profile",
     "solution",
-    "classification"
+    "classification",
+    "usage"
 })
 @XmlRootElement(name = "asset")
 public class Asset {
@@ -60,6 +26,8 @@ public class Asset {
     protected SolutionType solution;
     @XmlElement(required = true)
     protected ClassificationType classification;
+    @XmlElement(required = true)
+    protected UsageType usage;
     @XmlAttribute(name = "name", required = true)
     protected String name;
     @XmlAttribute(name = "id", required = true)
@@ -144,6 +112,30 @@ public class Asset {
      */
     public void setClassification(ClassificationType value) {
         this.classification = value;
+    }
+
+    /**
+     * Obtém o valor da propriedade usage.
+     * 
+     * @return
+     *     possible object is
+     *     {@link UsageType }
+     *     
+     */
+    public UsageType getUsage() {
+        return usage;
+    }
+
+    /**
+     * Define o valor da propriedade usage.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link UsageType }
+     *     
+     */
+    public void setUsage(UsageType value) {
+        this.usage = value;
     }
 
     /**
