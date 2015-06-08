@@ -1,4 +1,3 @@
-
 package ledes.hidra.asset;
 
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class ContextReference {
     }
 
     /**
-     * Gets the value of the property contextId.
+     * Obtém o valor da propriedade contextId.
      * 
      * @return
      *     possible object is
@@ -64,7 +63,7 @@ public class ContextReference {
     }
 
     /**
-     * Define the value of the property contextId.
+     * Define o valor da propriedade contextId.
      * 
      * @param value
      *     allowed object is

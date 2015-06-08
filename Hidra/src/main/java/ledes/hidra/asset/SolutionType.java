@@ -1,5 +1,3 @@
-
-
 package ledes.hidra.asset;
 
 import java.util.ArrayList;
@@ -8,7 +6,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -29,7 +26,7 @@ public class SolutionType {
     protected SolutionType.Test test;
 
     /**
-     * Gets the value of the property artifacts.
+     * Obtém o valor da propriedade artifacts.
      * 
      * @return
      *     possible object is
@@ -41,7 +38,7 @@ public class SolutionType {
     }
 
     /**
-     * Define the value of the property artifacts.
+     * Define o valor da propriedade artifacts.
      * 
      * @param value
      *     allowed object is
@@ -53,7 +50,7 @@ public class SolutionType {
     }
 
     /**
-     * Gets the value of the property requirements.
+     * Obtém o valor da propriedade requirements.
      * 
      * @return
      *     possible object is
@@ -65,7 +62,7 @@ public class SolutionType {
     }
 
     /**
-     * Define the value of the property requirements.
+     * Define o valor da propriedade requirements.
      * 
      * @param value
      *     allowed object is
@@ -77,7 +74,7 @@ public class SolutionType {
     }
 
     /**
-     * Gets the value of the property design.
+     * Obtém o valor da propriedade design.
      * 
      * @return
      *     possible object is
@@ -89,7 +86,7 @@ public class SolutionType {
     }
 
     /**
-     * Define the value of the property design.
+     * Define o valor da propriedade design.
      * 
      * @param value
      *     allowed object is
@@ -101,7 +98,7 @@ public class SolutionType {
     }
 
     /**
-     * Gets the value of the property implementation.
+     * Obtém o valor da propriedade implementation.
      * 
      * @return
      *     possible object is
@@ -113,7 +110,7 @@ public class SolutionType {
     }
 
     /**
-     * Define the value of the property implementation.
+     * Define o valor da propriedade implementation.
      * 
      * @param value
      *     allowed object is
@@ -125,7 +122,7 @@ public class SolutionType {
     }
 
     /**
-     * Gets the value of the property test.
+     * Obtém o valor da propriedade test.
      * 
      * @return
      *     possible object is
@@ -137,7 +134,7 @@ public class SolutionType {
     }
 
     /**
-     * Define the value of the property test.
+     * Define o valor da propriedade test.
      * 
      * @param value
      *     allowed object is
@@ -149,7 +146,25 @@ public class SolutionType {
     }
 
 
-    
+    /**
+     * <p>Classe Java de anonymous complex type.
+     * 
+     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="artifact" type="{}artifactType" maxOccurs="unbounded"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "artifact"
@@ -180,11 +195,10 @@ public class SolutionType {
          * {@link ArtifactType }
          * 
          * 
-         * @return 
          */
         public List<ArtifactType> getArtifact() {
             if (artifact == null) {
-                artifact = new ArrayList<>();
+                artifact = new ArrayList<ArtifactType>();
             }
             return this.artifact;
         }
@@ -192,7 +206,25 @@ public class SolutionType {
     }
 
 
-    
+    /**
+     * <p>Classe Java de anonymous complex type.
+     * 
+     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="artifact" type="{}artifactType" maxOccurs="unbounded"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "artifact"
@@ -234,7 +266,25 @@ public class SolutionType {
     }
 
 
-    
+    /**
+     * <p>Classe Java de anonymous complex type.
+     * 
+     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="artifact" type="{}artifactType" maxOccurs="unbounded"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "artifact"
@@ -276,7 +326,25 @@ public class SolutionType {
     }
 
 
-    
+    /**
+     * <p>Classe Java de anonymous complex type.
+     * 
+     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="artifact" type="{}artifactType" maxOccurs="unbounded"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "artifact"
@@ -318,7 +386,25 @@ public class SolutionType {
     }
 
 
-    
+    /**
+     * <p>Classe Java de anonymous complex type.
+     * 
+     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="artifact" type="{}artifactType" maxOccurs="unbounded"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "artifact"

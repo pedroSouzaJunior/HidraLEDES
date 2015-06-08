@@ -1,4 +1,3 @@
-
 package ledes.hidra.asset;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -44,7 +43,7 @@ public class Asset {
     protected String shortDescription;
 
     /**
-     * Gets the value of the property profile.
+     * Obtém o valor da propriedade profile.
      * 
      * @return
      *     possible object is
@@ -56,7 +55,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property profile.
+     * Define o valor da propriedade profile.
      * 
      * @param value
      *     allowed object is
@@ -68,7 +67,7 @@ public class Asset {
     }
 
     /**
-     * Gets the value of the property solution.
+     * Obtém o valor da propriedade solution.
      * 
      * @return
      *     possible object is
@@ -80,7 +79,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property solution.
+     * Define o valor da propriedade solution.
      * 
      * @param value
      *     allowed object is
@@ -92,7 +91,7 @@ public class Asset {
     }
 
     /**
-     * Gets the value of the property classification.
+     * Obtém o valor da propriedade classification.
      * 
      * @return
      *     possible object is
@@ -104,7 +103,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property classification.
+     * Define o valor da propriedade classification.
      * 
      * @param value
      *     allowed object is
@@ -116,7 +115,7 @@ public class Asset {
     }
 
     /**
-     * Gets the value of the property usage.
+     * Obtém o valor da propriedade usage.
      * 
      * @return
      *     possible object is
@@ -128,7 +127,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property usage.
+     * Define o valor da propriedade usage.
      * 
      * @param value
      *     allowed object is
@@ -140,7 +139,7 @@ public class Asset {
     }
 
     /**
-     * Gets the value of the property name.
+     * Obtém o valor da propriedade name.
      * 
      * @return
      *     possible object is
@@ -152,7 +151,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property name.
+     * Define o valor da propriedade name.
      * 
      * @param value
      *     allowed object is
@@ -164,7 +163,7 @@ public class Asset {
     }
 
     /**
-     * Gets the value of the property id.
+     * Obtém o valor da propriedade id.
      * 
      * @return
      *     possible object is
@@ -176,7 +175,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property id.
+     * Define o valor da propriedade id.
      * 
      * @param value
      *     allowed object is
@@ -188,7 +187,7 @@ public class Asset {
     }
 
     /**
-     * Gets the value of the property date.
+     * Obtém o valor da propriedade date.
      * 
      * @return
      *     possible object is
@@ -200,7 +199,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property date.
+     * Define o valor da propriedade date.
      * 
      * @param value
      *     allowed object is
@@ -212,7 +211,7 @@ public class Asset {
     }
 
     /**
-     * Gets the value of the property state.
+     * Obtém o valor da propriedade state.
      * 
      * @return
      *     possible object is
@@ -224,7 +223,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property state.
+     * Define o valor da propriedade state.
      * 
      * @param value
      *     allowed object is
@@ -236,7 +235,7 @@ public class Asset {
     }
 
     /**
-     * Gets the value of the property version.
+     * Obtém o valor da propriedade version.
      * 
      * @return
      *     possible object is
@@ -248,7 +247,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property version.
+     * Define o valor da propriedade version.
      * 
      * @param value
      *     allowed object is
@@ -260,7 +259,7 @@ public class Asset {
     }
 
     /**
-     * Gets the value of the property shortDescription.
+     * Obtém o valor da propriedade shortDescription.
      * 
      * @return
      *     possible object is
@@ -272,7 +271,7 @@ public class Asset {
     }
 
     /**
-     * Define the value of the property shortDescription.
+     * Define o valor da propriedade shortDescription.
      * 
      * @param value
      *     allowed object is

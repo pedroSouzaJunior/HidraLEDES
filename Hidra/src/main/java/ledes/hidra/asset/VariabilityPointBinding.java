@@ -1,11 +1,9 @@
-
 package ledes.hidra.asset;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
-
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -18,7 +16,7 @@ public class VariabilityPointBinding {
     protected String bindingRule;
 
     /**
-     * Gets the value of the property id.
+     * Obtém o valor da propriedade id.
      * 
      * @return
      *     possible object is
@@ -30,7 +28,7 @@ public class VariabilityPointBinding {
     }
 
     /**
-     * Define the value of the property id.
+     * Define o valor da propriedade id.
      * 
      * @param value
      *     allowed object is
@@ -42,7 +40,7 @@ public class VariabilityPointBinding {
     }
 
     /**
-     * Gets the value of the property bindingRule.
+     * Obtém o valor da propriedade bindingRule.
      * 
      * @return
      *     possible object is
@@ -54,7 +52,7 @@ public class VariabilityPointBinding {
     }
 
     /**
-     * Define the value of the property bindingRule.
+     * Define o valor da propriedade bindingRule.
      * 
      * @param value
      *     allowed object is

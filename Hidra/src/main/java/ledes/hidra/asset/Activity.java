@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "activity", propOrder = {
     "variability"
@@ -59,7 +58,7 @@ public class Activity {
     }
 
     /**
-     * Gets the value of the property id.
+     * Obtém o valor da propriedade id.
      * 
      * @return
      *     possible object is
@@ -71,7 +70,7 @@ public class Activity {
     }
 
     /**
-     * Define the value of the property id.
+     * Define o valor da propriedade id.
      * 
      * @param value
      *     allowed object is
@@ -83,7 +82,7 @@ public class Activity {
     }
 
     /**
-     * Gets the value of the property task.
+     * Obtém o valor da propriedade task.
      * 
      * @return
      *     possible object is
@@ -95,7 +94,7 @@ public class Activity {
     }
 
     /**
-     * Define the value of the property task.
+     * Define o valor da propriedade task.
      * 
      * @param value
      *     allowed object is
@@ -107,7 +106,7 @@ public class Activity {
     }
 
     /**
-     * Gets the value of the property reference.
+     * Obtém o valor da propriedade reference.
      * 
      * @return
      *     possible object is
@@ -119,7 +118,7 @@ public class Activity {
     }
 
     /**
-     * Define the value of the property reference.
+     * Define o valor da propriedade reference.
      * 
      * @param value
      *     allowed object is
@@ -131,7 +130,7 @@ public class Activity {
     }
 
     /**
-     * Gets the value of the property role.
+     * Obtém o valor da propriedade role.
      * 
      * @return
      *     possible object is
@@ -143,7 +142,7 @@ public class Activity {
     }
 
     /**
-     * Define the value of the property role.
+     * Define o valor da propriedade role.
      * 
      * @param value
      *     allowed object is
@@ -155,7 +154,7 @@ public class Activity {
     }
 
     /**
-     * Gets the value of the property taskRole.
+     * Obtém o valor da propriedade taskRole.
      * 
      * @return
      *     possible object is
@@ -167,7 +166,7 @@ public class Activity {
     }
 
     /**
-     * Define the value of the property taskRole.
+     * Define o valor da propriedade taskRole.
      * 
      * @param value
      *     allowed object is

@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "artifactType")
 public class ArtifactType {
@@ -23,7 +24,7 @@ public class ArtifactType {
     protected String version;
 
     /**
-     * Gets the value of the property name.
+     * Obtém o valor da propriedade name.
      * 
      * @return
      *     possible object is
@@ -35,7 +36,7 @@ public class ArtifactType {
     }
 
     /**
-     * Define the value of the property name.
+     * Define o valor da propriedade name.
      * 
      * @param value
      *     allowed object is
@@ -47,7 +48,7 @@ public class ArtifactType {
     }
 
     /**
-     * Gets the value of the property type.
+     * Obtém o valor da propriedade type.
      * 
      * @return
      *     possible object is
@@ -59,7 +60,7 @@ public class ArtifactType {
     }
 
     /**
-     * Define the value of the proper type.
+     * Define o valor da propriedade type.
      * 
      * @param value
      *     allowed object is
@@ -71,7 +72,7 @@ public class ArtifactType {
     }
 
     /**
-     * Gets the value of the property reference.
+     * Obtém o valor da propriedade reference.
      * 
      * @return
      *     possible object is
@@ -83,7 +84,7 @@ public class ArtifactType {
     }
 
     /**
-     * Define the value of the property reference.
+     * Define o valor da propriedade reference.
      * 
      * @param value
      *     allowed object is
@@ -95,7 +96,7 @@ public class ArtifactType {
     }
 
     /**
-     * Gets the value of the property id.
+     * Obtém o valor da propriedade id.
      * 
      * @return
      *     possible object is
@@ -107,7 +108,7 @@ public class ArtifactType {
     }
 
     /**
-     * Define the value of the property id.
+     * Define o valor da propriedade id.
      * 
      * @param value
      *     allowed object is
@@ -119,7 +120,7 @@ public class ArtifactType {
     }
 
     /**
-     * Gets the value of the property version.
+     * Obtém o valor da propriedade version.
      * 
      * @return
      *     possible object is
@@ -131,7 +132,7 @@ public class ArtifactType {
     }
 
     /**
-     * Define the value of the property version.
+     * Define o valor da propriedade version.
      * 
      * @param value
      *     allowed object is

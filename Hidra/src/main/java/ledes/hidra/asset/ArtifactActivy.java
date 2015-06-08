@@ -1,4 +1,3 @@
-
 package ledes.hidra.asset;
 
 import java.util.ArrayList;
@@ -8,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -53,7 +53,7 @@ public class ArtifactActivy {
     }
 
     /**
-     * Gets the value of the property artifactId.
+     * Obtém o valor da propriedade artifactId.
      * 
      * @return
      *     possible object is
@@ -65,7 +65,7 @@ public class ArtifactActivy {
     }
 
     /**
-     * Define the value of the property artifactId.
+     * Define o valor da propriedade artifactId.
      * 
      * @param value
      *     allowed object is
@@ -77,7 +77,7 @@ public class ArtifactActivy {
     }
 
     /**
-     * Gets the value of the property contextId.
+     * Obtém o valor da propriedade contextId.
      * 
      * @return
      *     possible object is
@@ -89,7 +89,7 @@ public class ArtifactActivy {
     }
 
     /**
-     * Define the value of the property contextId.
+     * Define o valor da propriedade contextId.
      * 
      * @param value
      *     allowed object is

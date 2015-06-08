@@ -1,6 +1,3 @@
-
-
-
 package ledes.hidra.asset;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -24,7 +21,7 @@ public class ProfileType {
     protected int versionMinor;
 
     /**
-     * Gets the value of the property name.
+     * Obtém o valor da propriedade name.
      * 
      * @return
      *     possible object is
@@ -36,7 +33,7 @@ public class ProfileType {
     }
 
     /**
-     * Define the value of the property name.
+     * Define o valor da propriedade name.
      * 
      * @param value
      *     allowed object is
@@ -48,7 +45,7 @@ public class ProfileType {
     }
 
     /**
-     * Gets the value of the property idHistory.
+     * Obtém o valor da propriedade idHistory.
      * 
      * @return
      *     possible object is
@@ -60,7 +57,7 @@ public class ProfileType {
     }
 
     /**
-     * Define the value of the property idHistory.
+     * Define o valor da propriedade idHistory.
      * 
      * @param value
      *     allowed object is
@@ -72,36 +69,32 @@ public class ProfileType {
     }
 
     /**
-     * Gets the value of the property versionMajor.
+     * Obtém o valor da propriedade versionMajor.
      * 
-     * @return 
      */
     public int getVersionMajor() {
         return versionMajor;
     }
 
     /**
-     * Define the value of the property versionMajor.
+     * Define o valor da propriedade versionMajor.
      * 
-     * @param value
      */
     public void setVersionMajor(int value) {
         this.versionMajor = value;
     }
 
     /**
-     * Gets the value of the property versionMinor.
+     * Obtém o valor da propriedade versionMinor.
      * 
-     * @return 
      */
     public int getVersionMinor() {
         return versionMinor;
     }
 
     /**
-     * Define the value of the property versionMinor.
+     * Define o valor da propriedade versionMinor.
      * 
-     * @param value
      */
     public void setVersionMinor(int value) {
         this.versionMinor = value;

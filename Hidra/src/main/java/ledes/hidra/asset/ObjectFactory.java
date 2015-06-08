@@ -1,5 +1,3 @@
-
-
 package ledes.hidra.asset;
 
 import javax.xml.bind.annotation.XmlRegistry;
@@ -31,22 +29,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UsageType }
-     * 
-     */
-    public UsageType createUsageType() {
-        return new UsageType();
-    }
-
-    /**
-     * Create an instance of {@link ClassificationType }
-     * 
-     */
-    public ClassificationType createClassificationType() {
-        return new ClassificationType();
-    }
-
-    /**
      * Create an instance of {@link SolutionType }
      * 
      */
@@ -68,6 +50,22 @@ public class ObjectFactory {
      */
     public ProfileType createProfileType() {
         return new ProfileType();
+    }
+
+    /**
+     * Create an instance of {@link ClassificationType }
+     * 
+     */
+    public ClassificationType createClassificationType() {
+        return new ClassificationType();
+    }
+
+    /**
+     * Create an instance of {@link UsageType }
+     * 
+     */
+    public UsageType createUsageType() {
+        return new UsageType();
     }
 
     /**
@@ -124,38 +122,6 @@ public class ObjectFactory {
      */
     public Activity createActivity() {
         return new Activity();
-    }
-
-    /**
-     * Create an instance of {@link UsageType.ArtifactActivities }
-     * 
-     */
-    public UsageType.ArtifactActivities createUsageTypeArtifactActivities() {
-        return new UsageType.ArtifactActivities();
-    }
-
-    /**
-     * Create an instance of {@link UsageType.ContextReferences }
-     * 
-     */
-    public UsageType.ContextReferences createUsageTypeContextReferences() {
-        return new UsageType.ContextReferences();
-    }
-
-    /**
-     * Create an instance of {@link ClassificationType.Contexts }
-     * 
-     */
-    public ClassificationType.Contexts createClassificationTypeContexts() {
-        return new ClassificationType.Contexts();
-    }
-
-    /**
-     * Create an instance of {@link ClassificationType.DescriptionGroups }
-     * 
-     */
-    public ClassificationType.DescriptionGroups createClassificationTypeDescriptionGroups() {
-        return new ClassificationType.DescriptionGroups();
     }
 
     /**

@@ -1,4 +1,3 @@
-
 package ledes.hidra.asset;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,7 +19,7 @@ public class DescriptionGroup {
     protected String description;
 
     /**
-     * Gets the value of the property name.
+     * Obtém o valor da propriedade name.
      * 
      * @return
      *     possible object is
@@ -32,7 +31,7 @@ public class DescriptionGroup {
     }
 
     /**
-     * Define the value of the property name.
+     * Define o valor da propriedade name.
      * 
      * @param value
      *     allowed object is
@@ -44,7 +43,7 @@ public class DescriptionGroup {
     }
 
     /**
-     * Gets the value of the property reference.
+     * Obtém o valor da propriedade reference.
      * 
      * @return
      *     possible object is
@@ -56,7 +55,7 @@ public class DescriptionGroup {
     }
 
     /**
-     * Define the value of the property reference.
+     * Define o valor da propriedade reference.
      * 
      * @param value
      *     allowed object is
@@ -68,7 +67,7 @@ public class DescriptionGroup {
     }
 
     /**
-     * Gets the value of the property description.
+     * Obtém o valor da propriedade description.
      * 
      * @return
      *     possible object is
@@ -80,7 +79,7 @@ public class DescriptionGroup {
     }
 
     /**
-     * Define the value of the property description.
+     * Define o valor da propriedade description.
      * 
      * @param value
      *     allowed object is

@@ -1,4 +1,3 @@
-
 package ledes.hidra.asset;
 
 import java.util.ArrayList;
@@ -8,6 +7,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "classificationType", propOrder = {
     "contexts",
@@ -16,178 +17,66 @@ import javax.xml.bind.annotation.XmlType;
 public class ClassificationType {
 
     @XmlElement(required = true)
-    protected ClassificationType.Contexts contexts;
+    protected List<Context> contexts;
     @XmlElement(required = true)
-    protected ClassificationType.DescriptionGroups descriptionGroups;
+    protected List<DescriptionGroup> descriptionGroups;
 
     /**
-     * Gets the value of the property contexts.
+     * Gets the value of the contexts property.
      * 
-     * @return
-     *     possible object is
-     *     {@link ClassificationType.Contexts }
-     *     
-     */
-    public ClassificationType.Contexts getContexts() {
-        return contexts;
-    }
-
-    /**
-     * Define the value of the property contexts.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the contexts property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link ClassificationType.Contexts }
-     *     
-     */
-    public void setContexts(ClassificationType.Contexts value) {
-        this.contexts = value;
-    }
-
-    /**
-     * Gets the value of the property descriptionGroups.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ClassificationType.DescriptionGroups }
-     *     
-     */
-    public ClassificationType.DescriptionGroups getDescriptionGroups() {
-        return descriptionGroups;
-    }
-
-    /**
-     * Define the value of the property descriptionGroups.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ClassificationType.DescriptionGroups }
-     *     
-     */
-    public void setDescriptionGroups(ClassificationType.DescriptionGroups value) {
-        this.descriptionGroups = value;
-    }
-
-
-    /**
-     * <p>Classe Java de anonymous complex type.
-     * 
-     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
-     * 
+     * <p>
+     * For example, to add a new item, do as follows:
      * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="context" type="{}context" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
+     *    getContexts().add(newItem);
      * </pre>
      * 
      * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Context }
+     * 
+     * 
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "context"
-    })
-    public static class Contexts {
-
-        @XmlElement(required = true)
-        protected List<Context> context;
-
-        /**
-         * Gets the value of the context property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the context property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getContext().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link Context }
-         * 
-         * 
-         * @return 
-         */
-        public List<Context> getContext() {
-            if (context == null) {
-                context = new ArrayList<Context>();
-            }
-            return this.context;
+    public List<Context> getContexts() {
+        if (contexts == null) {
+            contexts = new ArrayList<Context>();
         }
-
+        return this.contexts;
     }
 
-
     /**
-     * <p>Classe Java de anonymous complex type.
+     * Gets the value of the descriptionGroups property.
      * 
-     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the descriptionGroups property.
      * 
+     * <p>
+     * For example, to add a new item, do as follows:
      * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="descriptionGroups" type="{}descriptionGroup" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
+     *    getDescriptionGroups().add(newItem);
      * </pre>
      * 
      * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link DescriptionGroup }
+     * 
+     * 
      */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "descriptionGroups"
-    })
-    public static class DescriptionGroups {
-
-        @XmlElement(required = true)
-        protected List<DescriptionGroup> descriptionGroups;
-
-        /**
-         * Gets the value of the descriptionGroups property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the descriptionGroups property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getDescriptionGroups().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link DescriptionGroup }
-         * 
-         * 
-         * @return 
-         */
-        public List<DescriptionGroup> getDescriptionGroups() {
-            if (descriptionGroups == null) {
-                descriptionGroups = new ArrayList<DescriptionGroup>();
-            }
-            return this.descriptionGroups;
+    public List<DescriptionGroup> getDescriptionGroups() {
+        if (descriptionGroups == null) {
+            descriptionGroups = new ArrayList<DescriptionGroup>();
         }
-
+        return this.descriptionGroups;
     }
 
 }

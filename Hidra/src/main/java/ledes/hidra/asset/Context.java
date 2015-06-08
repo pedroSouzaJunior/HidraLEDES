@@ -1,4 +1,3 @@
-
 package ledes.hidra.asset;
 
 import java.util.ArrayList;
@@ -8,8 +7,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-
-
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -26,7 +23,6 @@ public class Context {
     protected String id;
     @XmlAttribute(name = "description")
     protected String description;
-    
 
     /**
      * Gets the value of the descriptionGroup property.
@@ -58,7 +54,7 @@ public class Context {
     }
 
     /**
-     * Gets the value of the property name.
+     * Obtém o valor da propriedade name.
      * 
      * @return
      *     possible object is
@@ -70,7 +66,7 @@ public class Context {
     }
 
     /**
-     * Define the value of the property name.
+     * Define o valor da propriedade name.
      * 
      * @param value
      *     allowed object is
@@ -82,7 +78,7 @@ public class Context {
     }
 
     /**
-     * Gets the value of the property id.
+     * Obtém o valor da propriedade id.
      * 
      * @return
      *     possible object is
@@ -94,7 +90,7 @@ public class Context {
     }
 
     /**
-     * Define the value of the property id.
+     * Define o valor da propriedade id.
      * 
      * @param value
      *     allowed object is
@@ -106,7 +102,7 @@ public class Context {
     }
 
     /**
-     * Gets the value of the property description.
+     * Obtém o valor da propriedade description.
      * 
      * @return
      *     possible object is
@@ -118,7 +114,7 @@ public class Context {
     }
 
     /**
-     * Define the value of the property description.
+     * Define o valor da propriedade description.
      * 
      * @param value
      *     allowed object is

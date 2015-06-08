@@ -1,4 +1,3 @@
-
 package ledes.hidra.asset;
 
 import java.util.ArrayList;
@@ -18,142 +17,66 @@ import javax.xml.bind.annotation.XmlType;
 public class UsageType {
 
     @XmlElement(required = true)
-    protected UsageType.ArtifactActivities artifactActivities;
+    protected List<ArtifactActivy> artifactActivities;
     @XmlElement(required = true)
-    protected UsageType.ContextReferences contextReferences;
+    protected List<ContextReference> contextReferences;
 
     /**
-     * Gets the value of the property artifactActivities.
+     * Gets the value of the artifactActivities property.
      * 
-     * @return
-     *     possible object is
-     *     {@link UsageType.ArtifactActivities }
-     *     
-     */
-    public UsageType.ArtifactActivities getArtifactActivities() {
-        return artifactActivities;
-    }
-
-    /**
-     * Define the value of the property artifactActivities.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the artifactActivities property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link UsageType.ArtifactActivities }
-     *     
-     */
-    public void setArtifactActivities(UsageType.ArtifactActivities value) {
-        this.artifactActivities = value;
-    }
-
-    /**
-     * Gets the value of the property contextReferences.
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getArtifactActivities().add(newItem);
+     * </pre>
      * 
-     * @return
-     *     possible object is
-     *     {@link UsageType.ContextReferences }
-     *     
-     */
-    public UsageType.ContextReferences getContextReferences() {
-        return contextReferences;
-    }
-
-    /**
-     * Define the value of the property contextReferences.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link UsageType.ContextReferences }
-     *     
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ArtifactActivy }
+     * 
+     * 
      */
-    public void setContextReferences(UsageType.ContextReferences value) {
-        this.contextReferences = value;
-    }
-
-
-    
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "artifactActivities"
-    })
-    public static class ArtifactActivities {
-
-        @XmlElement(required = true)
-        protected List<ArtifactActivy> artifactActivities;
-
-        /**
-         * Gets the value of the artifactActivities property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the artifactActivities property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getArtifactActivities().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link ArtifactActivy }
-         * 
-         * 
-         * @return 
-         */
-        public List<ArtifactActivy> getArtifactActivities() {
-            if (artifactActivities == null) {
-                artifactActivities = new ArrayList<ArtifactActivy>();
-            }
-            return this.artifactActivities;
+    public List<ArtifactActivy> getArtifactActivities() {
+        if (artifactActivities == null) {
+            artifactActivities = new ArrayList<ArtifactActivy>();
         }
-
+        return this.artifactActivities;
     }
 
-
-    
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "contextReferences"
-    })
-    public static class ContextReferences {
-
-        @XmlElement(required = true)
-        protected List<ContextReference> contextReferences;
-
-        /**
-         * Gets the value of the contextReferences property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the contextReferences property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getContextReferences().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link ContextReference }
-         * 
-         * 
-         * @return 
-         */
-        public List<ContextReference> getContextReferences() {
-            if (contextReferences == null) {
-                contextReferences = new ArrayList<ContextReference>();
-            }
-            return this.contextReferences;
+    /**
+     * Gets the value of the contextReferences property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the contextReferences property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getContextReferences().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ContextReference }
+     * 
+     * 
+     */
+    public List<ContextReference> getContextReferences() {
+        if (contextReferences == null) {
+            contextReferences = new ArrayList<ContextReference>();
         }
-
+        return this.contextReferences;
     }
 
 }
