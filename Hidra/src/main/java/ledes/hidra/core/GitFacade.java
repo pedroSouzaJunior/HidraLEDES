@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ledes.hidra.Repository;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.revwalk.RevCommit;
 
 /**
  * This class is a Facade Pattern to jGit features. Its aim is to simplify
@@ -33,29 +36,35 @@ public class GitFacade {
      * @param Git - Used to get the Git commands api
      */
     private Git assistant;
-    
+
     private final String localPath;
 
-    
-    public GitFacade(String localPath){
+    public GitFacade(String localPath) {
         super();
         this.localPath = localPath;
     }
+
     /**
      * Method responsible for creating or starting a repository.
      *
      * @param directory
+     * @return 
      */
-    
-   
-    public final void start(File directory) {
 
-        try {
-            assistant = Git.init().setDirectory(directory).call();
+    public final boolean start(File directory) {
 
-        } catch (GitAPIException ex) {
-            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        if (!isRepositoryInitialized()) {
+            try {
+                assistant = Git.init().setDirectory(directory).call();
+                return true;
+
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+
         }
+        return true;
 
     }
 
@@ -91,20 +100,35 @@ public class GitFacade {
     /**
      * Pensando em utilizar apenas no GitFacade
      *
+     *
      * @return returns true if repository initialized
      */
     public boolean isRepositoryInitialized() {
 
         try {
-            assistant = Git.open(new F‌ile(localPath + "/.git" ));
+            assistant = Git.open(new F‌ile(localPath + "/.git"));
             return true;
         } catch (IOException ex) {
-            Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+             return false;
         }
-        return false;
+       // return false;
 
     }
 
+    
+    public boolean isRepositoryInitialized(String directory) {
+
+        try {
+            assistant = Git.open(new F‌ile(directory + "/.git"));
+            return true;
+        } catch (IOException ex) {
+           // Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+             return false;
+        }
+       // return false;
+
+    }
     /**
      * Receives name and email to configure User Account.
      *
@@ -212,4 +236,51 @@ public class GitFacade {
         assistant.add().addFilepattern(fileName).call();
 
     }
+    
+    /**
+     * Método responsável pelo commit das mudanças do repositório.
+     * @param message - String com a mensagem a ser adicionada ao commit.
+     * @return 
+     */
+    
+     public boolean commit(String message) {
+
+        if (isRepositoryInitialized(localPath)) {
+            System.err.println("Repository uninitialized");
+        } else {
+            try {
+                RevCommit commit = assistant.commit().setMessage(message)
+                        .call();
+                
+                System.out.println(commit.getId().getName());
+                 return true;
+            } catch (GitAPIException e) {
+                System.out.println(e.getMessage());
+            }
+           
+        }
+        return false;
+    }
+     
+     public Map<String, Set<String>> status() throws GitAPIException{
+          if (isRepositoryInitialized(localPath)) {
+            System.err.println("Repository uninitialized");
+            return null;
+        } 
+        Map<String, Set<String>> statusList = new HashMap<>();
+        Status status = assistant.status().call();
+        statusList.put("Added", status.getAdded());
+        statusList.put("Changed", status.getChanged());
+        statusList.put("Conflicting", status.getConflicting());
+        statusList.put("Igonred Not Index", status.getIgnoredNotInIndex());
+        statusList.put("Missing", status.getMissing());
+        statusList.put("Modified", status.getModified());
+        statusList.put("Removed", status.getRemoved());
+        statusList.put("Untracked", status.getUntracked());
+        statusList.put("UntrackedFolders", status.getUntrackedFolders());
+        statusList.put("Uncommitted Changes", status.getUncommittedChanges());
+        assistant.close();
+        return statusList;
+     
+     }
 }

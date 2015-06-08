@@ -31,23 +31,45 @@ public class Hidra {
      * @param repository
      */
     private Repository repository;
+  
     
-    public void startRepository(String localPath){
+    
+    /**
+     * Inicializa um repositório local sem um repositório master associado.
+     * Se não existir diretório ele será criado, se já existir um repositório no diretório indicado nada será alterado
+     * @param localPath - String com o caminho que o repositório será criado
+     * @return - true se não houve problemas
+     */
+    public boolean startRepository(String localPath){
         repository = new Repository(localPath);
-        repository.init();  
+        if(repository.isRepository());
+            
+        return repository.init(); 
+        
            
     }
+    
 
+    /**
+     * Cria, em um diretório vazio, uma cópia de um repositório indicado.
+     * Se o diretório não existir, ele será criado. 
+     * Se o diretório não for vazio, ou tiver um repositório vazio inicializado, retornará erro.
+     * 
+     * @param localPath - String que indica o caminho onde o repositório sera copiado
+     * @param remotePath - String que indica a URL - caso seja um repositório remoto - ou o caminho da repositorio a ser copiado
+     * @return 
+     */
     public boolean  startSynchronizedRepository(String localPath, String remotePath){
         repository = new Repository(localPath, remotePath);
         return repository.cloneRepository();
     }
     
     
-    //Provavelmente sairá daqui
-    public boolean isRepository(){
+   
+    private boolean isRepository(String directory){
         
-       return repository.isRepository();
+        repository = new Repository(directory);
+        return repository.isRepository(directory);
     }
     /**
      * RF-01

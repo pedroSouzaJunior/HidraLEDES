@@ -82,8 +82,8 @@ public class Repository {
         assistant = new GitFacade(localPath);
     }
 
-    protected void init(){
-        assistant.start(directory);
+    protected boolean init(){
+        return assistant.start(directory);
         
     }
     
@@ -255,6 +255,10 @@ public class Repository {
 
     boolean removeAsset(String assetId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    boolean isRepository(String directory) {
+        return assistant.isRepositoryInitialized(directory);
     }
 
 }
