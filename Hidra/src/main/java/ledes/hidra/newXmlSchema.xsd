@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           jaxb:version="1.0">
+    <!--Asset-->
+    <xs:element name="asset">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="profile" type="profileType"/>
+                <xs:element name="solution" type="solutionType"/>
+                <xs:element name="classification" type="classificationType"/>
+                <xs:element name="usage" type="usage"/>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="id" type="xs:string" use="required"/>
+            <xs:attribute name="date" type="xs:date"/>
+            <xs:attribute name="state" type="xs:string"/>
+            <xs:attribute name="version" type="xs:string"/>
+            <xs:attribute name="short-description" type="xs:string"/>
+        </xs:complexType>
+    </xs:element><!--profile-->
+    <xs:complexType name="profileType">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="id-history" type="xs:string" use="required"/>
+        <xs:attribute name="version-major" type="xs:int" use="required"/>
+        <xs:attribute name="version-minor" type="xs:int" use="required"/>
+    </xs:complexType><!--classification-->
+    
+    
+    <xs:complexType name="classificationType">
+        <xs:sequence><!--Contexts-->
+            <xs:element name="contexts">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="context" type="context" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element><!--descriptionGroups-->
+            <xs:element name="descriptionGroups">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="descriptionGroups" type="descriptionGroup" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        
+    </xs:complexType><!--DescriptionGroup-->
+    <xs:complexType name="descriptionGroup">
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="reference" type="xs:string"/>
+        <xs:attribute name="description" type="xs:string"/>
+    </xs:complexType><!--Context-->
+    
+    <xs:complexType name="context">
+        <xs:sequence>
+            <xs:element name="descriptionGroup" type="descriptionGroup" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="id" type="xs:string"/>
+        <xs:attribute name="description" type="xs:string"/>
+    </xs:complexType>
+
+    <!--Usage-->
+    <xs:complexType name="usage">
+        <xs:sequence><!--artifactActivities-->
+            <xs:element name="artifactActivities">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="artifactActivities" type="artifactActivy" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element><!--contextReferences-->
+            <xs:element name="contextReferences">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="contextReferences" type="contextReference" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+   
+    <!--ArtifactActivy-->
+    <xs:complexType name="artifactActivy">
+        <xs:sequence>
+            <xs:element name="activities" type="activity" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="artifactId" type="xs:string"/>
+        <xs:attribute name="contextId" type="xs:string"/>
+    </xs:complexType><!--contextReference-->
+    <xs:complexType name="contextReference">
+        <xs:sequence>
+            <xs:element name="activities" type="activity" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="contextId" type="xs:string"/>
+    </xs:complexType><!--Actitivy-->
+    <xs:complexType name="activity">
+        <xs:sequence>
+            <xs:element name="variability" type="VariabilityPointBinding" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string"/>
+        <xs:attribute name="task" type="xs:string"/>
+        <xs:attribute name="reference" type="xs:string"/>
+        <xs:attribute name="role" type="xs:string"/>
+        <xs:attribute name="taskRole" type="xs:string"/>
+    </xs:complexType><!--VariabilityPointBinding-->
+    <xs:complexType name="VariabilityPointBinding">
+        <xs:attribute name="id" type="xs:string"/>
+        <xs:attribute name="bindingRule" type="xs:string"/>
+    </xs:complexType><!--solution-->
+    <xs:complexType name="solutionType">
+        <xs:sequence><!--artifacts-->
+            <xs:element name="artifacts">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="artifact" type="artifactType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element><!--requirements-->
+            <xs:element name="requirements" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="artifact" type="artifactType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element><!--design-->
+            <xs:element name="design" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="artifact" type="artifactType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element><!--implementation-->
+            <xs:element name="implementation" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="artifact" type="artifactType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element><!--test-->
+            <xs:element name="test" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="artifact" type="artifactType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType><!--artifactType-->
+    <xs:complexType name="artifactType">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="type" type="xs:string" use="required"/>
+        <xs:attribute name="reference" type="xs:string" use="required"/>
+        <xs:attribute name="id" type="xs:string"/>
+        <xs:attribute name="version" type="xs:string"/>
+    </xs:complexType>
+</xs:schema>
