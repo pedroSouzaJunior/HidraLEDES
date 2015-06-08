@@ -1,10 +1,3 @@
-//
-// Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
-// Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: PM.06.07 às 07:40:41 PM AMT 
-//
-
 
 package ledes.hidra.asset;
 
@@ -18,38 +11,12 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
-/**
- * <p>Classe Java de anonymous complex type.
- * 
- * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
- * 
- * <pre>
- * &lt;complexType>
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="profile" type="{}profileType"/>
- *         &lt;element name="solution" type="{}solutionType"/>
- *         &lt;element name="classification" type="{}classificationType"/>
- *       &lt;/sequence>
- *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="id" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="date" type="{http://www.w3.org/2001/XMLSchema}date" />
- *       &lt;attribute name="state" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="version" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="short-description" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "profile",
     "solution",
-    "classification"
+    "classification",
+    "usage"
 })
 @XmlRootElement(name = "asset")
 public class Asset {
@@ -60,6 +27,8 @@ public class Asset {
     protected SolutionType solution;
     @XmlElement(required = true)
     protected ClassificationType classification;
+    @XmlElement(required = true)
+    protected UsageType usage;
     @XmlAttribute(name = "name", required = true)
     protected String name;
     @XmlAttribute(name = "id", required = true)
@@ -75,7 +44,7 @@ public class Asset {
     protected String shortDescription;
 
     /**
-     * Obtém o valor da propriedade profile.
+     * Gets the value of the property profile.
      * 
      * @return
      *     possible object is
@@ -87,7 +56,7 @@ public class Asset {
     }
 
     /**
-     * Define o valor da propriedade profile.
+     * Define the value of the property profile.
      * 
      * @param value
      *     allowed object is
@@ -99,7 +68,7 @@ public class Asset {
     }
 
     /**
-     * Obtém o valor da propriedade solution.
+     * Gets the value of the property solution.
      * 
      * @return
      *     possible object is
@@ -111,7 +80,7 @@ public class Asset {
     }
 
     /**
-     * Define o valor da propriedade solution.
+     * Define the value of the property solution.
      * 
      * @param value
      *     allowed object is
@@ -123,7 +92,7 @@ public class Asset {
     }
 
     /**
-     * Obtém o valor da propriedade classification.
+     * Gets the value of the property classification.
      * 
      * @return
      *     possible object is
@@ -135,7 +104,7 @@ public class Asset {
     }
 
     /**
-     * Define o valor da propriedade classification.
+     * Define the value of the property classification.
      * 
      * @param value
      *     allowed object is
@@ -147,7 +116,31 @@ public class Asset {
     }
 
     /**
-     * Obtém o valor da propriedade name.
+     * Gets the value of the property usage.
+     * 
+     * @return
+     *     possible object is
+     *     {@link UsageType }
+     *     
+     */
+    public UsageType getUsage() {
+        return usage;
+    }
+
+    /**
+     * Define the value of the property usage.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link UsageType }
+     *     
+     */
+    public void setUsage(UsageType value) {
+        this.usage = value;
+    }
+
+    /**
+     * Gets the value of the property name.
      * 
      * @return
      *     possible object is
@@ -159,7 +152,7 @@ public class Asset {
     }
 
     /**
-     * Define o valor da propriedade name.
+     * Define the value of the property name.
      * 
      * @param value
      *     allowed object is
@@ -171,7 +164,7 @@ public class Asset {
     }
 
     /**
-     * Obtém o valor da propriedade id.
+     * Gets the value of the property id.
      * 
      * @return
      *     possible object is
@@ -183,7 +176,7 @@ public class Asset {
     }
 
     /**
-     * Define o valor da propriedade id.
+     * Define the value of the property id.
      * 
      * @param value
      *     allowed object is
@@ -195,7 +188,7 @@ public class Asset {
     }
 
     /**
-     * Obtém o valor da propriedade date.
+     * Gets the value of the property date.
      * 
      * @return
      *     possible object is
@@ -207,7 +200,7 @@ public class Asset {
     }
 
     /**
-     * Define o valor da propriedade date.
+     * Define the value of the property date.
      * 
      * @param value
      *     allowed object is
@@ -219,7 +212,7 @@ public class Asset {
     }
 
     /**
-     * Obtém o valor da propriedade state.
+     * Gets the value of the property state.
      * 
      * @return
      *     possible object is
@@ -231,7 +224,7 @@ public class Asset {
     }
 
     /**
-     * Define o valor da propriedade state.
+     * Define the value of the property state.
      * 
      * @param value
      *     allowed object is
@@ -243,7 +236,7 @@ public class Asset {
     }
 
     /**
-     * Obtém o valor da propriedade version.
+     * Gets the value of the property version.
      * 
      * @return
      *     possible object is
@@ -255,7 +248,7 @@ public class Asset {
     }
 
     /**
-     * Define o valor da propriedade version.
+     * Define the value of the property version.
      * 
      * @param value
      *     allowed object is
@@ -267,7 +260,7 @@ public class Asset {
     }
 
     /**
-     * Obtém o valor da propriedade shortDescription.
+     * Gets the value of the property shortDescription.
      * 
      * @return
      *     possible object is
@@ -279,7 +272,7 @@ public class Asset {
     }
 
     /**
-     * Define o valor da propriedade shortDescription.
+     * Define the value of the property shortDescription.
      * 
      * @param value
      *     allowed object is

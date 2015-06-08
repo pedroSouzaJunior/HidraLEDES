@@ -1,10 +1,3 @@
-//
-// Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
-// Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: PM.06.07 às 08:50:12 PM AMT 
-//
-
 
 package ledes.hidra.asset;
 
@@ -16,46 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-/**
- * <p>Classe Java de usageType complex type.
- * 
- * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
- * 
- * <pre>
- * &lt;complexType name="usageType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="artifactActivities">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="artifactActivities" type="{}artifactActivy" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="contextReferences">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="contextReferences" type="{}contextReference" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "usageType", propOrder = {
     "artifactActivities",
@@ -69,7 +23,7 @@ public class UsageType {
     protected UsageType.ContextReferences contextReferences;
 
     /**
-     * Obtém o valor da propriedade artifactActivities.
+     * Gets the value of the property artifactActivities.
      * 
      * @return
      *     possible object is
@@ -81,7 +35,7 @@ public class UsageType {
     }
 
     /**
-     * Define o valor da propriedade artifactActivities.
+     * Define the value of the property artifactActivities.
      * 
      * @param value
      *     allowed object is
@@ -93,7 +47,7 @@ public class UsageType {
     }
 
     /**
-     * Obtém o valor da propriedade contextReferences.
+     * Gets the value of the property contextReferences.
      * 
      * @return
      *     possible object is
@@ -105,7 +59,7 @@ public class UsageType {
     }
 
     /**
-     * Define o valor da propriedade contextReferences.
+     * Define the value of the property contextReferences.
      * 
      * @param value
      *     allowed object is
@@ -117,25 +71,7 @@ public class UsageType {
     }
 
 
-    /**
-     * <p>Classe Java de anonymous complex type.
-     * 
-     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="artifactActivities" type="{}artifactActivy" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
+    
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "artifactActivities"
@@ -166,6 +102,7 @@ public class UsageType {
          * {@link ArtifactActivy }
          * 
          * 
+         * @return 
          */
         public List<ArtifactActivy> getArtifactActivities() {
             if (artifactActivities == null) {
@@ -177,25 +114,7 @@ public class UsageType {
     }
 
 
-    /**
-     * <p>Classe Java de anonymous complex type.
-     * 
-     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="contextReferences" type="{}contextReference" maxOccurs="unbounded"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
+    
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "contextReferences"
@@ -226,6 +145,7 @@ public class UsageType {
          * {@link ContextReference }
          * 
          * 
+         * @return 
          */
         public List<ContextReference> getContextReferences() {
             if (contextReferences == null) {

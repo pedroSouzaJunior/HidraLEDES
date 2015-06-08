@@ -1,9 +1,4 @@
-//
-// Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
-// Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: PM.06.04 às 04:13:36 PM AMT 
-//
+
 
 
 package ledes.hidra.asset;
@@ -14,26 +9,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 
-/**
- * <p>Classe Java de profileType complex type.
- * 
- * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
- * 
- * <pre>
- * &lt;complexType name="profileType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="id-history" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="version-major" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
- *       &lt;attribute name="version-minor" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "profileType")
 public class ProfileType {
@@ -48,7 +24,7 @@ public class ProfileType {
     protected int versionMinor;
 
     /**
-     * Obtém o valor da propriedade name.
+     * Gets the value of the property name.
      * 
      * @return
      *     possible object is
@@ -60,7 +36,7 @@ public class ProfileType {
     }
 
     /**
-     * Define o valor da propriedade name.
+     * Define the value of the property name.
      * 
      * @param value
      *     allowed object is
@@ -72,7 +48,7 @@ public class ProfileType {
     }
 
     /**
-     * Obtém o valor da propriedade idHistory.
+     * Gets the value of the property idHistory.
      * 
      * @return
      *     possible object is
@@ -84,7 +60,7 @@ public class ProfileType {
     }
 
     /**
-     * Define o valor da propriedade idHistory.
+     * Define the value of the property idHistory.
      * 
      * @param value
      *     allowed object is
@@ -96,32 +72,36 @@ public class ProfileType {
     }
 
     /**
-     * Obtém o valor da propriedade versionMajor.
+     * Gets the value of the property versionMajor.
      * 
+     * @return 
      */
     public int getVersionMajor() {
         return versionMajor;
     }
 
     /**
-     * Define o valor da propriedade versionMajor.
+     * Define the value of the property versionMajor.
      * 
+     * @param value
      */
     public void setVersionMajor(int value) {
         this.versionMajor = value;
     }
 
     /**
-     * Obtém o valor da propriedade versionMinor.
+     * Gets the value of the property versionMinor.
      * 
+     * @return 
      */
     public int getVersionMinor() {
         return versionMinor;
     }
 
     /**
-     * Define o valor da propriedade versionMinor.
+     * Define the value of the property versionMinor.
      * 
+     * @param value
      */
     public void setVersionMinor(int value) {
         this.versionMinor = value;

@@ -1,11 +1,3 @@
-//
-// Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
-// Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: PM.06.07 às 08:50:12 PM AMT 
-//
-
-
 package ledes.hidra.asset;
 
 import java.util.ArrayList;
@@ -17,30 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-/**
- * <p>Classe Java de activity complex type.
- * 
- * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
- * 
- * <pre>
- * &lt;complexType name="activity">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="variability" type="{}VariabilityPointBinding" maxOccurs="unbounded"/>
- *       &lt;/sequence>
- *       &lt;attribute name="id" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="task" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="reference" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="role" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="taskRole" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "activity", propOrder = {
     "variability"
@@ -90,7 +59,7 @@ public class Activity {
     }
 
     /**
-     * Obtém o valor da propriedade id.
+     * Gets the value of the property id.
      * 
      * @return
      *     possible object is
@@ -102,7 +71,7 @@ public class Activity {
     }
 
     /**
-     * Define o valor da propriedade id.
+     * Define the value of the property id.
      * 
      * @param value
      *     allowed object is
@@ -114,7 +83,7 @@ public class Activity {
     }
 
     /**
-     * Obtém o valor da propriedade task.
+     * Gets the value of the property task.
      * 
      * @return
      *     possible object is
@@ -126,7 +95,7 @@ public class Activity {
     }
 
     /**
-     * Define o valor da propriedade task.
+     * Define the value of the property task.
      * 
      * @param value
      *     allowed object is
@@ -138,7 +107,7 @@ public class Activity {
     }
 
     /**
-     * Obtém o valor da propriedade reference.
+     * Gets the value of the property reference.
      * 
      * @return
      *     possible object is
@@ -150,7 +119,7 @@ public class Activity {
     }
 
     /**
-     * Define o valor da propriedade reference.
+     * Define the value of the property reference.
      * 
      * @param value
      *     allowed object is
@@ -162,7 +131,7 @@ public class Activity {
     }
 
     /**
-     * Obtém o valor da propriedade role.
+     * Gets the value of the property role.
      * 
      * @return
      *     possible object is
@@ -174,7 +143,7 @@ public class Activity {
     }
 
     /**
-     * Define o valor da propriedade role.
+     * Define the value of the property role.
      * 
      * @param value
      *     allowed object is
@@ -186,7 +155,7 @@ public class Activity {
     }
 
     /**
-     * Obtém o valor da propriedade taskRole.
+     * Gets the value of the property taskRole.
      * 
      * @return
      *     possible object is
@@ -198,7 +167,7 @@ public class Activity {
     }
 
     /**
-     * Define o valor da propriedade taskRole.
+     * Define the value of the property taskRole.
      * 
      * @param value
      *     allowed object is

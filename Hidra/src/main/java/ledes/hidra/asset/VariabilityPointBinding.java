@@ -1,10 +1,3 @@
-//
-// Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
-// Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: PM.06.07 às 08:50:12 PM AMT 
-//
-
 
 package ledes.hidra.asset;
 
@@ -14,24 +7,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 
-/**
- * <p>Classe Java de VariabilityPointBinding complex type.
- * 
- * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
- * 
- * <pre>
- * &lt;complexType name="VariabilityPointBinding">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="id" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="bindingRule" type="{http://www.w3.org/2001/XMLSchema}string" />
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "VariabilityPointBinding")
 public class VariabilityPointBinding {
@@ -42,7 +18,7 @@ public class VariabilityPointBinding {
     protected String bindingRule;
 
     /**
-     * Obtém o valor da propriedade id.
+     * Gets the value of the property id.
      * 
      * @return
      *     possible object is
@@ -54,7 +30,7 @@ public class VariabilityPointBinding {
     }
 
     /**
-     * Define o valor da propriedade id.
+     * Define the value of the property id.
      * 
      * @param value
      *     allowed object is
@@ -66,7 +42,7 @@ public class VariabilityPointBinding {
     }
 
     /**
-     * Obtém o valor da propriedade bindingRule.
+     * Gets the value of the property bindingRule.
      * 
      * @return
      *     possible object is
@@ -78,7 +54,7 @@ public class VariabilityPointBinding {
     }
 
     /**
-     * Define o valor da propriedade bindingRule.
+     * Define the value of the property bindingRule.
      * 
      * @param value
      *     allowed object is

@@ -1,10 +1,3 @@
-//
-// Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
-// Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: PM.06.07 às 07:40:41 PM AMT 
-//
-
 
 package ledes.hidra.asset;
 
@@ -15,47 +8,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Classe Java de classificationType complex type.
- * 
- * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
- * 
- * <pre>
- * &lt;complexType name="classificationType">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="contexts">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="context" type="{}context" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *         &lt;element name="descriptionGroups">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="descriptionGroups" type="{}descriptionGroup" maxOccurs="unbounded"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "classificationType", propOrder = {
     "contexts",
@@ -69,7 +21,7 @@ public class ClassificationType {
     protected ClassificationType.DescriptionGroups descriptionGroups;
 
     /**
-     * Obtém o valor da propriedade contexts.
+     * Gets the value of the property contexts.
      * 
      * @return
      *     possible object is
@@ -81,7 +33,7 @@ public class ClassificationType {
     }
 
     /**
-     * Define o valor da propriedade contexts.
+     * Define the value of the property contexts.
      * 
      * @param value
      *     allowed object is
@@ -93,7 +45,7 @@ public class ClassificationType {
     }
 
     /**
-     * Obtém o valor da propriedade descriptionGroups.
+     * Gets the value of the property descriptionGroups.
      * 
      * @return
      *     possible object is
@@ -105,7 +57,7 @@ public class ClassificationType {
     }
 
     /**
-     * Define o valor da propriedade descriptionGroups.
+     * Define the value of the property descriptionGroups.
      * 
      * @param value
      *     allowed object is
