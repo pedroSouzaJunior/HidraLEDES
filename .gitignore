@@ -12,4 +12,8 @@
 /Hidra/target/
 /Hidra/nbproject/
 /WSHidra/target/
+/WSHidra/nb-configuration.xml
+/HidraPrototypeMaven/build/
+/HidraPrototypeMaven/target/
+Hidra/target/maven-archiver/
 
