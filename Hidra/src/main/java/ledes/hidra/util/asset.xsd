@@ -32,35 +32,20 @@
     <xs:complexType name="classificationType">
         <xs:sequence>
             <!--Contexts-->
-            <xs:element name="contexts">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="context" type="context"
-                                    maxOccurs="unbounded"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
+            <xs:element name="contexts" type="context" maxOccurs="unbounded"/>
             <!--descriptionGroups-->
-            <xs:element name="descriptionGroups">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="descriptionGroups" type="descriptionGroup"
-                                    maxOccurs="unbounded"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
+            <xs:element name="descriptionGroups" type="descriptionGroup" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
-    <!--DescriptionGroup-->	
+    <!--DescriptionGroup--> 
     <xs:complexType name="descriptionGroup">
         <xs:attribute name="name" type="xs:string"/>
         <xs:attribute name="reference" type="xs:string"/>
         <xs:attribute name="description" type="xs:string"/>
     </xs:complexType>
 
-    <!--Context-->	
+    <!--Context-->  
     <xs:complexType name="context">
         <xs:sequence>
             <xs:element name="descriptionGroup" type="descriptionGroup" maxOccurs="unbounded"/>
@@ -75,24 +60,10 @@
     <xs:complexType name="usageType">
         <xs:sequence>
             <!--artifactActivities-->
-            <xs:element name="artifactActivities">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="artifactActivities" type="artifactActivy"
-                                    maxOccurs="unbounded"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-
+            <xs:element name="artifactActivities" type="artifactActivy" maxOccurs="unbounded"/>
+            
             <!--contextReferences-->
-            <xs:element name="contextReferences">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="contextReferences" type="contextReference"
-                                    maxOccurs="unbounded"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
+            <xs:element name="contextReferences" type="contextReference" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -131,7 +102,7 @@
         <xs:attribute name="id" type="xs:string"/>
         <xs:attribute name="bindingRule" type="xs:string"/>
     </xs:complexType> 
-	   
+       
 
     <!--solution-->
     <xs:complexType name="solutionType">
