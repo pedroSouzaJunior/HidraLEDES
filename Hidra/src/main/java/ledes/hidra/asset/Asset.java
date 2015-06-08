@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: PM.06.04 às 04:13:36 PM AMT 
+// Gerado em: PM.06.07 às 07:40:41 PM AMT 
 //
 
 
@@ -30,6 +30,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;sequence>
  *         &lt;element name="profile" type="{}profileType"/>
  *         &lt;element name="solution" type="{}solutionType"/>
+ *         &lt;element name="classification" type="{}classificationType"/>
  *       &lt;/sequence>
  *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="id" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
@@ -47,7 +48,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "profile",
-    "solution"
+    "solution",
+    "classification"
 })
 @XmlRootElement(name = "asset")
 public class Asset {
@@ -56,6 +58,8 @@ public class Asset {
     protected ProfileType profile;
     @XmlElement(required = true)
     protected SolutionType solution;
+    @XmlElement(required = true)
+    protected ClassificationType classification;
     @XmlAttribute(name = "name", required = true)
     protected String name;
     @XmlAttribute(name = "id", required = true)
@@ -116,6 +120,30 @@ public class Asset {
      */
     public void setSolution(SolutionType value) {
         this.solution = value;
+    }
+
+    /**
+     * Obtém o valor da propriedade classification.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ClassificationType }
+     *     
+     */
+    public ClassificationType getClassification() {
+        return classification;
+    }
+
+    /**
+     * Define o valor da propriedade classification.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ClassificationType }
+     *     
+     */
+    public void setClassification(ClassificationType value) {
+        this.classification = value;
     }
 
     /**
