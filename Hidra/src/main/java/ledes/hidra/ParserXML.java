@@ -5,42 +5,44 @@
  */
 package ledes.hidra;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Iterator;
+import java.util.List;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import ledes.hidra.asset.ArtifactType;
 import ledes.hidra.asset.Asset;
+import ledes.hidra.asset.SolutionType;
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  *
- * @author danielli
+ * @author drocha
  */
 public class ParserXML {
-    public static void main(String[] args) {
-        XStream stream = new XStream(new DomDriver());
-        stream.alias("asset", Asset.class);
+
+    public static void main(String[] args) throws FileNotFoundException, XmlPullParserException, JAXBException {
+
+        FileReader xml = new FileReader("/home/danielli/Downloads/ativo.xml");
         Asset a;
-        a = (Asset) stream.fromXML("<?xml version=\"1.0\"?> "+
-"<asset name=\"jaxb\" id=\"1\" short-description=\"jaxb java architecture xml binding\"> " +
-	"<profile name=\"Komponento Profile\" id-history=\"komponento_03052005::core_03052005\" version-major=\"1\" version-minor=\"0\"/> " + 
-		"<solution> "+
-			"<artifacts> "+
-				"<artifact name=\" jaxb \" type=\"Folder\" reference=\"/\"/> "+
-				"<artifact name=\" jwsdp.properties \" type=\"File\" reference=\"/LICENSE\"/> "+
-			"</artifacts> "+ 
-			"<design> "+
-				"<artifact name=\" index.html \" type=\"File\" reference=\"/jaxb/docs\"/> "+
-			"</design> "+
-			"<implementation> "+
-				"<artifact name=\" src \" type=\"Folder\" reference=\"/jaxb/samples/unmarshal-validate\"/> "+ 
-				"<artifact name=\" jwsdp.properties \" type=\"File\" reference=\"/jaxb/conf\"/> "+
-			"</implementation> "+
-			"<test> "+
-				"<artifact name=\" samples \" type=\"Folder\" reference=\"/jaxb\"/> "+
-			"</test> "+
-		"</solution> "+
-"</asset>");
-System.out.println(a.getName());
-    
-    
-    
+        JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+        
+        a = (Asset) unmarshaller.unmarshal(xml);
+        System.out.println(a.getSolution().getDesign().getArtifact().get(0).getReference());
+        
+        
+        //verificar existencia de ativo
+        
+        
+        SolutionType.Artifacts artifacts = a.getSolution().getArtifacts();
+        for(ArtifactType art : artifacts.getArtifact()){
+            art.getReference();
+        
+        }
+
     }
 }

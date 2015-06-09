@@ -1,10 +1,15 @@
 package ledes.hidra;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
@@ -31,46 +36,40 @@ public class Hidra {
      * @param repository
      */
     private Repository repository;
-  
-    
-    
+
     /**
-     * Inicializa um repositório local sem um repositório master associado.
-     * Se não existir diretório ele será criado, se já existir um repositório no diretório indicado nada será alterado
+     * Inicializa um repositório local sem um repositório master associado. Se
+     * não existir diretório ele será criado, se já existir um repositório no
+     * diretório indicado nada será alterado
+     *
      * @param localPath - String com o caminho que o repositório será criado
      * @return - true se não houve problemas
      */
-    public boolean startRepository(String localPath){
+    public boolean startRepository(String localPath) {
         repository = new Repository(localPath);
-        if(repository.isRepository());
-            
-        return repository.init(); 
-        
-           
+        if (repository.isRepository());
+
+        return repository.init();
+
     }
-    
 
     /**
-     * Cria, em um diretório vazio, uma cópia de um repositório indicado.
-     * Se o diretório não existir, ele será criado. 
-     * Se o diretório não for vazio, ou tiver um repositório vazio inicializado, retornará erro.
-     * 
-     * @param localPath - String que indica o caminho onde o repositório sera copiado
-     * @param remotePath - String que indica a URL - caso seja um repositório remoto - ou o caminho da repositorio a ser copiado
-     * @return 
+     * Cria, em um diretório vazio, uma cópia de um repositório indicado. Se o
+     * diretório não existir, ele será criado. Se o diretório não for vazio, ou
+     * tiver um repositório vazio inicializado, retornará erro.
+     *
+     * @param localPath - String que indica o caminho onde o repositório sera
+     * copiado
+     * @param remotePath - String que indica a URL - caso seja um repositório
+     * remoto - ou o caminho do repositorio a ser copiado
+     * @return
      */
-    public boolean  startSynchronizedRepository(String localPath, String remotePath){
+    public boolean startSynchronizedRepository(String localPath, String remotePath) {
         repository = new Repository(localPath, remotePath);
         return repository.cloneRepository();
     }
-    
-    
-   
-    private boolean isRepository(String directory){
-        
-        repository = new Repository(directory);
-        return repository.isRepository(directory);
-    }
+
+  
     /**
      * RF-01
      *
@@ -85,33 +84,33 @@ public class Hidra {
             return false;
         }
     }
-    
+
     /**
      * RF-02, RF-13
-     * 
+     *
      * @param assetId
-     * @return 
+     * @return
      */
     public SolutionType getSolution(String assetId) {
         return repository.getSolution(assetId);
     }
-    
+
     /**
      * RF-02, RF-13
-     * 
+     *
      * @param assetId
      * @param solution
-     * @return 
+     * @return
      */
     public boolean setSolutionType(String assetId, SolutionType solution) {
         return repository.setSolutionType(assetId, solution);
     }
-    
+
     /**
      * RF-04
-     * 
-     * @param assetPath 
-     * @return 
+     *
+     * @param assetPath
+     * @return
      */
     public boolean validateAsset(String assetPath) {
         try {
@@ -119,120 +118,118 @@ public class Hidra {
         } catch (SAXException | IOException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
         }
-       return false;
+        return false;
     }
-    
+
     /**
      * RF-05
-     * 
+     *
      * @param assetId
-     * @return 
+     * @return
      */
     public boolean removeAsset(String assetId) {
         return repository.removeAsset(assetId);
     }
-    
+
     /**
      * RF-06
-     * 
+     *
      * @param assetId
-     * @return 
+     * @return
      */
     public ClassificationType getClassification(String assetId) {
         return repository.getClassification(assetId);
     }
-    
+
     /**
      * RF-06
-     * 
+     *
      * @param classification
-     * @return 
+     * @return
      */
     public boolean setClassification(ClassificationType classification) {
         return repository.setClassification(classification);
     }
-    
+
     /**
      * RF-07, RF-14
-     * 
+     *
      * @param assetId
-     * @return 
+     * @return
      */
     public UsageType getUsage(String assetId) {
         return repository.getUsage(assetId);
     }
-    
+
     /**
      * RF-07
-     * 
+     *
      * @param usage
-     * @return 
+     * @return
      */
     public boolean setUsage(UsageType usage) {
         return repository.setUsage(usage);
     }
-    
+
     /**
      * RF-08
-     * 
+     *
      * @param assetId
-     * @return 
+     * @return
      */
     public List<Asset> getRelatedAssets(String assetId) {
         return repository.getRelatedAssets(assetId);
     }
-    
+
     /**
      * RF-08
-     * 
+     *
      * @param assetId
      * @param relatedId
-     * @return 
+     * @return
      */
     public boolean setRelatedAsset(String assetId, String relatedId) {
         return repository.setRelatedAsset(assetId, relatedId);
     }
-    
+
     /**
      * RF-09
-     * 
+     *
      * @param assetId
      * @param complete
-     * @return 
+     * @return
      */
     public String getLog(String assetId, boolean complete) {
         return repository.getLog(assetId, complete);
     }
-    
+
     /**
      * RF-09
-     * 
+     *
      * @param assetId
-     * @return 
+     * @return
      */
     public String getLog(String assetId) {
         return repository.getLog(assetId, false);
     }
-    
+
     /**
      * RF-10
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<Asset> listAssets() {
         return repository.listAssets();
     }
-    
+
     /**
      * RF-11
-     * 
+     *
      * @param assetId
-     * @return 
+     * @return
      */
     public File downloadAsset(String assetId) {
         return repository.downloadAsset(assetId);
     }
-    
-    
-    
+
 }
