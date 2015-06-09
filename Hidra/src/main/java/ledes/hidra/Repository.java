@@ -1,11 +1,16 @@
 package ledes.hidra;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -149,26 +154,38 @@ public class Repository {
 
         }
     }
-
+    
+    
     /**
-     * Reponsavel por adicionar um Ativo de software ao repositorio. A operacao
-     * consiste de uma validacao do ativo, antes de efetuar a adicao do mesmo ao
-     * repositorio. Caso o ativo esteja condisente com o padrao RAS, ele podera
-     * entao ser adicionado ao repositorio.
-     *
-     * @param Asset
-     */
-    boolean addAsset(String assetPath) throws SAXException, IOException {
-
-        File auxiliary = new File(assetPath);
-        if (auxiliary.isDirectory()) {
-            return validateAsset(assetPath);
+     * Método responsável pela leitura de manifest asset.xml de um repositório. 
+     * Retorna nulo se repositório não foi inicializado. 
+     * @return
+     * @throws JAXBException 
+     * @throws java.io.FileNotFoundException 
+     */  
+    public Asset readAsset() throws JAXBException, FileNotFoundException {
+        if(isRepository()){
+            FileReader xml;
+            Asset asset ;
+            JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            xml = new FileReader(localPath + "asset.xml");
+            asset = (Asset) unmarshaller.unmarshal(xml);
+            return asset;
         }
+        return null;
 
-        return false;
     }
-
-    boolean validateAsset(String assetPath) throws SAXException, IOException {
+    
+    /**
+     * Valida o manifest asset.xml de acordo com o esquema asset.xsd que define o padrão dos ativos segundo OMG.
+     * @param assetPath - recebe como parametro uma string que define o caminho dentro do diretorio do ativo do manifest asset.xml
+     * @return
+     * @throws SAXException
+     * @throws IOException 
+     */
+    
+       boolean validateAsset(String assetPath) throws SAXException, IOException {
 
         File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
         Source xmlFile = new StreamSource(new File(assetPath+ "asset.xml"));
@@ -188,6 +205,40 @@ public class Repository {
         return false;
         
     }
+    
+       
+    /**
+     * Válida se o diretório, que representa o ativo, contém todos os artefatos descritos no manifest asset.xml.
+     * Recebe como paramêtro um Objeto Asset.
+     * Só deve ser invocada se o asset.xml estiver dentro do padrão RAS definido.
+     * @param asset
+     * @return 
+     */
+    boolean validateAsset(Asset asset){
+    
+    
+        return false;
+    }
+
+    /**
+     * Reponsavel por adicionar um Ativo de software ao repositorio. A operacao
+     * consiste de uma validacao do ativo, antes de efetuar a adicao do mesmo ao
+     * repositorio. Caso o ativo esteja condisente com o padrao RAS, ele podera
+     * entao ser adicionado ao repositorio.
+     *
+     * @param Asset
+     */
+    boolean addAsset(String assetPath) throws SAXException, IOException {
+
+        File auxiliary = new File(assetPath);
+        if (auxiliary.isDirectory()) {
+            return validateAsset(assetPath);
+        }
+
+        return false;
+    }
+
+ 
 
     /**
      * Responsavel por retornar ao usuario a forma representativa dos artefatos
