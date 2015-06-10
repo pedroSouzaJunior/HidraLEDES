@@ -42,6 +42,78 @@ public class Asset {
     @XmlAttribute(name = "short-description")
     protected String shortDescription;
 
+    
+    public String describeSolution(){
+        StringBuilder stb = new StringBuilder().append("\n");
+        
+        stb.append("the asset is described by:\n");
+        stb.append("Artifacts:\n");
+        for(ArtifactType artfacty: this.solution.getArtifacts().getArtifact()){
+            stb.append("ID: ").append(artfacty.getId());
+            stb.append("Name: ").append(artfacty.getName());
+            stb.append("Type: ").append(artfacty.getType());
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+        }
+        
+        stb.append("Requirements:\n");
+        for(ArtifactType artfacty: this.solution.getRequirements().getArtifact()){
+            stb.append("ID: ").append(artfacty.getId());
+            stb.append("Name: ").append(artfacty.getName());
+            stb.append("Type: ").append(artfacty.getType());
+            stb.append("Reference: ").append(artfacty.getReference());
+        }
+        
+        stb.append("Design:\n");
+        for(ArtifactType artfacty: this.solution.getDesign().getArtifact()){
+            stb.append("ID: ").append(artfacty.getId());
+            stb.append("Name: ").append(artfacty.getName());
+            stb.append("Type: ").append(artfacty.getType());
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+        }
+        
+        stb.append("Implementation:\n");
+        for(ArtifactType artfacty: this.solution.getImplementation().getArtifact()){
+            stb.append("ID: ").append(artfacty.getId());
+            stb.append("Name: ").append(artfacty.getName());
+            stb.append("Type: ").append(artfacty.getType());
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+        }
+        
+        stb.append("Design:\n");
+        for(ArtifactType artfacty: this.solution.getDesign().getArtifact()){
+            stb.append("ID: ").append(artfacty.getId());
+            stb.append("Name: ").append(artfacty.getName());
+            stb.append("Type: ").append(artfacty.getType());
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+        }
+        
+        stb.append("Test:\n");
+        for(ArtifactType artfacty: this.solution.getTest().getArtifact()){
+            stb.append("ID: ").append(artfacty.getId());
+            stb.append("Name: ").append(artfacty.getName());
+            stb.append("Type: ").append(artfacty.getType());
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+        }
+        
+        return stb.toString();
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Obtém o valor da propriedade profile.
      * 
