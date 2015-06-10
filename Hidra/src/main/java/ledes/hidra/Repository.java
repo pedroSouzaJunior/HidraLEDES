@@ -57,6 +57,7 @@ public class Repository {
     private final File directory;
 
     private final GitFacade assistant;
+
     /**
      * Builder of the repository class with one parameter. You must start the
      * repository after the instantiation of the repository.
@@ -70,7 +71,6 @@ public class Repository {
         assistant = new GitFacade(localPath);
 
     }
-    
 
     /**
      * Builder of the repository class with two parameters. You must start the
@@ -87,25 +87,26 @@ public class Repository {
         assistant = new GitFacade(localPath);
     }
 
-    protected boolean init(){
+    protected boolean init() {
         return assistant.start(directory);
-        
+
     }
-    
-    protected boolean cloneRepository (){
+
+    protected boolean cloneRepository() {
         try {
             assistant.cloneRepository(directory, remotePath);
             return true;
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
+
         return false;
     }
-    
-    protected boolean isRepository(){
+
+    protected boolean isRepository() {
         return assistant.isRepositoryInitialized();
     }
+
     /**
      * Return path repository
      *
@@ -154,19 +155,19 @@ public class Repository {
 
         }
     }
-    
-    
+
     /**
-     * Método responsável pela leitura de manifest asset.xml de um repositório. 
-     * Retorna nulo se repositório não foi inicializado. 
+     * Método responsável pela leitura de manifest asset.xml de um repositório.
+     * Retorna nulo se repositório não foi inicializado.
+     *
      * @return
-     * @throws JAXBException 
-     * @throws java.io.FileNotFoundException 
-     */  
+     * @throws JAXBException
+     * @throws java.io.FileNotFoundException
+     */
     public Asset readAsset() throws JAXBException, FileNotFoundException {
-        if(isRepository()){
+        if (isRepository()) {
             FileReader xml;
-            Asset asset ;
+            Asset asset;
             JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             xml = new FileReader(localPath + "asset.xml");
@@ -176,19 +177,21 @@ public class Repository {
         return null;
 
     }
-    
+
     /**
-     * Valida o manifest asset.xml de acordo com o esquema asset.xsd que define o padrão dos ativos segundo OMG.
-     * @param assetPath - recebe como parametro uma string que define o caminho dentro do diretorio do ativo do manifest asset.xml
+     * Valida o manifest asset.xml de acordo com o esquema asset.xsd que define
+     * o padrão dos ativos segundo OMG.
+     *
+     * @param assetPath - recebe como parametro uma string que define o caminho
+     * dentro do diretorio do ativo do manifest asset.xml
      * @return
      * @throws SAXException
-     * @throws IOException 
+     * @throws IOException
      */
-    
-       boolean validateAsset(String assetPath) throws SAXException, IOException {
+    boolean validateAsset(String assetPath) throws SAXException, IOException {
 
         File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
-        Source xmlFile = new StreamSource(new File(assetPath+ "asset.xml"));
+        Source xmlFile = new StreamSource(new File(assetPath + "asset.xml"));
         SchemaFactory schemaFactory = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = schemaFactory.newSchema(schemaFile);
@@ -203,20 +206,20 @@ public class Repository {
         }
 
         return false;
-        
+
     }
-    
-       
+
     /**
-     * Válida se o diretório, que representa o ativo, contém todos os artefatos descritos no manifest asset.xml.
-     * Recebe como paramêtro um Objeto Asset.
-     * Só deve ser invocada se o asset.xml estiver dentro do padrão RAS definido.
+     * Válida se o diretório, que representa o ativo, contém todos os artefatos
+     * descritos no manifest asset.xml. Recebe como paramêtro um Objeto Asset.
+     * Só deve ser invocada se o asset.xml estiver dentro do padrão RAS
+     * definido.
+     *
      * @param asset
-     * @return 
+     * @return
      */
-    boolean validateAsset(Asset asset){
-    
-    
+    boolean validateAsset(Asset asset) {
+
         return false;
     }
 
@@ -237,8 +240,6 @@ public class Repository {
 
         return false;
     }
-
- 
 
     /**
      * Responsavel por retornar ao usuario a forma representativa dos artefatos
