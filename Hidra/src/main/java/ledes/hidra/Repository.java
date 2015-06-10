@@ -269,8 +269,13 @@ public class Repository {
      *
      * @param assetId representa o id de um ativo de software.
      */
-    ClassificationType getClassification(String assetId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String getClassification(String assetId) {
+        String classification;
+        
+        Asset asset = findAsset(assetId);
+        classification = asset.getDescribeClassification();
+        
+        return classification;
     }
 
     boolean setClassification(ClassificationType classification) {
@@ -311,6 +316,14 @@ public class Repository {
 
     boolean isRepository(String directory) {
         return assistant.isRepositoryInitialized(directory);
+    }
+
+    
+    /**
+     * dado id devolve ativo da lista de ativos do repositorio.
+     */
+    private Asset findAsset(String assetId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -137,7 +137,7 @@ public class Hidra {
      * @param assetId
      * @return
      */
-    public ClassificationType getClassification(String assetId) {
+    public String getClassification(String assetId) {
         return repository.getClassification(assetId);
     }
 

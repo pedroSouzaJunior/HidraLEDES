@@ -354,4 +354,24 @@ public class Asset {
         this.shortDescription = value;
     }
 
+    public String getDescribeClassification() {
+        StringBuilder stb = new StringBuilder().append("\n");
+        
+        stb.append("the asset is classified by:\n");
+        stb.append("Contexts:\n");
+        for(Context context: this.classification.getContexts()){
+            stb.append("ID: ").append(context.getId());
+            stb.append("Name: ").append(context.getName());
+            stb.append("Description: ").append(context.getDescription()).append("\n");
+        }
+        
+        stb.append("Descriptor Groups:\n");
+        for(DescriptionGroup descriptorGroup: this.getClassification().getDescriptionGroups()){
+            stb.append("Name: ").append(descriptorGroup.getName());
+            stb.append("Description: ").append(descriptorGroup.getDescription());
+            stb.append("Rerefence: ").append(descriptorGroup.getReference()).append("\n");
+        }
+        return stb.toString();
+    }
+
 }
