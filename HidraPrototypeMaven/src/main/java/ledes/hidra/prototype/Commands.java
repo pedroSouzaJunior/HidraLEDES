@@ -27,6 +27,7 @@ public class Commands {
         strategies = new HashMap<>();
         strategies.put("help", new HelpCommand());
         strategies.put("start", new StartRepoCommand());
+        strategies.put("addAsset", new AddAssetCommand());
 
         // put generic commands here
     }
@@ -105,5 +106,24 @@ public class Commands {
 
         }
     }
+    
+    /**
+     * Adiciona um ativo no repositorio
+     * 
+     */
+    class AddAssetCommand extends Command {
+
+        @Override
+        public String execute(String arg) {
+           
+                if(hidra.addAsset(arg));
+                System.out.println(arg);
+          
+            
+            return "Teste";
+        }
+    
+    
+    } 
 
 }

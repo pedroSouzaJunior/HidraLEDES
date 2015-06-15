@@ -231,10 +231,14 @@ public class GitFacade {
      * @param fileName - recebe como parâmetro uma String com o nome do arquivo.
      * @throws GitAPIException - exceção padrão da API Git
      */
-    public void add(String fileName) throws GitAPIException {
+    public boolean add(String fileName) throws GitAPIException {
 
-        assistant.add().addFilepattern(fileName).call();
-
+        if(isRepositoryInitialized())
+        {
+            assistant.add().addFilepattern(fileName).call();
+            return true;
+        }
+        return false;
     }
     
     /**

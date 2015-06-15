@@ -33,7 +33,7 @@ public class HidraPrototype {
                 }
             }
 
-           Hidra hidra = new Hidra();
+         
          
             
             String result = commands.parse(command, arguments.toString());

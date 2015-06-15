@@ -3,6 +3,7 @@ package ledes.hidra;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +22,7 @@ import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import ledes.hidra.core.GitFacade;
+import ledes.hidra.core.ValidatorAssets;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.xml.sax.SAXException;
 
@@ -42,6 +44,7 @@ import org.xml.sax.SAXException;
  */
 public class Repository {
 
+    private final static String manifest = "rasset.xml";
     /**
      * @param String localPath - Define full path to the repository local
      */
@@ -157,20 +160,22 @@ public class Repository {
     }
 
     /**
-     * Método responsável pela leitura de manifest asset.xml de um repositório.
+     * Método responsável pela leitura de manifest rasset.xml de um repositório.
      * Retorna nulo se repositório não foi inicializado.
      *
+     * @param nameAsset
      * @return
      * @throws JAXBException
      * @throws java.io.FileNotFoundException
      */
-    public Asset readAsset() throws JAXBException, FileNotFoundException {
+    public Asset readAsset(String nameAsset) throws JAXBException, FileNotFoundException {
         if (isRepository()) {
             FileReader xml;
             Asset asset;
             JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            xml = new FileReader(localPath + "asset.xml");
+            //  System.out.println("Caminho manifest: " + localPath +"/"+ nameAsset +"/rasset.xml");
+            xml = new FileReader(localPath + "/" + nameAsset + "/rasset.xml");
             asset = (Asset) unmarshaller.unmarshal(xml);
             return asset;
         }
@@ -179,19 +184,40 @@ public class Repository {
     }
 
     /**
-     * Valida o manifest asset.xml de acordo com o esquema asset.xsd que define
+     * Método responsável pela verificação da existência do arquivo manifest
+     * chamado "rasset.xml". Recebe o diretorio do Asset a ser adicionado.
+     *
+     * @param path
+     * @return
+     */
+    public boolean manifestExist(File path) {
+
+        File[] matchingFiles = path.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.startsWith("rasset") && name.endsWith("xml");
+            }
+        });
+
+        return matchingFiles != null;
+
+    }
+
+    /**
+     * Valida o manifest rasset.xml de acordo com o esquema asset.xsd que define
      * o padrão dos ativos segundo OMG.
      *
      * @param assetPath - recebe como parametro uma string que define o caminho
-     * dentro do diretorio do ativo do manifest asset.xml
+     * dentro do diretorio do ativo do manifest rasset.xml
      * @return
      * @throws SAXException
      * @throws IOException
      */
     boolean validateAsset(String assetPath) throws SAXException, IOException {
 
-        File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
-        Source xmlFile = new StreamSource(new File(assetPath + "asset.xml"));
+        //  File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
+        File schemaFile = new File("/home/danielli/asset.xsd");
+        Source xmlFile = new StreamSource(new File(assetPath + manifest));
         SchemaFactory schemaFactory = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = schemaFactory.newSchema(schemaFile);
@@ -211,34 +237,45 @@ public class Repository {
 
     /**
      * Válida se o diretório, que representa o ativo, contém todos os artefatos
-     * descritos no manifest asset.xml. Recebe como paramêtro um Objeto Asset.
-     * Só deve ser invocada se o asset.xml estiver dentro do padrão RAS
+     * descritos no manifest rasset.xml. Recebe como paramêtro um Objeto Asset.
+     * Só deve ser invocada se o rasset.xml estiver dentro do padrão RAS
      * definido.
      *
      * @param asset
      * @return
      */
-    boolean validateAsset(Asset asset) {
-
-        return false;
+    boolean validateAsset(Asset asset, String assetPath) {
+        ValidatorAssets validator = new ValidatorAssets(assetPath);
+        return validator.isValidAsset(asset);
     }
 
     /**
      * Reponsavel por adicionar um Ativo de software ao repositorio. A operacao
      * consiste de uma validacao do ativo, antes de efetuar a adicao do mesmo ao
-     * repositorio. Caso o ativo esteja condisente com o padrao RAS, ele podera
+     * repositorio. Caso o ativo esteja condizente com o padrao RAS, ele podera
      * entao ser adicionado ao repositorio.
      *
      * @param Asset
      */
-    boolean addAsset(String assetPath) throws SAXException, IOException {
+    boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException {
 
-        File auxiliary = new File(assetPath);
-        if (auxiliary.isDirectory()) {
-            return validateAsset(assetPath);
+        String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
+        File assetFolder = new File(assetPath);
+
+        if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
+            try {
+
+                return assistant.add(nameAsset);
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+
+        } else {
+
+            return false;
+
         }
-
-        return false;
     }
 
     /**
@@ -271,10 +308,10 @@ public class Repository {
      */
     String getClassification(String assetId) {
         String classification;
-        
+
         Asset asset = findAsset(assetId);
         classification = asset.getDescribeClassification();
-        
+
         return classification;
     }
 
@@ -318,7 +355,6 @@ public class Repository {
         return assistant.isRepositoryInitialized(directory);
     }
 
-    
     /**
      * dado id devolve ativo da lista de ativos do repositorio.
      */

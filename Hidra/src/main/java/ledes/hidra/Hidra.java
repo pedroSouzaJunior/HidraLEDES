@@ -1,19 +1,16 @@
 package ledes.hidra;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.xml.sax.SAXException;
 
 /**
@@ -73,13 +70,14 @@ public class Hidra {
     /**
      * RF-01
      *
-     * @param assetPath
+     * @param nameAsset
      * @return
+     * 
      */
-    public boolean addAsset(String assetPath) {
+    public boolean addAsset(String nameAsset) {
         try {
-            return repository.addAsset(assetPath);
-        } catch (SAXException | IOException ex) {
+            return repository.addAsset(nameAsset);
+        } catch (SAXException | IOException | JAXBException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
