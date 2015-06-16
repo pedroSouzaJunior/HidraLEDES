@@ -9,6 +9,13 @@
 \usepackage{longtable}
 \usepackage{wrapfig}
 \usepackage{float}
+
+
+\usepackage[toc]{glossaries}
+
+\makeglossaries
+
+
 %\usepackage{verbatim}
 
 % fonts
@@ -93,7 +100,6 @@ Write the abstract here.
 \tableofcontents
 \listoffigures
 \listoftables
-\listofalgorithms
 \newpage
 
 \pagestyle{plain}
@@ -105,6 +111,9 @@ Write the abstract here.
 \include{3_ferramentas}
 \include{4_hidra}
 \include{5_conlusao}
+
+\setglossarystyle{altlisthypergroup}
+
 
 \bibliographystyle{plain}
 \bibliography{referencias}

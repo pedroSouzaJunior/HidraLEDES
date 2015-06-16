@@ -1,0 +1,120 @@
+\section{Requisitos Funcionais Hidra}
+
+A partir da Tabela 4.1 os seguintes requisitos funcionais da biblioteca Hidra foram criados.
+
+\begin{longtable}{ | l | p{6cm} | p{2cm} | p{4cm} |}
+\caption{Requisitos Funcionais Hidra}\\
+\hline
+\textbf{ID} & \textbf{Requisito} & \textbf{Cambuci} & \textbf{Solução}  \\
+\hline
+\endfirsthead
+\multicolumn{4}{c}%
+{\tablename\ \thetable\ -- \textit{Requisitos Funcionais Hidra}} \\
+\hline
+\textbf{ID} & \textbf{Requisito} & \textbf{RA Cambuci} & \textbf{Solução}  \\
+\hline
+\endhead
+\hline \multicolumn{4}{r}{\textit{Continua na página seguinte}} \\
+\endfoot
+\hline
+\endlastfoot
+	RF-01
+	& A biblioteca \textit{Hidra} deve possibilitar a \textbf{inclusão de ativos de software}, levando em consideração a composição de um ativo por diferentes artefatos.
+	& RA-AS[1]
+	& Os ativos reusáveis de software são armazenados no repositório em forma de diretórios, por meio, da segunda forma de armazenamento RAS \cite{omg2005}. \\ \hline
+
+	% 4_1_rf_hidra.tex
+	RF-02
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos a fim de \textbf{listar artefatos que compõem um ativo de software} armazenado no repositório.
+	& RA-AS[1]
+	& Requisito implementado por meio dos métodos \textit{Asset.getSolution()} e \textit{Asset.setSolution()}. \\ \hline
+
+	RF-03
+	& A biblioteca \textit{Hidra} deve possuir uma \textbf{estrutura padronizada de representação, comunicação e armazenamento} de ativos de software. 
+	& RA-AS[2] 
+	& Foi adotado o padrão RAS atualmente em sua versão 2.2. \\ \hline
+
+	RF-04
+	& A biblioteca \textit{Hidra} deve possibilitar que todo novo ativo de software seja \textbf{validado e certificado} de acordo com o padrão adotado.
+	& RA-AS[2]
+	& As regras especificadas no padrão RAS, expressas em forma de um XSD \textit{NomeArquivoXSD.xsd}, são consultadas ao validar e certificar um Ativo antes de qualquer atualização ou inserção (método \textit{Asset.validate()}).\\ \hline
+
+	RF-05
+	& A biblioteca \textit{Hidra} deve possibilitar que ativos de software, que não forem mais utilizados, \textbf{sejam removidos do repositório}.
+	& RA-AS[3]
+	& Requisito implementado por meio do método \textit{Repository .removeAsset(Asset asset)}. \\ \hline
+
+	RF-06
+	& A biblioteca \textit{Hidra} deve possibilitar a adição de informações para \textbf{classificação de um ativo} e também o contexto de sua utilização.
+	& RA-AS[4] 
+	& Requisito implementado por meio dos métodos \textit{Asset.getClassification()} e \textit{Asset.setClassification()}. \\ \hline
+
+	RF-07
+	& A biblioteca \textit{Hidra} deve possibilitar a adição de informações sobre \textbf{regras para instalação, personalização, e utilização} do ativo.
+	& extensão do requisito RA-AS[4] baseando-se no padrão RAS.
+	& Requisito implementado por meio dos métodos \textit{Asset.getUsage()} e \textit{Asset.setUsage()}. \\ \hline
+
+	RF-08
+	& A biblioteca \textit{Hidra} deve possibilitar o \textbf{registro de dependência entre ativos}.
+	& RA-AS[5] 
+	& Requistio implementado por meio dos métodos \textit{Asset.getRelatedAssets()} e \textit{Asset.setRelatedAsset()}. \\ \hline
+
+	RF-09
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos a fim de \textbf{oferecer informações relevantes a todos os interessados, sobre mudanças} que aconteçam no ativo de software: data de alteração, autor da alteração, o que foi alterado e descrição sobre a alteração.
+	& RA-AS[6] 
+	& Requisito implementado por meio do método \textit{Asset.getLog()} \\ \hline
+
+	RF-10
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos a fim de \textbf{listar ativos armazenados no repositório}.
+	& RA-AS[7]
+	& Requisito implementado por meio do método \textit{Repository.listAssets()} \\ \hline
+
+	RF-11
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos a fim de \textbf{recuperar um ativo armazenado no repositório} (\textit{download}).
+	& RA-AS[7] 
+	& Requisito implementado por meio do método \textit{Repository .retrieveAsset()} \\ \hline
+
+	\underline{RF-12}
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos a fim de \textbf{buscar ativos armazenados no repositório}.
+	& RA-AS[7] 
+	& Requisito não implementado na versão atual da biblioteca \textit{Hidra} (Trabalho Futuro). \\ \hline
+
+	RF-13
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos a fim de \textbf{garantir a atomicidade, consistência e isolamento de transações de controle} de ativos de software
+	& RA-AS[17]
+	& A biblioteca provê recursos para que as transações sejam controladas considerando os aspectos citados: os recursos da API jGit e a camada de serviços. Mas essa implementação deverá ser realizada diretamente no repositório. \\ \hline
+
+	RF-14
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos a fim de \textbf{permitir a persistência de diferentes tipos de ativos}.
+	& RAS[1]
+	& O padrão RAS, adotado na biblioteca \textit{Hidra} para a implementação dos requisitos relacionados ao Ativo de Software, permite a persistência de diferentes tipos de ativos, desde que a estrutura de cada ativo seja descrita em sua solução (métodos \textit{Asset.getSolution()} e \textit{Asset.setSolution()}). \\ \hline
+
+	RF-15
+	& A biblioteca \textit{Hidra} deve fornecer mecanismos a fim de \textbf{permitir a persistência de ativos implementados em diferentes linguagens de programação}.
+	& RAS[2] 
+	& O padrão RAS, adotado na biblioteca \textit{Hidra} para a implementação dos requisitos relacionados ao Ativo de Software, permite a persistência de ativos implementados em diferentes linguagens de programação, desde que as regras para instalação, personalização, e utilização de cada ativo seja descrita na especificação de seu uso (métodos \textit{Asset.getUsage()} e \textit{Asset.setUsage()}). \\ \hline
+
+	RF-16
+	& A biblioteca \textit{Hidra} deve fornecer uma \textbf{camada de serviços (\textit{Webservice})} com informações sobre suas características e direções normativas de uso, por meio de descrições padronizadas seguindo o padrão DNS para descoberta de serviços.
+	& RAS[5]
+	& Requisito não implementado na versão atual da biblioteca \textit{Hidra} (Trabalho Futuro). \\ \hline
+
+	RF-17
+	& A biblioteca \textit{Hidra} deve viabilizar o desenvolvimento de um repositório de ativos de software com uma camada \textit{webservice} com descrições semânticas, permitindo assim sua classificação nos respositórios de serviços.
+	& RAS[6]
+	& Requisito não implementado na versão atual da biblioteca \textit{Hidra} (Trabalho Futuro). \\ \hline
+
+	RF-18
+	& A biblioteca \textit{Hidra} deve viabilizar o desenvolvimento  de repositório de ativos de software que tenham à disposição  informações e documentos relacionados às suas características  de qualidade.
+	& RAS[7]
+	& Requisito não implementado na versão atual da biblioteca \textit{Hidra} (Trabalho Futuro). \\ \hline
+
+	RF-19
+	& A biblioteca \textit{Hidra} deve prover mecanismos para a  captura, monitoramento, registro e sinalização do não  cumprimento de requisitos de qualidade estabelecidos entre  serviços provedores e serviços clientes.
+	& RAS[8]
+	& Requisito não implementado na versão atual da biblioteca \textit{Hidra} (Trabalho Futuro). \\ \hline
+
+
+\end{longtable}
+
+\input{4_2_rn_hidra}
