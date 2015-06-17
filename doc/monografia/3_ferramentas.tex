@@ -1,7 +1,52 @@
 \chapter{Tecnologias e Ferramentas} \label{chapter:ferramentas}
 
-Texto.
+\section{Descrição das tecnologias e ferramentas utilizadas}
+Esta seção apresenta as ferramentas e tecnologias utilizadas no desenvolvimento do projeto \textit{Hidra}.
 
-\section{Seção} \label{section:sec1}
 
-Caso seja necessario dividir o texto do capitulo em secoes.
+
+\begin{itemize}
+\item \textbf{NetBeans IDE (Integrated Development Environment)}. Ambiente de desenvolvimento utilizado. Ferramenta para que permite escrever, compilar, depurar e instalar programas. O IDE é completamente escrito em Java, mas também da suporte a qualquer linguagem de programação. possui um grande número de módulos para extender suas funcionalidades. O NetBeans IDE é livre, sem restrições à sua forma de utilização.
+
+\item \textbf{JDK 8 (Java Development Kit)}. Inclui ferramentas úteis para desenvolver e testar os programas escritos na linguagem de programação Java e em execução na plataforma Java.
+
+\item \textbf{JAXB (Java Architecture for XML Binding)}. Auxilia na manipulação de documentos XML, através da linguagem de programação Java. Ao invés de percorrer o documento, separá-lo logicamente em partes discretas, e repassar o conteúdo para a aplicação Java (ORT, 2003), assim como o SAX (SAX, 2005) ou o DOM (W3C, 2005), o JAXB funciona em duas etapas.
+    \begin{itemize}
+    \item Um esquema XML é compilado em códigos fonte de classes.
+    
+    \item Após o mapeamento (\textit{binding}) de um esquema XML em um conjunto de classes, então, pode-se, através de uma aplicação que utilize as bibliotecas do JAXB e as classes geradas pelo compilador:
+        \begin{itemize}
+
+        \item criar uma árvore de objetos em memória a partir de um documento XML (\textit{unmarshalling});
+        
+        \item criar um documento XML a partir de objetos Java (\textit{marshalling});
+        
+        \end{itemize} 
+    \end{itemize}
+    
+
+\item \textbf{JGit}. Biblioteca Java do sistema de controle de versão Git, na qual contém.
+    \begin{itemize}
+    \item rotinas de acesso ao repositório
+    
+    \item protocolos de rede
+    
+    \item principais algoritmos de controle de versão
+    \end{itemize}
+
+\item \textbf{Apache Maven}. Ferramenta de automação para compilação utilizada em projetos Java,  Similar à ferramenta Ant, hospedada pela Apache Software Foundation. Utiliza-se um arquivo XML (\textit{POM}) para descrever o projeto de software sendo construído, suas dependências sobre módulos e componentes externos, a ordem de compilação, diretórios e plug-ins necessários. O maven Importa bibliotecas Java e seus plug-ins dinamicamente de um ou mais repositórios online, como o \textit{Maven 2 Central Repository}.
+
+
+\item \textbf{java.util.Properties}. Classe Java que permite armazenar informações indexadas por uma palavra chave. A partir dela é possível fazer uma rápida pesquisa para recuperar informações necessárias em aplicativos Java SE e Java EE. As informações armazenadas por esta classe podem permanecer em memória ou ser persistida em um arquivo texto, sendo por este motivo muito utilizada para armazenar propriedades de aplicativos (caminho de servidor, Logins, Senhas de usuários, caminho de diretórios).
+	Uma lista de propriedades pode conter outra lista de propriedades contendo outros "padrões"; Nesta segunda lista de propriedades será pesquisado se a chave de propriedade não for encontrada na lista de propriedades original.
+
+
+
+
+\item \textbf{Padrões de Projeto Grasp e Grop}. \cite{larman2004} Utilização de padrões Facade e Especialista na Informação.
+
+\textbf{Facade}: Classe Facade para simplificar o acesso a subconjuntos de métodos e classes, diminuição do acoplamento, e melhor manutenibilidade.
+
+\textbf{Especialista na Informação}: Padrão utilizado para atribuição de responsabilidades. As responsabilidades serão atribuidas a quem realmente detêm a informação necessária para preencher os requisitos daquela responsabilidade.
+
+\end{itemize}

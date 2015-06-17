@@ -1,0 +1,30 @@
+\ifglsentryexists{arquitetura}{}%
+{%
+\gls@defglossaryentry{arquitetura}%
+{%
+name={Arquitetura de referência},%
+sort={Arquitetura de referência},%
+type={main},%
+first={Arquitetura de refer\IeC {\^e}ncia},%
+firstplural={Arquitetura de refer\IeC {\^e}ncias},%
+text={Arquitetura de refer\IeC {\^e}ncia},%
+plural={Arquitetura de refer\IeC {\^e}ncias},%
+description={A estrutura e organização lógica de funcionamento do sistema computacional.},%
+descriptionplural={A estrutura e organização lógica de funcionamento do sistema computacional.},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
