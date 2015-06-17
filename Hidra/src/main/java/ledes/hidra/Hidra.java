@@ -10,7 +10,6 @@ import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.xml.sax.SAXException;
 
 /**
@@ -86,11 +85,11 @@ public class Hidra {
     /**
      * RF-02, RF-13
      *
-     * @param assetId
+     * @param asset
      * @return
      */
-    public SolutionType getSolution(String assetId) {
-        return repository.getSolution(assetId);
+    public SolutionType getSolution(Asset asset) {
+        return repository.getSolution(asset);
     }
 
     /**
@@ -193,30 +192,29 @@ public class Hidra {
     /**
      * RF-09
      *
-     * @param assetId
-     * @param complete
+     * @param assetName
      * @return
      */
-    public String getLog(String assetId, boolean complete) {
-        return repository.getLog(assetId, complete);
+    public String getLog(String assetName) {
+        return repository.getLog(assetName);
     }
 
-    /**
-     * RF-09
-     *
-     * @param assetId
-     * @return
-     */
-    public String getLog(String assetId) {
-        return repository.getLog(assetId, false);
-    }
+//    /**
+//     * RF-09
+//     *
+//     * @param assetId
+//     * @return
+//     */
+//    public String getLog(String assetId) {
+//        return repository.getLog(assetId, false);
+//    }
 
     /**
      * RF-10
      *
      * @return
      */
-    public List<Asset> listAssets() {
+    public List<String> listAssets() {
         return repository.listAssets();
     }
 

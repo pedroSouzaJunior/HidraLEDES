@@ -3,6 +3,7 @@ package ledes.hidra.core;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -11,6 +12,7 @@ import ledes.hidra.Repository;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -48,9 +50,8 @@ public class GitFacade {
      * Method responsible for creating or starting a repository.
      *
      * @param directory
-     * @return 
+     * @return
      */
-
     public final boolean start(File directory) {
 
         if (!isRepositoryInitialized()) {
@@ -109,26 +110,26 @@ public class GitFacade {
             assistant = Git.open(new F‌ile(localPath + "/.git"));
             return true;
         } catch (IOException ex) {
-           // Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
-             return false;
+            // Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-       // return false;
+        // return false;
 
     }
 
-    
     public boolean isRepositoryInitialized(String directory) {
 
         try {
             assistant = Git.open(new F‌ile(directory + "/.git"));
             return true;
         } catch (IOException ex) {
-           // Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
-             return false;
+            // Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-       // return false;
+        // return false;
 
     }
+
     /**
      * Receives name and email to configure User Account.
      *
@@ -233,21 +234,20 @@ public class GitFacade {
      */
     public boolean add(String fileName) throws GitAPIException {
 
-        if(isRepositoryInitialized())
-        {
+        if (isRepositoryInitialized()) {
             assistant.add().addFilepattern(fileName).call();
             return true;
         }
         return false;
     }
-    
+
     /**
      * Método responsável pelo commit das mudanças do repositório.
+     *
      * @param message - String com a mensagem a ser adicionada ao commit.
-     * @return 
+     * @return
      */
-    
-     public boolean commit(String message) {
+    public boolean commit(String message) {
 
         if (isRepositoryInitialized(localPath)) {
             System.err.println("Repository uninitialized");
@@ -255,22 +255,22 @@ public class GitFacade {
             try {
                 RevCommit commit = assistant.commit().setMessage(message)
                         .call();
-                
+
                 System.out.println(commit.getId().getName());
-                 return true;
+                return true;
             } catch (GitAPIException e) {
                 System.out.println(e.getMessage());
             }
-           
+
         }
         return false;
     }
-     
-     public Map<String, Set<String>> status() throws GitAPIException{
-          if (isRepositoryInitialized(localPath)) {
+
+    public Map<String, Set<String>> status() throws GitAPIException {
+        if (isRepositoryInitialized(localPath)) {
             System.err.println("Repository uninitialized");
             return null;
-        } 
+        }
         Map<String, Set<String>> statusList = new HashMap<>();
         Status status = assistant.status().call();
         statusList.put("Added", status.getAdded());
@@ -285,6 +285,70 @@ public class GitFacade {
         statusList.put("Uncommitted Changes", status.getUncommittedChanges());
         assistant.close();
         return statusList;
-     
-     }
+
+    }
+
+    /**
+     * Método responsável pela remoção de arquivos da area de seleção do
+     * diretório de trabalho e do repositório.
+     *
+     * @param filename - recebe uma string com o nome do arquivo a ser removido
+     * @return - retorna true se a operação for bem sucedida
+     */
+    public boolean remove(String filename) {
+        File file;
+
+        if (isRepositoryInitialized()) {
+            System.err.println("Repository uninitialized");
+            return false;
+        } else {
+
+            file = new File(localPath + "/" + filename);
+
+            if (!file.exists()) {
+                System.err.println("Asset does not exist");
+            } else {
+                try {
+                    assistant.rm().addFilepattern(filename).call();
+                    return true;
+                } catch (GitAPIException e) {
+                    System.out.println(e.getMessage());
+
+                }
+
+            }
+
+        }
+        return false;
+
+    }
+    
+    
+    /**
+     * Retorna os logs dos commits realizados no repositorio.
+     * @return
+     * @throws GitAPIException 
+     */
+
+    public String getLogs() throws GitAPIException {
+        String logs = null;
+        if (isRepositoryInitialized()) {
+            System.err.println("Repository uninitialized");
+        } else {
+
+            // Repository repository1 = git1.getRepository();
+            //ObjectId head = repository1.resolve("HEAD");
+            Iterable<RevCommit> log ;
+
+            log = assistant.log().call();
+            for (RevCommit rev : log) {
+                logs = "Author: " + rev.getAuthorIdent().getName()
+                        + "\nMessage: " + rev.getFullMessage();
+                return logs;
+            }
+
+        }
+        return logs;
+    }
+
 }

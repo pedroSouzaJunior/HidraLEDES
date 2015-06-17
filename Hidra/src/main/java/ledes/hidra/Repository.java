@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -284,8 +286,8 @@ public class Repository {
      *
      * @param assetId que representa o id de um ativo de software.
      */
-    SolutionType getSolution(String assetId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    SolutionType getSolution(Asset asset) {
+        return asset.getSolution();
     }
 
     /**
@@ -315,6 +317,30 @@ public class Repository {
         return classification;
     }
 
+    /**
+     * Realiza o commit das mudanças realizadas, se as alterações não estiverem fora
+     * do padrão RAS.
+     * Recebe o nome do ativo e mensagem a ser salva.
+     * 
+     * @param message
+     * @param nameAsset
+     * @return
+     * @throws SAXException
+     * @throws IOException
+     * @throws JAXBException 
+     */
+    public boolean saveChanges(String message, String nameAsset) throws SAXException, IOException, JAXBException {
+        String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
+        File assetFolder = new File(assetPath);
+        if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
+            return assistant.commit(message);
+        }
+        else{
+            System.err.println("");
+        }
+        return false;
+    }
+
     boolean setClassification(ClassificationType classification) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -335,20 +361,42 @@ public class Repository {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    String getLog(String assetId, boolean complete) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String getLog(String nameAsset) {
+         String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
+        try {
+            return assistant.getLogs();
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
+    
+    /**
+     * Retorna uma lista com todos os nomes dos ativos do repositorio.
+     * PS: deve retornar apenas os arquivos adicionados a area de seleção
+     * Será resolvido com o indice.
+     * @return 
+     */
 
-    List<Asset> listAssets() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    List<String> listAssets() {
+        File dir = new File(localPath);
+        List<String> assets = new ArrayList<>();
+        assets.addAll(Arrays.asList(dir.list()));
+        return assets;
     }
 
     File downloadAsset(String assetId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    boolean removeAsset(String assetId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Remove um ativo do repositório.
+     *
+     * @param assetName - Recebe o nome do ativo a ser removido
+     * @return retorna verdadeiro caso a operação seja bem sucedida.
+     */
+    boolean removeAsset(String assetName) {
+        return assistant.remove(assetName);
     }
 
     boolean isRepository(String directory) {
