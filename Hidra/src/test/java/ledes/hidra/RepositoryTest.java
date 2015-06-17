@@ -29,7 +29,7 @@ public class RepositoryTest {
     private final String localPath;
 
     public RepositoryTest() {
-        localPath = "/home/danielli/repo2";
+        localPath = System.getProperty("user.home") + "/repo2";
 
     }
 
@@ -102,10 +102,10 @@ public class RepositoryTest {
     public void testGetLocalPath() {
         System.out.println("getLocalPath");
         Repository instance = new Repository(localPath);
-        String expResult = "/home/danielli/repo2";
+        String expResult = System.getProperty("user.home") + "/repo2";
         String result = instance.getLocalPath();
         assertEquals(expResult, result);
-      
+
     }
 
     /**
@@ -168,44 +168,41 @@ public class RepositoryTest {
         File repo = new File(localPath);
         System.out.println(repo.getAbsolutePath());
         boolean result = instance.manifestExist(new File(localPath + "/asset"));
-        System.out.println(localPath+"/asset");
+        System.out.println(localPath + "/asset");
         assertEquals(expResult, result);
-        
 
     }
 
-    
-
     /**
      * Test of validateAsset method, of class Repository.
+     *
      * @throws java.lang.Exception
      */
     @Test
     public void testValidateAsset_String() throws Exception {
         System.out.println("validateAsset");
-        String assetPath = "/home/danielli/repo2/asset/";
+        String assetPath = System.getProperty("user.home") + "/repo2/asset/";
         Repository instance = new Repository(localPath);
         boolean expResult = true;
         boolean result = instance.validateAsset(assetPath);
         assertEquals(expResult, result);
-        
+
     }
-    
-    
-    
+
     /**
      * Test of readAsset method, of class Repository.
+     *
      * @throws java.lang.Exception
      */
     @Test
     public void testReadAsset() throws Exception {
         System.out.println("readAsset");
-        
+
         Repository instance = new Repository(localPath);
         Asset result = instance.readAsset("asset");
-      
+
         assertTrue("o resultado eh :", result != null);
-        
+
     }
 
     /*  *
@@ -214,15 +211,15 @@ public class RepositoryTest {
     @Test
     public void testValidateAsset_Asset_String() throws JAXBException, FileNotFoundException {
         System.out.println("validateAsset");
-        
+
         Repository instance = new Repository(localPath);
         Asset asset = instance.readAsset("asset");
-        String assetPath = "/home/danielli/repo2/asset";
-        
+        String assetPath = System.getProperty("user.home") + "/repo2/asset";
+
         boolean expResult = true;
         boolean result = instance.validateAsset(asset, assetPath);
         assertEquals(expResult, result);
-       
+
     }
 
     /**
@@ -236,7 +233,7 @@ public class RepositoryTest {
         boolean expResult = true;
         boolean result = instance.addAsset(nameAsset);
         assertEquals(expResult, result);
-  
+
     }
 
     /**
@@ -393,17 +390,19 @@ public class RepositoryTest {
 
     /**
      * Test of downloadAsset method, of class Repository.
+     * @throws java.io.FileNotFoundException
      */
     @Test
-    public void testDownloadAsset() {
+    public void testDownloadAsset() throws FileNotFoundException {
         System.out.println("downloadAsset");
-        String assetId = "";
-        Repository instance = null;
-        File expResult = null;
+        String assetId = "/arquivos/JSFImmediate.zip";
+        
+        Repository instance = new Repository(localPath);
+        
+        
         File result = instance.downloadAsset(assetId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        assertEquals(true, result != null);
     }
 
     /**

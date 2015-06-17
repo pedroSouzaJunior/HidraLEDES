@@ -1,6 +1,7 @@
 package ledes.hidra;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -223,8 +224,9 @@ public class Hidra {
      *
      * @param assetId
      * @return
+     * @throws java.io.FileNotFoundException
      */
-    public File downloadAsset(String assetId) {
+    public File downloadAsset(String assetId) throws FileNotFoundException {
         return repository.downloadAsset(assetId);
     }
 
