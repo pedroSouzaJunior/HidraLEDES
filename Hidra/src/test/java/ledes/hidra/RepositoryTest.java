@@ -392,14 +392,14 @@ public class RepositoryTest {
      * Test of downloadAsset method, of class Repository.
      * @throws java.io.FileNotFoundException
      */
-    //@Test
+    @Test
     public void testDownloadAsset() throws FileNotFoundException {
         System.out.println("downloadAsset");
         String assetId = "/arquivos/JSFImmediate.zip";
         
         Repository instance = new Repository(localPath);
         
-        File expResult = null;
+        
         File result = instance.downloadAsset(assetId);
         
         assertEquals(true, result != null);

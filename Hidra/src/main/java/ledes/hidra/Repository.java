@@ -348,7 +348,7 @@ public class Repository {
     }
 
     File downloadAsset(String assetId) throws FileNotFoundException {
-        File file = new File(directory + "/JSFImmediate.zip");
+        File file = new File(directory + assetId +".zip");
         FileOutputStream fileOut = new FileOutputStream(file);
         
         int count = 0;
