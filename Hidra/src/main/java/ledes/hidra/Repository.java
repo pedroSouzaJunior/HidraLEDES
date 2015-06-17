@@ -2,9 +2,12 @@ package ledes.hidra;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +26,7 @@ import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import ledes.hidra.core.GitFacade;
 import ledes.hidra.core.ValidatorAssets;
+import ledes.hidra.util.Properties;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.xml.sax.SAXException;
 
@@ -216,7 +220,7 @@ public class Repository {
     boolean validateAsset(String assetPath) throws SAXException, IOException {
 
         //  File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
-        File schemaFile = new File("/home/danielli/asset.xsd");
+        File schemaFile = new File(System.getProperty("user.home")+"/asset.xsd");
         Source xmlFile = new StreamSource(new File(assetPath + manifest));
         SchemaFactory schemaFactory = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -343,8 +347,30 @@ public class Repository {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    File downloadAsset(String assetId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    File downloadAsset(String assetId) throws FileNotFoundException {
+        File file = new File(directory + "/JSFImmediate.zip");
+        FileOutputStream fileOut = new FileOutputStream(file);
+        
+        int count = 0;
+
+        try {
+            URL url = new URL(Properties.getProperties().getProperty("Protocol"), 
+                    Properties.getProperties().getProperty("RemoteURI"), assetId);
+
+            URLConnection con = url.openConnection();
+            con.connect();
+
+            do {
+                count = con.getInputStream().read();
+            } while (count != -1);
+            fileOut.close();
+            System.out.println("Arquivo baixado com sucesso");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return file;
     }
 
     boolean removeAsset(String assetId) {

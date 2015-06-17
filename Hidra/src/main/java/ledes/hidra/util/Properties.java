@@ -96,7 +96,8 @@ public class Properties {
         java.util.Properties defaults = new java.util.Properties();
         defaults.setProperty("ApplicationType", "Client");
         defaults.setProperty("LocalDirectory", ".");
-        defaults.setProperty("RemoteURI", "");
+        defaults.setProperty("Protocol", "http");
+        defaults.setProperty("RemoteURI", "moacirrf.com.br");
         defaults.setProperty("UserName", "default");
         defaults.setProperty("UserEmail", "default@domain.com");
         defaults.setProperty("Password", "");
