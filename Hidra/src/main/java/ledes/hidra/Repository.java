@@ -6,13 +6,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
-<<<<<<< HEAD
+
 import java.util.ArrayList;
 import java.util.Arrays;
-=======
+
 import java.net.URL;
 import java.net.URLConnection;
->>>>>>> e265683937bacc08f9c372362998475c97464888
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -128,14 +128,14 @@ public class Repository {
         return localPath;
     }
 
-    /**
-     * Set path repository
-     *
-     * @param localPath
-     */
-    public void setLocalPath(String localPath) {
-        this.localPath = localPath;
-    }
+//    /**
+//     * Set path repository
+//     *
+//     * @param localPath
+//     */
+//    public void setLocalPath(String localPath) {
+//        this.localPath = localPath;
+//    }
 
     /**
      * Return remote repository path
@@ -225,7 +225,7 @@ public class Repository {
     boolean validateAsset(String assetPath) throws SAXException, IOException {
 
         //  File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
-        File schemaFile = new File(System.getProperty("user.home")+"/asset.xsd");
+        File schemaFile = new File(System.getProperty("user.home") + "/asset.xsd");
         Source xmlFile = new StreamSource(new File(assetPath + manifest));
         SchemaFactory schemaFactory = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -325,25 +325,29 @@ public class Repository {
     }
 
     /**
-     * Realiza o commit das mudanças realizadas, se as alterações não estiverem fora
-     * do padrão RAS.
-     * Recebe o nome do ativo e mensagem a ser salva.
-     * 
+     * Realiza o commit das mudanças realizadas, se as alterações não estiverem
+     * fora do padrão RAS. Recebe o nome do ativo e mensagem a ser salva.
+     *
      * @param message
      * @param nameAsset
      * @return
      * @throws SAXException
      * @throws IOException
-     * @throws JAXBException 
+     * @throws JAXBException
      */
     public boolean saveChanges(String message, String nameAsset) throws SAXException, IOException, JAXBException {
         String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
         File assetFolder = new File(assetPath);
         if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
-            return assistant.commit(message);
-        }
-        else{
-            System.err.println("");
+            try {
+                return assistant.commit(message);
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            System.err.println("Erro na validação do ativo!"
+                    + "\n Verifique se o nome do ativo está correto,"
+                    + "\n ou se as alterações não ferem o padrão  adotado para o repositorio.");
         }
         return false;
     }
@@ -369,7 +373,7 @@ public class Repository {
     }
 
     String getLog(String nameAsset) {
-         String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
+        String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
         try {
             return assistant.getLogs();
         } catch (GitAPIException ex) {
@@ -377,14 +381,14 @@ public class Repository {
         }
         return null;
     }
-    
-    /**
-     * Retorna uma lista com todos os nomes dos ativos do repositorio.
-     * PS: deve retornar apenas os arquivos adicionados a area de seleção
-     * Será resolvido com o indice.
-     * @return 
-     */
 
+    /**
+     * Retorna uma lista com todos os nomes dos ativos do repositorio. PS: deve
+     * retornar apenas os arquivos adicionados a area de seleção Será resolvido
+     * com o indice.
+     *
+     * @return
+     */
     List<String> listAssets() {
         File dir = new File(localPath);
         List<String> assets = new ArrayList<>();
@@ -393,13 +397,13 @@ public class Repository {
     }
 
     File downloadAsset(String assetId) throws FileNotFoundException {
-        File file = new File(directory + assetId +".zip");
+        File file = new File(directory + assetId + ".zip");
         FileOutputStream fileOut = new FileOutputStream(file);
-        
+
         int count = 0;
 
         try {
-            URL url = new URL(Properties.getProperties().getProperty("Protocol"), 
+            URL url = new URL(Properties.getProperties().getProperty("Protocol"),
                     Properties.getProperties().getProperty("RemoteURI"), assetId);
 
             URLConnection con = url.openConnection();
@@ -414,7 +418,7 @@ public class Repository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return file;
     }
 

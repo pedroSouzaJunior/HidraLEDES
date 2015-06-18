@@ -4,17 +4,25 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ledes.hidra.Repository;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.MergeCommand;
+import org.eclipse.jgit.api.MergeResult;
+import org.eclipse.jgit.api.PullResult;
+import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.RebaseResult;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.PushResult;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 /**
  * This class is a Facade Pattern to jGit features. Its aim is to simplify
@@ -40,6 +48,8 @@ public class GitFacade {
     private Git assistant;
 
     private final String localPath;
+
+    private org.eclipse.jgit.lib.Repository repository;
 
     public GitFacade(String localPath) {
         super();
@@ -139,9 +149,14 @@ public class GitFacade {
      */
     public void setConfigurationUser(String name, String email) {
 
-        Config config = assistant.getRepository().getConfig();
-        config.setString("user", null, "name", name);
-        config.setString("user", null, "email", email);
+        if (isRepositoryInitialized()) {
+            Config config;
+            org.eclipse.jgit.lib.Repository repo = assistant.getRepository();
+            repo.close();
+            config = assistant.getRepository().getConfig();
+            config.setString("user", null, "name", name);
+            config.setString("user", null, "email", email);
+        }
 
     }
 
@@ -151,19 +166,22 @@ public class GitFacade {
      * @return Map<String, String>
      */
     public Map<String, String> getConfigurationUser() {
-        Config config = assistant.getRepository().getConfig();
 
-        String name = config.getString("user", null, "name");
-        String email = config.getString("user", null, "email");
-        Map<String, String> configuration = new HashMap<>();
-        if (name == null || email == null) {
-            System.out.println("User identity is unknown!");
-            return null;
-        } else {
-            configuration.put(name, email);
-            return configuration;
+        if (isRepositoryInitialized()) {
+            Config config = assistant.getRepository().getConfig();
+
+            String name = config.getString("user", null, "name");
+            String email = config.getString("user", null, "email");
+            Map<String, String> configuration = new HashMap<>();
+            if (name == null || email == null) {
+                System.out.println("User identity is unknown!");
+                return null;
+            } else {
+                configuration.put(name, email);
+                return configuration;
+            }
         }
-
+        return null;
     }
 
     /**
@@ -171,9 +189,11 @@ public class GitFacade {
      */
     public void unSetConfigurationUser() {
 
-        Config config = assistant.getRepository().getConfig();
-        config.unsetSection("user", "email");
-        config.unsetSection("user", "name");
+        if (isRepositoryInitialized()) {
+            Config config = assistant.getRepository().getConfig();
+            config.unsetSection("user", "email");
+            config.unsetSection("user", "name");
+        }
 
     }
 
@@ -184,8 +204,13 @@ public class GitFacade {
      */
     public void setConfigRemote(String remoteRepository) {
 
-        Config config = assistant.getRepository().getConfig();
-        config.setString("remote", "origin", "url", remoteRepository);
+        if (isRepositoryInitialized()) {
+            Config config = assistant.getRepository().getConfig();
+            config.setString("remote", "origin", "url", remoteRepository);
+//            String url = config.getString("remote", "origin", "url");
+//            System.out.println("Origin comes from " + url);
+
+        }
     }
 
     /**
@@ -194,8 +219,10 @@ public class GitFacade {
      */
     public void unSetConfigRemote() {
 
-        Config config = assistant.getRepository().getConfig();
-        config.unset("remote", "origin", "url");
+        if (isRepositoryInitialized()) {
+            Config config = assistant.getRepository().getConfig();
+            config.unset("remote", "origin", "url");
+        }
     }
 
     /**
@@ -205,13 +232,14 @@ public class GitFacade {
      */
     public String getConfigRemote() {
 
-        Config config = assistant.getRepository().getConfig();
-        String url = config.getString("remote", "origin", "url");
-        if (url != null) {
-            System.out.println("Origin comes from " + url);
+        if (isRepositoryInitialized()) {
+            Config config = assistant.getRepository().getConfig();
+            String url = config.getString("remote", "origin", "url");
+
             return url;
+
         }
-        return null;
+        return "oi";
     }
 
     /**
@@ -220,9 +248,13 @@ public class GitFacade {
      */
     public boolean hasRemoteRepository() {
 
-        Config config = assistant.getRepository().getConfig();
-        String url = config.getString("remote", "origin", "url");
-        return url != null;
+        if (isRepositoryInitialized()) {
+            Config config = assistant.getRepository().getConfig();
+            String url = config.getString("remote", "origin", "url");
+
+            return url != null;
+        }
+        return false;
     }
 
     /**
@@ -230,13 +262,16 @@ public class GitFacade {
      * repositório.
      *
      * @param fileName - recebe como parâmetro uma String com o nome do arquivo.
+     * @return
      * @throws GitAPIException - exceção padrão da API Git
      */
     public boolean add(String fileName) throws GitAPIException {
 
         if (isRepositoryInitialized()) {
             assistant.add().addFilepattern(fileName).call();
+            assistant.close();
             return true;
+
         }
         return false;
     }
@@ -246,28 +281,28 @@ public class GitFacade {
      *
      * @param message - String com a mensagem a ser adicionada ao commit.
      * @return
+     * @throws org.eclipse.jgit.api.errors.GitAPIException
      */
-    public boolean commit(String message) {
+    public boolean commit(String message) throws GitAPIException {
 
-        if (isRepositoryInitialized(localPath)) {
-            System.err.println("Repository uninitialized");
-        } else {
-            try {
-                RevCommit commit = assistant.commit().setMessage(message)
-                        .call();
+//        
+//        
+        if (isRepositoryInitialized()) {
+//           
+            System.out.println(assistant.getRepository().getDirectory().getAbsolutePath());
+            RevCommit commit = assistant.commit().setMessage(message)
+                    .call();
 
-                System.out.println(commit.getId().getName());
-                return true;
-            } catch (GitAPIException e) {
-                System.out.println(e.getMessage());
-            }
-
+            System.out.println(commit.getId().getName());
+            System.out.println(commit.getAuthorIdent().getName());
+            return true;
         }
+
         return false;
     }
 
     public Map<String, Set<String>> status() throws GitAPIException {
-        if (isRepositoryInitialized(localPath)) {
+        if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
             return null;
         }
@@ -298,7 +333,7 @@ public class GitFacade {
     public boolean remove(String filename) {
         File file;
 
-        if (isRepositoryInitialized()) {
+        if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
             return false;
         } else {
@@ -322,23 +357,22 @@ public class GitFacade {
         return false;
 
     }
-    
-    
+
     /**
      * Retorna os logs dos commits realizados no repositorio.
+     *
      * @return
-     * @throws GitAPIException 
+     * @throws GitAPIException
      */
-
     public String getLogs() throws GitAPIException {
         String logs = null;
-        if (isRepositoryInitialized()) {
+        if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
         } else {
 
             // Repository repository1 = git1.getRepository();
             //ObjectId head = repository1.resolve("HEAD");
-            Iterable<RevCommit> log ;
+            Iterable<RevCommit> log;
 
             log = assistant.log().call();
             for (RevCommit rev : log) {
@@ -349,6 +383,330 @@ public class GitFacade {
 
         }
         return logs;
+    }
+
+    /**
+     * Atualiza o repositorio remoto com as alterações do repositorio local.
+     * Recebe como parâmetro o usuário e senha cadastrados no repositorio
+     * remoto.
+     *
+     * @param user
+     * @param password
+     * @return
+     */
+    public boolean push(String user, String password) throws GitAPIException {
+        if (isRepositoryInitialized()) {
+            CredentialsProvider cp = new UsernamePasswordCredentialsProvider(user, password);
+            PushCommand pc = assistant.push();
+            pc.setCredentialsProvider(cp).setForce(true).setPushAll();
+            Iterator<PushResult> it;
+
+            if (!hasRemoteRepository()) {
+
+                System.err.println("Please add a remote repository");
+                return false;
+
+            }
+
+            it = pc.call().iterator();
+            if (it.hasNext()) {
+                System.out.println(it.next().toString());
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    /**
+     * Atualiza o repositorio local.
+     *
+     * @return
+     * @throws GitAPIException
+     */
+    public boolean pull() throws GitAPIException {
+
+        if (isRepositoryInitialized()) {
+            if (hasRemoteRepository()) {
+                PullResult pullResult;
+
+                pullResult = assistant.pull().call();
+
+                System.out.println(pullResult);
+
+                MergeResult mergeResult = pullResult.getMergeResult();
+                if (mergeResult != null) {
+                    //TODO     
+                }
+                RebaseResult rebaseResult = pullResult.getRebaseResult();
+                if (rebaseResult != null) {
+                    //TODO
+                }
+
+                return true;
+            } else {
+                System.err.println("Please add a remote repository");
+            }
+
+        }
+        return false;
+    }
+
+    /**
+     * Trata os conflitos gerados pelo merge de dois repositorios ou branches.
+     *
+     * @param conflict
+     */
+    public void resolveConflictsMerge(MergeResult conflict) {
+
+        switch (conflict.getMergeStatus()) {
+            case CONFLICTING:
+                System.out.println("CONFLICT (content): Merge conflict in: adicionar arquivo que tem conflito"
+                        + "Automatic merge failed; fix conflicts and then commit the result.");
+                System.out.println(conflict.getConflicts());
+                break;
+            case FAILED:
+                System.out.println("FAILED: " + conflict.getFailingPaths());
+                break;
+            case ABORTED:
+                System.out.println("ABORTED: ");
+                break;
+            case ALREADY_UP_TO_DATE:
+                System.out.println("ALREADY UP TO DATE: ");
+                break;
+            case CHECKOUT_CONFLICT:
+                System.out.println("CHECKOUT_CONFLICT: meaning that nothing could be merged, "
+                        + "as the pre-scan for the trees already failed for certain files");
+                break;
+            default:
+                System.out.println("Unsuccessfully");
+
+        }
+
+    }
+
+    /**
+     * Realiza a junção de dois repositórios ou dois branches.
+     *
+     * @param branch
+     * @return
+     * @throws IOException
+     * @throws GitAPIException
+     */
+    public boolean merge(String branch) throws IOException, GitAPIException {
+        MergeCommand mgCmd = assistant.merge();
+
+        mgCmd.include(assistant.getRepository().getRef(branch));
+        MergeResult res = mgCmd.call();
+        System.out.println(res.getMergeStatus());
+
+        if (!res.getMergeStatus().isSuccessful()) {
+            resolveConflictsMerge(res);
+            return false;
+        } else {
+            return true;
+        }
+
+//        if (res.getMergeStatus().equals(MergeResult.MergeStatus.CONFLICTING)) {
+//            System.out.println(res.getConflicts().toString());
+//            return false;
+//        } else if (res.getMergeStatus().equals(MergeResult.MergeStatus.FAILED)) {
+//            System.out.println(res.getFailingPaths());
+//
+//            return false;
+//        }
+    }
+
+    /**
+     * Troca de branch.
+     *
+     * @param branch
+     * @return
+     */
+    public boolean checkout(String branch) {
+
+        if (isRepositoryInitialized()) {
+            try {
+                assistant.checkout().setName(branch).call();
+
+                return true;
+            } catch (GitAPIException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+
+                return false;
+
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Troca e cria um novo branch no repositorio. Recebe o nome do novo branch
+     * a ser criado.
+     *
+     * @param branch
+     * @return
+     */
+    public boolean checkoutCreateBranch(String branch) {
+
+        if (isRepositoryInitialized()) {
+            try {
+                assistant.checkout().setCreateBranch(true).setName(branch).call();
+                return true;
+            } catch (GitAPIException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Cria uma tag simples. Recebe o nome da tag e a mensagem a ser salva.
+     *
+     * @param tagName
+     * @param tagMsg
+     * @return
+     */
+    public boolean createLightTag(String tagName, String tagMsg) {
+
+        if (isRepositoryInitialized()) {
+            try {
+                assistant.tag().setName(tagName).setMessage(tagMsg).call();
+                return true;
+            } catch (GitAPIException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     * Cria uma tag com anotações e mais informações.
+     *
+     * @param tagName
+     * @param tagMgs
+     * @return
+     */
+    public boolean createAnnotatedTag(String tagName, String tagMgs) {
+
+        if (isRepositoryInitialized()) {
+            try {
+                assistant.tag().setName(tagName).setAnnotated(true).setMessage(tagName).call();
+                return true;
+            } catch (GitAPIException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Lista todas as tags criadas.
+     *
+     * @return
+     */
+    public boolean listTags() {
+
+        if (isRepositoryInitialized()) {
+            try {
+                for (org.eclipse.jgit.lib.Ref ref : assistant.tagList().call()) {
+
+                    System.out.println(ref.getName());
+
+                }
+
+                return true;
+            } catch (GitAPIException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+
+    public boolean tagDelete(String nameTags) {
+        if (isRepositoryInitialized()) {
+            try {
+                assistant.tagDelete().setTags(nameTags).call();
+                return true;
+            } catch (GitAPIException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Concluir
+     *
+     * @param nameTag
+     * @return
+     */
+    public boolean showTags(String nameTag) {
+
+        if (isRepositoryInitialized()) {
+            System.out.println(assistant.tag().getMessage());
+
+            return true;
+        }
+        return false;
+
+    }
+
+    public boolean showBranches() {
+        if (!isRepositoryInitialized()) {
+            System.err.println("Repository uninitialized");
+        } else {
+            try {
+                System.out.println("Branches: ");
+                for (org.eclipse.jgit.lib.Ref ref : assistant.branchList().call()) {
+                    System.out.println(ref.getName());
+
+                }
+                System.out.println("Current Branch: " + assistant.getRepository().getBranch());
+                return true;
+            } catch (GitAPIException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        assistant.getRepository().close();
+        return false;
+    }
+
+    public String createBranch(String nameBranch) {
+        String branch = null;
+        if (!isRepositoryInitialized()) {
+            System.err.println("Repositorio nao inicializado");
+        } else {
+
+            try {
+                assistant.branchCreate().setName(nameBranch).call();
+            } catch (GitAPIException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            List<org.eclipse.jgit.lib.Ref> call = null;
+
+            try {
+                call = new Git(assistant.getRepository()).branchList()
+                        .call();
+            } catch (GitAPIException ex) {
+                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            for (org.eclipse.jgit.lib.Ref ref : call) {
+                branch = "Branch Created: " + " " + ref.getName();
+
+            }
+            assistant.getRepository().close();
+
+            return branch;
+        }
+        return branch;
     }
 
 }

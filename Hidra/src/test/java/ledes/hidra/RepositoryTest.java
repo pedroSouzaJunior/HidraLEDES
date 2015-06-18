@@ -108,18 +108,7 @@ public class RepositoryTest {
 
     }
 
-    /**
-     * Test of setLocalPath method, of class Repository.
-     */
-    @Test
-    public void testSetLocalPath() {
-        System.out.println("setLocalPath");
-        String localPath = "";
-        Repository instance = null;
-        instance.setLocalPath(localPath);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+
 
     /**
      * Test of getRemotePath method, of class Repository.
@@ -245,8 +234,8 @@ public class RepositoryTest {
         String assetId = "";
         Repository instance = null;
         SolutionType expResult = null;
-        SolutionType result = instance.getSolution(assetId);
-        assertEquals(expResult, result);
+//        SolutionType result = instance.getSolution(Asset);
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -368,8 +357,8 @@ public class RepositoryTest {
         boolean complete = false;
         Repository instance = null;
         String expResult = "";
-        String result = instance.getLog(assetId, complete);
-        assertEquals(expResult, result);
+//        String result = instance.getLog(assetId, complete);
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -382,8 +371,8 @@ public class RepositoryTest {
         System.out.println("listAssets");
         Repository instance = null;
         List<Asset> expResult = null;
-        List<Asset> result = instance.listAssets();
-        assertEquals(expResult, result);
+//        List<Asset> result = instance.listAssets();
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
