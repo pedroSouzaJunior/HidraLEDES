@@ -1,5 +1,6 @@
 package ledes.hidra.asset;
 
+import java.util.Iterator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -46,78 +47,108 @@ public class Asset {
     public String describeSolution(){
         StringBuilder stb = new StringBuilder().append("\n");
         
-        stb.append("the asset is described by:\n");
+        stb.append("the asset is described by:\n\n");
         stb.append("Artifacts:\n");
         for(ArtifactType artfacty: this.solution.getArtifacts().getArtifact()){
-            stb.append("ID: ").append(artfacty.getId());
-            stb.append("Name: ").append(artfacty.getName());
-            stb.append("Type: ").append(artfacty.getType());
-            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Name: ").append(artfacty.getName()).append("\t");
+            stb.append("Type: ").append(artfacty.getType()).append("\t");
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
         }
         
         stb.append("Requirements:\n");
         for(ArtifactType artfacty: this.solution.getRequirements().getArtifact()){
-            stb.append("ID: ").append(artfacty.getId());
-            stb.append("Name: ").append(artfacty.getName());
-            stb.append("Type: ").append(artfacty.getType());
-            stb.append("Reference: ").append(artfacty.getReference());
+            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Name: ").append(artfacty.getName()).append("\t");
+            stb.append("Type: ").append(artfacty.getType()).append("\t");
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
         }
         
         stb.append("Design:\n");
         for(ArtifactType artfacty: this.solution.getDesign().getArtifact()){
-            stb.append("ID: ").append(artfacty.getId());
-            stb.append("Name: ").append(artfacty.getName());
-            stb.append("Type: ").append(artfacty.getType());
-            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Name: ").append(artfacty.getName()).append("\t");
+            stb.append("Type: ").append(artfacty.getType()).append("\t");
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
         }
         
         stb.append("Implementation:\n");
         for(ArtifactType artfacty: this.solution.getImplementation().getArtifact()){
-            stb.append("ID: ").append(artfacty.getId());
-            stb.append("Name: ").append(artfacty.getName());
-            stb.append("Type: ").append(artfacty.getType());
-            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Name: ").append(artfacty.getName()).append("\t");
+            stb.append("Type: ").append(artfacty.getType()).append("\t");
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
         }
         
         stb.append("Design:\n");
         for(ArtifactType artfacty: this.solution.getDesign().getArtifact()){
-            stb.append("ID: ").append(artfacty.getId());
-            stb.append("Name: ").append(artfacty.getName());
-            stb.append("Type: ").append(artfacty.getType());
-            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Name: ").append(artfacty.getName()).append("\t");
+            stb.append("Type: ").append(artfacty.getType()).append("\t");
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
         }
         
         stb.append("Test:\n");
         for(ArtifactType artfacty: this.solution.getTest().getArtifact()){
-            stb.append("ID: ").append(artfacty.getId());
-            stb.append("Name: ").append(artfacty.getName());
-            stb.append("Type: ").append(artfacty.getType());
-            stb.append("Reference: ").append(artfacty.getReference()).append("\n");
+            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Name: ").append(artfacty.getName()).append("\t");
+            stb.append("Type: ").append(artfacty.getType()).append("\t");
+            stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
         }
         
         return stb.toString();
     }
     
-    public String getDescribeClassification() {
+    public String describeClassification() {
         StringBuilder stb = new StringBuilder().append("\n");
         
-        stb.append("the asset is classified by:\n");
+        stb.append("the asset is classified by:\n\n");
         stb.append("Contexts:\n");
         for(Context context: this.classification.getContexts()){
-            stb.append("ID: ").append(context.getId());
-            stb.append("Name: ").append(context.getName());
-            stb.append("Description: ").append(context.getDescription()).append("\n");
+            stb.append("ID: ").append(context.getId()).append("\t");
+            stb.append("Name: ").append(context.getName()).append("\t");
+            stb.append("Description: ").append(context.getDescription()).append("\n\n");
         }
         
         stb.append("Descriptor Groups:\n");
         for(DescriptionGroup descriptorGroup: this.getClassification().getDescriptionGroups()){
-            stb.append("Name: ").append(descriptorGroup.getName());
-            stb.append("Description: ").append(descriptorGroup.getDescription());
-            stb.append("Rerefence: ").append(descriptorGroup.getReference()).append("\n");
+            stb.append("Name: ").append(descriptorGroup.getName()).append("\t");
+            stb.append("Description: ").append(descriptorGroup.getDescription()).append("\t");
+            stb.append("Rerefence: ").append(descriptorGroup.getReference()).append("\n\n");
         }
         return stb.toString();
     }
     
+    
+    public String describeUsage(){
+    
+        StringBuilder stb = new StringBuilder().append("\n");
+        stb.append("the use of the asset is given by:\n\n");
+        stb.append("artifact Activities:\n");
+        for(ArtifactActivy activy: this.getUsage().getArtifactActivities()){
+            stb.append("ID: ").append(activy.getArtifactId()).append("\t");
+            stb.append("Contex ID: ").append(activy.getContextId()).append("\n\n");
+            
+            for(Activity ac: activy.getActivities()){
+                stb.append("Activity ID: ").append(ac.getId()).append("\t");
+                stb.append("Activity Reference: ").append(ac.getReference()).append("\t");
+                stb.append("Role: ").append(ac.getRole()).append("\t");
+                stb.append("Task: ").append(ac.getTask()).append("\t");
+                stb.append("Task Role: ").append(ac.getTaskRole()).append("\n\n");
+                
+                for (VariabilityPointBinding variability : ac.getVariability()) {
+                    stb.append("Variability ID: ").append(variability.getId()).append("\t");
+                    stb.append("Variability Binding Rule: ").append(variability.getBindingRule()).append("\n\n");
+                }
+                    
+            }
+            
+            
+        }
+        
+        
+        return stb.toString();
+    }
     
     /**
      * Obtém o valor da propriedade profile.

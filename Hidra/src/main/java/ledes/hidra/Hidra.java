@@ -89,8 +89,9 @@ public class Hidra {
      *
      * @param assetId
      * @return
+     * @throws javax.xml.bind.JAXBException
      */
-    public SolutionType getSolution(String assetId) {
+    public String getSolution(String assetId) throws JAXBException {
         return repository.getSolution(assetId);
     }
 
@@ -136,7 +137,7 @@ public class Hidra {
      * @param assetId
      * @return
      */
-    public String getClassification(String assetId) {
+    public String getClassification(String assetId) throws JAXBException {
         return repository.getClassification(assetId);
     }
 
@@ -156,7 +157,7 @@ public class Hidra {
      * @param assetId
      * @return
      */
-    public UsageType getUsage(String assetId) {
+    public String getUsage(String assetId) throws JAXBException {
         return repository.getUsage(assetId);
     }
 

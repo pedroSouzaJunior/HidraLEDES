@@ -197,6 +197,7 @@ public class Repository {
     public boolean manifestExist(File path) {
 
         File[] matchingFiles = path.listFiles(new FilenameFilter() {
+
             @Override
             public boolean accept(File dir, String name) {
                 return name.startsWith("rasset") && name.endsWith("xml");
@@ -206,7 +207,7 @@ public class Repository {
         return matchingFiles != null;
 
     }
-
+    
     /**
      * Valida o manifest rasset.xml de acordo com o esquema asset.xsd que define
      * o padrão dos ativos segundo OMG.
@@ -220,7 +221,7 @@ public class Repository {
     boolean validateAsset(String assetPath) throws SAXException, IOException {
 
         //  File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
-        File schemaFile = new File(System.getProperty("user.home")+"/asset.xsd");
+        File schemaFile = new File(System.getProperty("user.home") + "/asset.xsd");
         Source xmlFile = new StreamSource(new File(assetPath + manifest));
         SchemaFactory schemaFactory = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -288,8 +289,21 @@ public class Repository {
      *
      * @param assetId que representa o id de um ativo de software.
      */
-    SolutionType getSolution(String assetId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String getSolution(String assetId) throws JAXBException {
+
+        File assetFile = new File(directory+"/"+assetId);
+        if (assetFile.exists()) {
+
+            File file = new File(directory + "/" + assetId + "/rasset.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
+
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            Asset asset = (Asset) jaxbUnmarshaller.unmarshal(file);
+
+            return asset.describeSolution();
+        }
+
+        return "Asset Do Not Exist";
     }
 
     /**
@@ -310,21 +324,42 @@ public class Repository {
      *
      * @param assetId representa o id de um ativo de software.
      */
-    String getClassification(String assetId) {
-        String classification;
+    String getClassification(String assetId) throws JAXBException {
 
-        Asset asset = findAsset(assetId);
-        classification = asset.getDescribeClassification();
+        File assetFile = new File(directory+"/"+assetId);
+        if (assetFile.exists()) {
 
-        return classification;
+            File file = new File(directory + "/" + assetId + "/rasset.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
+
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            Asset asset = (Asset) jaxbUnmarshaller.unmarshal(file);
+
+            return asset.describeClassification();
+        }
+
+        return "Asset Do Not Exist";
     }
 
     boolean setClassification(ClassificationType classification) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    UsageType getUsage(String assetId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String getUsage(String assetId) throws JAXBException {
+        
+        File assetFile = new File(directory+"/"+assetId);
+        if (assetFile.exists()) {
+
+            File file = new File(directory + "/" + assetId + "/rasset.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
+
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            Asset asset = (Asset) jaxbUnmarshaller.unmarshal(file);
+
+            return asset.describeUsage();
+        }
+
+        return "Asset Do Not Exist";
     }
 
     boolean setUsage(UsageType usage) {
@@ -348,13 +383,13 @@ public class Repository {
     }
 
     File downloadAsset(String assetId) throws FileNotFoundException {
-        File file = new File(directory + assetId +".zip");
+        File file = new File(directory + assetId + ".zip");
         FileOutputStream fileOut = new FileOutputStream(file);
-        
+
         int count = 0;
 
         try {
-            URL url = new URL(Properties.getProperties().getProperty("Protocol"), 
+            URL url = new URL(Properties.getProperties().getProperty("Protocol"),
                     Properties.getProperties().getProperty("RemoteURI"), assetId);
 
             URLConnection con = url.openConnection();
@@ -369,7 +404,7 @@ public class Repository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return file;
     }
 
