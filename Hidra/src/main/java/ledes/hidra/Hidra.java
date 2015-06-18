@@ -90,13 +90,12 @@ public class Hidra {
      * @return
      * @throws javax.xml.bind.JAXBException
      */
-<<<<<<< HEAD
-    public SolutionType getSolution(Asset asset) {
-        return repository.getSolution(asset);
-=======
+
+    
+
     public String getSolution(String assetId) throws JAXBException {
         return repository.getSolution(assetId);
->>>>>>> 323d304a20db2bf52103dcc257924f0421b3381d
+
     }
 
     /**

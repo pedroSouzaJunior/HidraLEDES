@@ -108,22 +108,7 @@ public class RepositoryTest {
 
     }
 
-<<<<<<< HEAD
 
-=======
-    /**
-     * Test of setLocalPath method, of class Repository.
-     */
-    //@Test
-    public void testSetLocalPath() {
-        System.out.println("setLocalPath");
-        String localPath = "";
-        Repository instance = null;
-        instance.setLocalPath(localPath);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
->>>>>>> 323d304a20db2bf52103dcc257924f0421b3381d
 
     /**
      * Test of getRemotePath method, of class Repository.
@@ -247,15 +232,7 @@ public class RepositoryTest {
     @Test
     public void testGetSolution() throws JAXBException {
         System.out.println("getSolution");
-<<<<<<< HEAD
-        String assetId = "";
-        Repository instance = null;
-        SolutionType expResult = null;
-//        SolutionType result = instance.getSolution(Asset);
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-=======
+
         String assetId = "asset";
         Repository instance = new Repository(localPath);
         boolean expResult = true;
@@ -265,7 +242,7 @@ public class RepositoryTest {
         String result = instance.getSolution(assetId);
         System.out.println(result);
         assertEquals(expResult, result != null);
->>>>>>> 323d304a20db2bf52103dcc257924f0421b3381d
+
     }
 
     /**

@@ -294,10 +294,7 @@ public class Repository {
      *
      * @param assetId que representa o id de um ativo de software.
      */
-<<<<<<< HEAD
-    SolutionType getSolution(Asset asset) {
-        return asset.getSolution();
-=======
+
     String getSolution(String assetId) throws JAXBException {
 
         File assetFile = new File(directory+"/"+assetId);
@@ -313,7 +310,7 @@ public class Repository {
         }
 
         return "Asset Do Not Exist";
->>>>>>> 323d304a20db2bf52103dcc257924f0421b3381d
+
     }
 
     /**
