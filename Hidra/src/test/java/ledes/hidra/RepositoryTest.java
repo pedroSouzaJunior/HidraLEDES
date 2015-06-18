@@ -54,7 +54,7 @@ public class RepositoryTest {
     /**
      * Test of init method, of class Repository.
      */
-    @Test
+    //@Test
     public void testInit() {
 
         System.out.println("init");
@@ -70,7 +70,7 @@ public class RepositoryTest {
     /**
      * Test of cloneRepository method, of class Repository.
      */
-    @Test
+    //@Test
     public void testCloneRepository() {
         System.out.println("cloneRepository");
         Repository instance = null;
@@ -84,7 +84,7 @@ public class RepositoryTest {
     /**
      * Test of isRepository method, of class Repository.
      */
-    @Test
+    //@Test
     public void testIsRepository_0args() {
         System.out.println("isRepository");
         Repository instance = new Repository(localPath);
@@ -98,7 +98,7 @@ public class RepositoryTest {
     /**
      * Test of getLocalPath method, of class Repository.
      */
-    @Test
+    //@Test
     public void testGetLocalPath() {
         System.out.println("getLocalPath");
         Repository instance = new Repository(localPath);
@@ -108,12 +108,27 @@ public class RepositoryTest {
 
     }
 
+<<<<<<< HEAD
 
+=======
+    /**
+     * Test of setLocalPath method, of class Repository.
+     */
+    //@Test
+    public void testSetLocalPath() {
+        System.out.println("setLocalPath");
+        String localPath = "";
+        Repository instance = null;
+        instance.setLocalPath(localPath);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+>>>>>>> 323d304a20db2bf52103dcc257924f0421b3381d
 
     /**
      * Test of getRemotePath method, of class Repository.
      */
-    @Test
+    //@Test
     public void testGetRemotePath() {
         System.out.println("getRemotePath");
         Repository instance = null;
@@ -127,7 +142,7 @@ public class RepositoryTest {
     /**
      * Test of setRemotePath method, of class Repository.
      */
-    @Test
+    //@Test
     public void testSetRemotePath() {
         System.out.println("setRemotePath");
         String remotePath = "";
@@ -140,7 +155,7 @@ public class RepositoryTest {
     /**
      * Test of removeRepository method, of class Repository.
      */
-    @Test
+    //@Test
     public void testRemoveRepository() {
         System.out.println("removeRepository");
         Repository instance = null;
@@ -149,7 +164,7 @@ public class RepositoryTest {
         fail("The test case is a prototype.");
     }
 
-    @Test
+   // @Test
     public void testManifestExist() {
         System.out.println("ManifestExist");
         Repository instance = new Repository(localPath);
@@ -167,7 +182,7 @@ public class RepositoryTest {
      *
      * @throws java.lang.Exception
      */
-    @Test
+    //@Test
     public void testValidateAsset_String() throws Exception {
         System.out.println("validateAsset");
         String assetPath = System.getProperty("user.home") + "/repo2/asset/";
@@ -183,7 +198,7 @@ public class RepositoryTest {
      *
      * @throws java.lang.Exception
      */
-    @Test
+    //@Test
     public void testReadAsset() throws Exception {
         System.out.println("readAsset");
 
@@ -197,7 +212,7 @@ public class RepositoryTest {
     /*  *
      * Test of validateAsset method, of class Repository.
      */
-    @Test
+    //@Test
     public void testValidateAsset_Asset_String() throws JAXBException, FileNotFoundException {
         System.out.println("validateAsset");
 
@@ -214,7 +229,7 @@ public class RepositoryTest {
     /**
      * Test of addAsset method, of class Repository.
      */
-    @Test
+   // @Test
     public void testAddAsset() throws Exception {
         System.out.println("addAsset");
         String nameAsset = "asset";
@@ -227,10 +242,12 @@ public class RepositoryTest {
 
     /**
      * Test of getSolution method, of class Repository.
+     * @throws javax.xml.bind.JAXBException
      */
     @Test
-    public void testGetSolution() {
+    public void testGetSolution() throws JAXBException {
         System.out.println("getSolution");
+<<<<<<< HEAD
         String assetId = "";
         Repository instance = null;
         SolutionType expResult = null;
@@ -238,12 +255,23 @@ public class RepositoryTest {
 //        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+=======
+        String assetId = "asset";
+        Repository instance = new Repository(localPath);
+        boolean expResult = true;
+        
+        
+        
+        String result = instance.getSolution(assetId);
+        System.out.println(result);
+        assertEquals(expResult, result != null);
+>>>>>>> 323d304a20db2bf52103dcc257924f0421b3381d
     }
 
     /**
      * Test of setSolutionType method, of class Repository.
      */
-    @Test
+    //@Test
     public void testSetSolutionType() {
         System.out.println("setSolutionType");
         String assetId = "";
@@ -258,23 +286,24 @@ public class RepositoryTest {
 
     /**
      * Test of getClassification method, of class Repository.
+     * @throws javax.xml.bind.JAXBException
      */
     @Test
-    public void testGetClassification() {
+    public void testGetClassification() throws JAXBException {
         System.out.println("getClassification");
-        String assetId = "";
-        Repository instance = null;
-        String expResult = "";
+        String assetId = "asset";
+        Repository instance = new Repository(localPath);
+        boolean expResult = true;
+        
         String result = instance.getClassification(assetId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println(result);
+        assertEquals(expResult, result != null);
     }
 
     /**
      * Test of setClassification method, of class Repository.
      */
-    @Test
+    //@Test
     public void testSetClassification() {
         System.out.println("setClassification");
         ClassificationType classification = null;
@@ -288,27 +317,29 @@ public class RepositoryTest {
 
     /**
      * Test of getUsage method, of class Repository.
+     * @throws javax.xml.bind.JAXBException
      */
     @Test
-    public void testGetUsage() {
+    public void testGetUsage() throws JAXBException {
         System.out.println("getUsage");
-        String assetId = "";
-        Repository instance = null;
-        UsageType expResult = null;
-        UsageType result = instance.getUsage(assetId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String assetId = "asset";
+        Repository instance = new Repository(localPath);
+        boolean expResult = true;
+       
+        String result = instance.getUsage(assetId);
+        System.out.println(result);
+        assertEquals(expResult, result != null);
+        
     }
 
     /**
      * Test of setUsage method, of class Repository.
      */
-    @Test
+    //@Test
     public void testSetUsage() {
         System.out.println("setUsage");
         UsageType usage = null;
-        Repository instance = null;
+        Repository instance = new Repository(localPath);
         boolean expResult = false;
         boolean result = instance.setUsage(usage);
         assertEquals(expResult, result);
@@ -319,7 +350,7 @@ public class RepositoryTest {
     /**
      * Test of getRelatedAssets method, of class Repository.
      */
-    @Test
+    //@Test
     public void testGetRelatedAssets() {
         System.out.println("getRelatedAssets");
         String assetId = "";
@@ -334,7 +365,7 @@ public class RepositoryTest {
     /**
      * Test of setRelatedAsset method, of class Repository.
      */
-    @Test
+    //@Test
     public void testSetRelatedAsset() {
         System.out.println("setRelatedAsset");
         String assetId = "";
@@ -350,7 +381,7 @@ public class RepositoryTest {
     /**
      * Test of getLog method, of class Repository.
      */
-    @Test
+    //@Test
     public void testGetLog() {
         System.out.println("getLog");
         String assetId = "";
@@ -366,7 +397,7 @@ public class RepositoryTest {
     /**
      * Test of listAssets method, of class Repository.
      */
-    @Test
+    //@Test
     public void testListAssets() {
         System.out.println("listAssets");
         Repository instance = null;
@@ -381,7 +412,7 @@ public class RepositoryTest {
      * Test of downloadAsset method, of class Repository.
      * @throws java.io.FileNotFoundException
      */
-    @Test
+    //@Test
     public void testDownloadAsset() throws FileNotFoundException {
         System.out.println("downloadAsset");
         String assetId = "/arquivos/JSFImmediate.zip";
@@ -397,7 +428,7 @@ public class RepositoryTest {
     /**
      * Test of removeAsset method, of class Repository.
      */
-    @Test
+    //@Test
     public void testRemoveAsset() {
         System.out.println("removeAsset");
         String assetId = "";
@@ -412,7 +443,7 @@ public class RepositoryTest {
     /**
      * Test of isRepository method, of class Repository.
      */
-    @Test
+    //@Test
     public void testIsRepository_String() {
         System.out.println("isRepository");
         String directory = "";
