@@ -31,6 +31,7 @@ import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import ledes.hidra.core.GitFacade;
 import ledes.hidra.core.ValidatorAssets;
+import ledes.hidra.util.Configuration;
 import ledes.hidra.util.Properties;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.xml.sax.SAXException;
@@ -57,7 +58,7 @@ public class Repository {
     /**
      * @param String localPath - Define full path to the repository local
      */
-    private String localPath;
+    private final String localPath;
     /**
      * @param String remotePath - Define URL or path to the repository remote
      */
@@ -136,7 +137,6 @@ public class Repository {
 //    public void setLocalPath(String localPath) {
 //        this.localPath = localPath;
 //    }
-
     /**
      * Return remote repository path
      *
@@ -205,14 +205,14 @@ public class Repository {
 
             @Override
             public boolean accept(File dir, String name) {
-                return name.startsWith("rasset") && name.endsWith("xml");
+                return name.startsWith(Configuration.properties.getProperty("ManifestName")) && name.endsWith("ManifestExtension");
             }
         });
 
         return matchingFiles != null;
 
     }
-    
+
     /**
      * Valida o manifest rasset.xml de acordo com o esquema asset.xsd que define
      * o padrão dos ativos segundo OMG.
@@ -223,7 +223,7 @@ public class Repository {
      * @throws SAXException
      * @throws IOException
      */
-    boolean validateAsset(String assetPath) throws SAXException, IOException {
+    public boolean validateAsset(String assetPath) throws SAXException, IOException {
 
         //  File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
         File schemaFile = new File(System.getProperty("user.home") + "/asset.xsd");
@@ -252,11 +252,58 @@ public class Repository {
      * definido.
      *
      * @param asset
+     * @param assetPath
      * @return
      */
-    boolean validateAsset(Asset asset, String assetPath) {
+    public boolean validateAsset(Asset asset, String assetPath) {
         ValidatorAssets validator = new ValidatorAssets(assetPath);
         return validator.isValidAsset(asset);
+    }
+
+    public class ValidationRuntimeException extends RuntimeException {
+
+        public ValidationRuntimeException() {
+            super();
+        }
+
+        public ValidationRuntimeException(String message) {
+            super(message);
+        }
+
+        public ValidationRuntimeException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        public ValidationRuntimeException(Throwable cause) {
+            super(cause);
+        }
+    }
+
+    public boolean validateAll(String assetName, String assetPath, File path) throws SAXException, IOException, JAXBException, ValidationRuntimeException {
+        boolean ret = true;
+
+        if (!path.isDirectory()) {
+            ret = false;
+            throw new ValidationRuntimeException("It is not a directory: " + path);
+
+        }
+        if (!manifestExist(path)) {
+            ret = false;
+            throw new ValidationRuntimeException("File not found manisfest in: " + path);
+
+        }
+        if (validateAsset(assetPath)) {
+            ret = false;
+            throw new ValidationRuntimeException("Manifest not is valid");
+
+        }
+        if (!validateAsset(readAsset(assetName), assetPath)) {
+            ret = false;
+            throw new ValidationRuntimeException("Active structure does not match the manifest file");
+
+        }
+
+        return ret;
     }
 
     /**
@@ -265,14 +312,20 @@ public class Repository {
      * repositorio. Caso o ativo esteja condizente com o padrao RAS, ele podera
      * entao ser adicionado ao repositorio.
      *
-     * @param Asset
+     * @param nameAsset
+     * @return
+     * @throws org.xml.sax.SAXException
+     * @throws java.io.IOException
+     * @throws javax.xml.bind.JAXBException
+     *
      */
-    boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException {
+    public boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException {
 
         String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
         File assetFolder = new File(assetPath);
 
-        if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
+        // if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
+        if (validateAll(nameAsset, assetPath, assetFolder)) {
             try {
 
                 return assistant.add(nameAsset);
@@ -293,11 +346,12 @@ public class Repository {
      * que fazem parte do ativo
      *
      * @param assetId que representa o id de um ativo de software.
+     * @return
+     * @throws javax.xml.bind.JAXBException
      */
+    public String getSolution(String assetId) throws JAXBException {
 
-    String getSolution(String assetId) throws JAXBException {
-
-        File assetFile = new File(directory+"/"+assetId);
+        File assetFile = new File(directory + "/" + assetId);
         if (assetFile.exists()) {
 
             File file = new File(directory + "/" + assetId + "/rasset.xml");
@@ -333,7 +387,7 @@ public class Repository {
      */
     String getClassification(String assetId) throws JAXBException {
 
-        File assetFile = new File(directory+"/"+assetId);
+        File assetFile = new File(directory + "/" + assetId);
         if (assetFile.exists()) {
 
             File file = new File(directory + "/" + assetId + "/rasset.xml");
@@ -381,8 +435,8 @@ public class Repository {
     }
 
     String getUsage(String assetId) throws JAXBException {
-        
-        File assetFile = new File(directory+"/"+assetId);
+
+        File assetFile = new File(directory + "/" + assetId);
         if (assetFile.exists()) {
 
             File file = new File(directory + "/" + assetId + "/rasset.xml");

@@ -101,6 +101,9 @@ public class Properties {
         defaults.setProperty("UserName", "default");
         defaults.setProperty("UserEmail", "default@domain.com");
         defaults.setProperty("Password", "");
+        defaults.setProperty("ManifestName", "rasset");
+        defaults.setProperty("ManifestExtension", "xml");
+        
         
         return defaults;
     }

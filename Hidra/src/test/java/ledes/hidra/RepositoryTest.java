@@ -29,7 +29,7 @@ public class RepositoryTest {
     private final String localPath;
 
     public RepositoryTest() {
-        localPath = System.getProperty("user.home") + "/repo2";
+        localPath = System.getProperty("user.home") + "/hidrainstance";
 
     }
 
