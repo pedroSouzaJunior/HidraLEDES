@@ -6,8 +6,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import java.net.URL;
 import java.net.URLConnection;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,6 +34,7 @@ import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import ledes.hidra.core.GitFacade;
 import ledes.hidra.core.ValidatorAssets;
+import ledes.hidra.util.Configuration;
 import ledes.hidra.util.Properties;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.xml.sax.SAXException;
@@ -55,7 +61,7 @@ public class Repository {
     /**
      * @param String localPath - Define full path to the repository local
      */
-    private String localPath;
+    private final String localPath;
     /**
      * @param String remotePath - Define URL or path to the repository remote
      */
@@ -129,15 +135,14 @@ public class Repository {
         return localPath;
     }
 
-    /**
-     * Set path repository
-     *
-     * @param localPath
-     */
-    public void setLocalPath(String localPath) {
-        this.localPath = localPath;
-    }
-
+//    /**
+//     * Set path repository
+//     *
+//     * @param localPath
+//     */
+//    public void setLocalPath(String localPath) {
+//        this.localPath = localPath;
+//    }
     /**
      * Return remote repository path
      *
@@ -216,7 +221,7 @@ public class Repository {
 
             @Override
             public boolean accept(File dir, String name) {
-                return name.startsWith("rasset") && name.endsWith("xml");
+                return name.startsWith(Configuration.properties.getProperty("ManifestName")) && name.endsWith("ManifestExtension");
             }
         });
 
@@ -234,7 +239,7 @@ public class Repository {
      * @throws SAXException
      * @throws IOException
      */
-    boolean validateAsset(String assetPath) throws SAXException, IOException {
+    public boolean validateAsset(String assetPath) throws SAXException, IOException {
 
         //  File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
         File schemaFile = new File(System.getProperty("user.home") + "/asset.xsd");
@@ -263,11 +268,58 @@ public class Repository {
      * definido.
      *
      * @param asset
+     * @param assetPath
      * @return
      */
-    boolean validateAsset(Asset asset, String assetPath) {
+    public boolean validateAsset(Asset asset, String assetPath) {
         ValidatorAssets validator = new ValidatorAssets(assetPath);
         return validator.isValidAsset(asset);
+    }
+
+    public class ValidationRuntimeException extends RuntimeException {
+
+        public ValidationRuntimeException() {
+            super();
+        }
+
+        public ValidationRuntimeException(String message) {
+            super(message);
+        }
+
+        public ValidationRuntimeException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        public ValidationRuntimeException(Throwable cause) {
+            super(cause);
+        }
+    }
+
+    public boolean validateAll(String assetName, String assetPath, File path) throws SAXException, IOException, JAXBException, ValidationRuntimeException {
+        boolean ret = true;
+
+        if (!path.isDirectory()) {
+            ret = false;
+            throw new ValidationRuntimeException("It is not a directory: " + path);
+
+        }
+        if (!manifestExist(path)) {
+            ret = false;
+            throw new ValidationRuntimeException("File not found manisfest in: " + path);
+
+        }
+        if (validateAsset(assetPath)) {
+            ret = false;
+            throw new ValidationRuntimeException("Manifest not is valid");
+
+        }
+        if (!validateAsset(readAsset(assetName), assetPath)) {
+            ret = false;
+            throw new ValidationRuntimeException("Active structure does not match the manifest file");
+
+        }
+
+        return ret;
     }
 
     /**
@@ -276,14 +328,20 @@ public class Repository {
      * repositorio. Caso o ativo esteja condizente com o padrao RAS, ele podera
      * entao ser adicionado ao repositorio.
      *
-     * @param Asset
+     * @param nameAsset
+     * @return
+     * @throws org.xml.sax.SAXException
+     * @throws java.io.IOException
+     * @throws javax.xml.bind.JAXBException
+     *
      */
-    boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException {
+    public boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException {
 
         String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
         File assetFolder = new File(assetPath);
 
-        if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
+        // if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
+        if (validateAll(nameAsset, assetPath, assetFolder)) {
             try {
 
                 return assistant.add(nameAsset);
@@ -336,7 +394,10 @@ public class Repository {
      * que fazem parte do ativo
      *
      * @param assetId que representa o id de um ativo de software.
+     * @return
+     * @throws javax.xml.bind.JAXBException
      */
+
     String getSolution(String assetId) throws JAXBException, FileNotFoundException {
 
         File assetFile = new File(directory + "/" + assetId);
@@ -346,6 +407,7 @@ public class Repository {
         }
 
         return "Asset Do Not Exist";
+
     }
 
     /**
@@ -406,11 +468,41 @@ public class Repository {
         return "Asset Do Not Exist";
     }
 
+    /**
+     * Realiza o commit das mudanças realizadas, se as alterações não estiverem
+     * fora do padrão RAS. Recebe o nome do ativo e mensagem a ser salva.
+     *
+     * @param message
+     * @param nameAsset
+     * @return
+     * @throws SAXException
+     * @throws IOException
+     * @throws JAXBException
+     */
+    public boolean saveChanges(String message, String nameAsset) throws SAXException, IOException, JAXBException {
+        String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
+        File assetFolder = new File(assetPath);
+        if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
+            try {
+                return assistant.commit(message);
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            System.err.println("Erro na validação do ativo!"
+                    + "\n Verifique se o nome do ativo está correto,"
+                    + "\n ou se as alterações não ferem o padrão  adotado para o repositorio.");
+        }
+        return false;
+    }
+
     boolean setClassification(ClassificationType classification) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+
     String getUsage(String assetId) {
+
 
         File assetFile = new File(directory + "/" + assetId);
         try {
@@ -435,12 +527,28 @@ public class Repository {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    String getLog(String assetId, boolean complete) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String getLog(String nameAsset) {
+        String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
+        try {
+            return assistant.getLogs();
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
-    List<Asset> listAssets() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Retorna uma lista com todos os nomes dos ativos do repositorio. PS: deve
+     * retornar apenas os arquivos adicionados a area de seleção Será resolvido
+     * com o indice.
+     *
+     * @return
+     */
+    List<String> listAssets() {
+        File dir = new File(localPath);
+        List<String> assets = new ArrayList<>();
+        assets.addAll(Arrays.asList(dir.list()));
+        return assets;
     }
 
     String describeAssets() {
@@ -483,8 +591,14 @@ public class Repository {
         return file;
     }
 
-    boolean removeAsset(String assetId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Remove um ativo do repositório.
+     *
+     * @param assetName - Recebe o nome do ativo a ser removido
+     * @return retorna verdadeiro caso a operação seja bem sucedida.
+     */
+    boolean removeAsset(String assetName) {
+        return assistant.remove(assetName);
     }
 
     boolean isRepository(String directory) {

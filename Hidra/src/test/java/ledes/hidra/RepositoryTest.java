@@ -30,7 +30,7 @@ public class RepositoryTest {
     private final String localPath;
 
     public RepositoryTest() {
-        localPath = System.getProperty("user.home") + "/repo2";
+        localPath = System.getProperty("user.home") + "/hidrainstance";
 
     }
 
@@ -109,18 +109,7 @@ public class RepositoryTest {
 
     }
 
-    /**
-     * Test of setLocalPath method, of class Repository.
-     */
-    //@Test
-    public void testSetLocalPath() {
-        System.out.println("setLocalPath");
-        String localPath = "";
-        Repository instance = null;
-        instance.setLocalPath(localPath);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+
 
     /**
      * Test of getRemotePath method, of class Repository.
@@ -244,6 +233,7 @@ public class RepositoryTest {
     @Test
     public void testGetSolution() throws JAXBException, FileNotFoundException {
         System.out.println("getSolution");
+
         String assetId = "asset";
         Repository instance = new Repository(localPath);
         boolean expResult = true;
@@ -253,6 +243,7 @@ public class RepositoryTest {
         String result = instance.getSolution(assetId);
         System.out.println(result);
         assertEquals(expResult, result != null);
+
     }
 
     /**
@@ -392,8 +383,8 @@ public class RepositoryTest {
         boolean complete = false;
         Repository instance = null;
         String expResult = "";
-        String result = instance.getLog(assetId, complete);
-        assertEquals(expResult, result);
+//        String result = instance.getLog(assetId, complete);
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -406,8 +397,8 @@ public class RepositoryTest {
         System.out.println("listAssets");
         Repository instance = null;
         List<Asset> expResult = null;
-        List<Asset> result = instance.listAssets();
-        assertEquals(expResult, result);
+//        List<Asset> result = instance.listAssets();
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
