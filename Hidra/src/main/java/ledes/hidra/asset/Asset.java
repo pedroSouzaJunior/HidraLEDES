@@ -1,6 +1,5 @@
 package ledes.hidra.asset;
 
-import java.util.Iterator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -43,7 +42,13 @@ public class Asset {
     @XmlAttribute(name = "short-description")
     protected String shortDescription;
 
-    
+
+    /***
+     * Método que descreve a solucao de um ativo
+     * atravez dele e possivel descobrir a solucao que incorpora
+     * um ativo.
+     * @return String - a descricao da solucao.
+     */
     public String describeSolution(){
         StringBuilder stb = new StringBuilder().append("\n");
         
@@ -99,6 +104,12 @@ public class Asset {
         return stb.toString();
     }
     
+    
+    /***
+     * Metodo responsavel por descrever a classificacao de um ativo.
+     * por meio dele e possivel obter uma descricao da classificacao de um ativo.
+     * @return String - a descricao da Classificacao 
+     */
     public String describeClassification() {
         StringBuilder stb = new StringBuilder().append("\n");
         
@@ -120,6 +131,11 @@ public class Asset {
     }
     
     
+    /***
+     * Metodo responsavel pela descricao de Uso de um ativo.
+     * por meio dele e possivel obter a descricao de uso de um Ativo.
+     * @return String - a descricao de Uso.
+     */
     public String describeUsage(){
     
         StringBuilder stb = new StringBuilder().append("\n");
