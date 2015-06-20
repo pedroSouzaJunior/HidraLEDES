@@ -73,7 +73,7 @@ public class Repository {
     private final File directory;
 
     private final GitFacade assistant;
-    
+
     private List<String> exceptionList;
 
     /**
@@ -169,8 +169,6 @@ public class Repository {
         this.exceptionList = exceptionList;
     }
 
-    
-    
     /**
      * Responsible method to delete a repository
      */
@@ -378,16 +376,6 @@ public class Repository {
         return result;
     }
 
-    private Asset xmlToAsset(String assetId) throws JAXBException {
-
-        File assetFile = new File(directory + "/" + assetId + "/rasset.xml");
-        JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
-
-        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        Asset customer = (Asset) jaxbUnmarshaller.unmarshal(assetFile);
-
-        return customer;
-    }
 
     /**
      * Responsavel por retornar ao usuario a forma representativa dos artefatos
@@ -397,12 +385,15 @@ public class Repository {
      * @return
      * @throws javax.xml.bind.JAXBException
      */
-
-    String getSolution(String assetId) throws JAXBException, FileNotFoundException {
+    String getSolution(String assetId) {
 
         File assetFile = new File(directory + "/" + assetId);
         if (assetFile.exists()) {
-            return readAsset(assetId).describeSolution();
+            try {
+                return readAsset(assetId).describeSolution();
+            } catch (JAXBException | FileNotFoundException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
 
@@ -418,34 +409,34 @@ public class Repository {
      */
     boolean setSolutionType(String assetId, SolutionType solution) {
         boolean result = false;
+        /*
+         try {
+         Asset asset = xmlToAsset(assetId);
 
-        try {
-            Asset asset = xmlToAsset(assetId);
+         for (ArtifactType a : solution.getArtifacts().getArtifact()) {
+         asset.getSolution().getArtifacts().getArtifact().add(a);
+         }
 
-            for (ArtifactType a : solution.getArtifacts().getArtifact()) {
-                asset.getSolution().getArtifacts().getArtifact().add(a);
-            }
+         for (ArtifactType a : solution.getRequirements().getArtifact()) {
+         asset.getSolution().getRequirements().getArtifact().add(a);
+         }
 
-            for (ArtifactType a : solution.getRequirements().getArtifact()) {
-                asset.getSolution().getRequirements().getArtifact().add(a);
-            }
+         for (ArtifactType a : solution.getDesign().getArtifact()) {
+         asset.getSolution().getDesign().getArtifact().add(a);
+         }
 
-            for (ArtifactType a : solution.getDesign().getArtifact()) {
-                asset.getSolution().getDesign().getArtifact().add(a);
-            }
+         for (ArtifactType a : solution.getImplementation().getArtifact()) {
+         asset.getSolution().getImplementation().getArtifact().add(a);
+         }
 
-            for (ArtifactType a : solution.getImplementation().getArtifact()) {
-                asset.getSolution().getImplementation().getArtifact().add(a);
-            }
+         for (ArtifactType a : solution.getTest().getArtifact()) {
+         asset.getSolution().getTest().getArtifact().add(a);
+         }
 
-            for (ArtifactType a : solution.getTest().getArtifact()) {
-                asset.getSolution().getTest().getArtifact().add(a);
-            }
-
-            result = javaToxml(asset, assetId);
-        } catch (JAXBException e) {
-        }
-
+         result = javaToxml(asset, assetId);
+         } catch (JAXBException e) {
+         }
+         */
         return result;
     }
 
@@ -457,14 +448,17 @@ public class Repository {
      *
      * @param assetId representa o id de um ativo de software.
      */
-    String getClassification(String assetId) throws JAXBException, FileNotFoundException {
+    String getClassification(String assetId) {
 
         File assetFile = new File(directory + "/" + assetId);
-        if (assetFile.exists()) {
+        try {
+            if (assetFile.exists()) {
 
-            return readAsset(assetId).describeClassification();
+                return readAsset(assetId).describeClassification();
+            }
+        } catch (FileNotFoundException | JAXBException exception) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
         }
-
         return "Asset Do Not Exist";
     }
 
@@ -500,17 +494,15 @@ public class Repository {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-
     String getUsage(String assetId) {
-
 
         File assetFile = new File(directory + "/" + assetId);
         try {
             if (assetFile.exists()) {
                 return readAsset(assetId).describeUsage();
             }
-        } catch (JAXBException | FileNotFoundException exception) {
-            this.getExceptionList().add(exception.getMessage());
+        } catch (FileNotFoundException | JAXBException exception) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
         }
         return "Asset Do Not Exist";
     }

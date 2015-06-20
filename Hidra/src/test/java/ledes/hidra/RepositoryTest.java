@@ -30,7 +30,7 @@ public class RepositoryTest {
     private final String localPath;
 
     public RepositoryTest() {
-        localPath = System.getProperty("user.home") + "/hidrainstance";
+        localPath = System.getProperty("user.home") + File.separator + "repo2";
 
     }
 
@@ -229,6 +229,7 @@ public class RepositoryTest {
     /**
      * Test of getSolution method, of class Repository.
      * @throws javax.xml.bind.JAXBException
+     * @throws java.io.FileNotFoundException
      */
     @Test
     public void testGetSolution() throws JAXBException, FileNotFoundException {
@@ -311,18 +312,19 @@ public class RepositoryTest {
     /**
      * Test of getUsage method, of class Repository.
      * @throws javax.xml.bind.JAXBException
+     * @throws java.io.FileNotFoundException
      */
     @Test
-    public void testGetUsage() throws JAXBException {
+    public void testGetUsage() throws JAXBException, FileNotFoundException {
         System.out.println("getUsage");
-        String assetId = "NONONO";
+        String assetId = "asset";
         Repository instance = new Repository(localPath);
         boolean expResult = true;
        
         String result = instance.getUsage(assetId);
         System.out.println(result);
         
-        System.out.println(instance.getExceptionList());
+        
         assertEquals(expResult, result != null);
         
     }
@@ -451,24 +453,7 @@ public class RepositoryTest {
     }
 
     
-    /**
-     * Test of isRepository method, of class Repository.
-     */
-    //@Test
-    public void testDescribeAssets() {
-        System.out.println("isRepository");
-        String directory = localPath;
-        
-        Repository instance = new Repository(localPath);
-        boolean expResult = true;
-        
-        String result = instance.describeAssets();
-        
-        System.out.println(result);
-        
-        assertEquals(expResult, result != null);
-        
-    }
+    
     
     
 }
