@@ -28,7 +28,7 @@ public class Asset {
     protected ClassificationType classification;
     @XmlElement(required = true)
     protected UsageType usage;
-    @XmlElement(required = true)
+    
     protected RelatedAssets relatedAssetsList;
     @XmlAttribute(name = "name", required = true)
     protected String name;

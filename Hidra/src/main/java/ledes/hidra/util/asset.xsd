@@ -10,7 +10,7 @@
                 <xs:element name="solution" type="solutionType"/>
                 <xs:element name="classification" type="classificationType"/>
                 <xs:element name="usage" type="usageType"/>
-                <xs:element name="relatedAssetsList" type="relatedAssets"/>
+                <xs:element name="relatedAssetsList" type="relatedAssets" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
             <xs:attribute name="name" type="xs:string" use="required"/>
             <xs:attribute name="id" type="xs:string" use="required"/>
@@ -187,10 +187,4 @@
         <xs:attribute name="reference" type="xs:string"/>
         <xs:attribute name="relationshipType" type="xs:string"/>
     </xs:complexType>
-   
-    
-    
-    
-    
-
 </xs:schema>
