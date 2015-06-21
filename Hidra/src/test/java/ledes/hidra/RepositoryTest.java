@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import javax.xml.bind.JAXBException;
+import ledes.hidra.asset.ArtifactType;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
@@ -30,7 +31,7 @@ public class RepositoryTest {
     private final String localPath;
 
     public RepositoryTest() {
-        localPath = System.getProperty("user.home") + "/hidrainstance";
+        localPath = System.getProperty("user.home") + File.separator + "repo2";
 
     }
 
@@ -229,9 +230,10 @@ public class RepositoryTest {
     /**
      * Test of getSolution method, of class Repository.
      * @throws javax.xml.bind.JAXBException
+     * @throws java.io.FileNotFoundException
      */
     @Test
-    public void testGetSolution() throws JAXBException {
+    public void testGetSolution() throws JAXBException, FileNotFoundException {
         System.out.println("getSolution");
 
         String assetId = "asset";
@@ -248,18 +250,33 @@ public class RepositoryTest {
 
     /**
      * Test of setSolutionType method, of class Repository.
+     * @throws javax.xml.bind.JAXBException
      */
     //@Test
-    public void testSetSolutionType() {
+    public void testSetSolutionType() throws JAXBException{
         System.out.println("setSolutionType");
-        String assetId = "";
-        SolutionType solution = null;
-        Repository instance = null;
-        boolean expResult = false;
+        String assetId = "asset";
+        
+        ArtifactType a = new ArtifactType();
+        a.setId("213546");
+        a.setName("ARTEFATO NOVO");
+        a.setReference("/ALGUMA PASTA");
+        a.setType("FOLDER");
+        a.setVersion("LAST VERSION");
+        
+        SolutionType solution = new SolutionType();
+        solution.getArtifacts().getArtifact().add(a);
+        solution.getImplementation().getArtifact().add(a);
+        solution.getRequirements().getArtifact().add(a);
+        solution.getDesign().getArtifact().add(a);
+        solution.getTest().getArtifact().add(a);
+        
+        Repository instance = new Repository(localPath);
+        boolean expResult = true;
         boolean result = instance.setSolutionType(assetId, solution);
+        
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -267,7 +284,7 @@ public class RepositoryTest {
      * @throws javax.xml.bind.JAXBException
      */
     @Test
-    public void testGetClassification() throws JAXBException {
+    public void testGetClassification() throws JAXBException, FileNotFoundException {
         System.out.println("getClassification");
         String assetId = "asset";
         Repository instance = new Repository(localPath);
@@ -296,9 +313,10 @@ public class RepositoryTest {
     /**
      * Test of getUsage method, of class Repository.
      * @throws javax.xml.bind.JAXBException
+     * @throws java.io.FileNotFoundException
      */
     @Test
-    public void testGetUsage() throws JAXBException {
+    public void testGetUsage() throws JAXBException, FileNotFoundException {
         System.out.println("getUsage");
         String assetId = "asset";
         Repository instance = new Repository(localPath);
@@ -306,6 +324,8 @@ public class RepositoryTest {
        
         String result = instance.getUsage(assetId);
         System.out.println(result);
+        
+        
         assertEquals(expResult, result != null);
         
     }
@@ -433,4 +453,8 @@ public class RepositoryTest {
         fail("The test case is a prototype.");
     }
 
+    
+    
+    
+    
 }

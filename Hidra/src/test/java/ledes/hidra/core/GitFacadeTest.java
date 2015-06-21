@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -63,9 +64,14 @@ public class GitFacadeTest {
     /**
      * Test of cloneRepository method, of class GitFacade.
      */
+<<<<<<< HEAD
     
     
     //@Test
+=======
+    @Ignore
+    @Test
+>>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
     public void testCloneRepository() throws Exception {
         System.out.println("cloneRepository");
         File directory = dir;
@@ -80,6 +86,7 @@ public class GitFacadeTest {
     /**
      * Test of isRepositoryInitialized method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testIsRepositoryInitialized_0args() {
         System.out.println("isRepositoryInitialized");
@@ -94,6 +101,7 @@ public class GitFacadeTest {
     /**
      * Test of setConfigurationUser method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testSetConfigurationUser() {
         System.out.println("setConfigurationUser");
@@ -107,6 +115,7 @@ public class GitFacadeTest {
     /**
      * Test of getConfigurationUser method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testGetConfigurationUser() {
         System.out.println("getConfigurationUser");
@@ -120,6 +129,7 @@ public class GitFacadeTest {
     /**
      * Test of unSetConfigurationUser method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testUnSetConfigurationUser() {
         System.out.println("unSetConfigurationUser");
@@ -155,6 +165,7 @@ public class GitFacadeTest {
     /**
      * Test of getConfigRemote method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testGetConfigRemote() {
         System.out.println("getConfigRemote");
@@ -168,6 +179,7 @@ public class GitFacadeTest {
     /**
      * Test of hasRemoteRepository method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testHasRemoteRepository() {
         System.out.println("hasRemoteRepository");
@@ -181,8 +193,13 @@ public class GitFacadeTest {
     /**
      * Test of add method, of class GitFacade.
      */
+<<<<<<< HEAD
     
     //@Test
+=======
+    @Ignore
+    @Test
+>>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
     public void testAdd() throws Exception {
         System.out.println("add");
         String fileName = "pull.txt";
@@ -195,7 +212,12 @@ public class GitFacadeTest {
     /**
      * Test of commit method, of class GitFacade.
      */
+<<<<<<< HEAD
     //@Test
+=======
+    @Ignore
+    @Test
+>>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
     public void testCommit() throws GitAPIException {
         System.out.println("commit");
         String message = "testando pull";
@@ -210,7 +232,12 @@ public class GitFacadeTest {
      * Test of status method, of class GitFacade.
      * @throws java.lang.Exception
      */
+<<<<<<< HEAD
     //@Test
+=======
+    @Ignore
+    @Test
+>>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
     public void testStatus() throws Exception {
         System.out.println("status");
         GitFacade instance = new GitFacade(localPath);
@@ -239,6 +266,7 @@ public class GitFacadeTest {
     /**
      * Test of getLogs method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testGetLogs() throws Exception {
         System.out.println("getLogs");
@@ -251,7 +279,12 @@ public class GitFacadeTest {
     /**
      * Test of push method, of class GitFacade.
      */
+<<<<<<< HEAD
     //@Test
+=======
+    @Ignore
+    @Test
+>>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
     public void testPush() throws GitAPIException {
         System.out.println("push");
         String user =  "Danielli Urbieta";
@@ -267,7 +300,12 @@ public class GitFacadeTest {
      * Test of pull method, of class GitFacade.
      * @throws java.lang.Exception
      */
+<<<<<<< HEAD
     //@Test
+=======
+    @Ignore
+    @Test
+>>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
     public void testPull() throws Exception {
         System.out.println("pull");
         GitFacade instance = new GitFacade(localPath);
@@ -308,7 +346,12 @@ public class GitFacadeTest {
     /**
      * Test of checkout method, of class GitFacade.
      */
+<<<<<<< HEAD
     //@Test
+=======
+    @Ignore
+    @Test
+>>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
     public void testCheckout() {
         System.out.println("checkout");
         String branch = "master";
@@ -367,6 +410,7 @@ public class GitFacadeTest {
     /**
      * Test of listTags method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testListTags() {
         System.out.println("listTags");
@@ -380,6 +424,7 @@ public class GitFacadeTest {
     /**
      * Test of tagDelete method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testTagDelete() {
         System.out.println("tagDelete");
@@ -394,6 +439,7 @@ public class GitFacadeTest {
     /**
      * Test of showTags method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testShowTags() {
         System.out.println("showTags");
@@ -408,6 +454,7 @@ public class GitFacadeTest {
     /**
      * Test of showBranches method, of class GitFacade.
      */
+    @Ignore
     @Test
     public void testShowBranches() {
         System.out.println("showBranches");

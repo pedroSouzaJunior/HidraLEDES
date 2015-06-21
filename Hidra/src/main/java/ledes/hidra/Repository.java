@@ -13,18 +13,21 @@ import java.util.Arrays;
 import java.net.URL;
 import java.net.URLConnection;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import ledes.hidra.asset.ArtifactType;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
@@ -71,6 +74,8 @@ public class Repository {
 
     private final GitFacade assistant;
 
+    private List<String> exceptionList;
+
     /**
      * Builder of the repository class with one parameter. You must start the
      * repository after the instantiation of the repository.
@@ -82,7 +87,7 @@ public class Repository {
         this.localPath = localPath;
         this.directory = new File(localPath);
         assistant = new GitFacade(localPath);
-
+        this.exceptionList = new ArrayList<>();
     }
 
     /**
@@ -98,6 +103,7 @@ public class Repository {
         this.remotePath = remotePath;
         this.directory = new File(localPath);
         assistant = new GitFacade(localPath);
+        this.exceptionList = new ArrayList<>();
     }
 
     
@@ -157,6 +163,14 @@ public class Repository {
      */
     public void setRemotePath(String remotePath) {
         this.remotePath = remotePath;
+    }
+
+    public List<String> getExceptionList() {
+        return exceptionList;
+    }
+
+    public void setExceptionList(List<String> exceptionList) {
+        this.exceptionList = exceptionList;
     }
 
     /**
@@ -348,6 +362,28 @@ public class Repository {
         }
     }
 
+    private boolean javaToxml(Asset asset, String assetId) {
+        boolean result = false;
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            //Marshal the employees list in console
+            jaxbMarshaller.marshal(asset, System.out);
+
+            //Marshal the employees list in file
+            jaxbMarshaller.marshal(asset, new File(directory + "/" + assetId + "/rasset.xml"));
+            result = true;
+        } catch (JAXBException e) {
+            System.err.println("Algo de Errado nao Esta Certo");
+        }
+
+        return result;
+    }
+
+
     /**
      * Responsavel por retornar ao usuario a forma representativa dos artefatos
      * que fazem parte do ativo
@@ -356,18 +392,16 @@ public class Repository {
      * @return
      * @throws javax.xml.bind.JAXBException
      */
-    public String getSolution(String assetId) throws JAXBException {
+    String getSolution(String assetId) {
 
         File assetFile = new File(directory + "/" + assetId);
         if (assetFile.exists()) {
+            try {
+                return readAsset(assetId).describeSolution();
+            } catch (JAXBException | FileNotFoundException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-            File file = new File(directory + "/" + assetId + "/rasset.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Asset asset = (Asset) jaxbUnmarshaller.unmarshal(file);
-
-            return asset.describeSolution();
         }
 
         return "Asset Do Not Exist";
@@ -381,7 +415,36 @@ public class Repository {
      * @param solution representa a solucao que compoe o ativo de software.
      */
     boolean setSolutionType(String assetId, SolutionType solution) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = false;
+        /*
+         try {
+         Asset asset = xmlToAsset(assetId);
+
+         for (ArtifactType a : solution.getArtifacts().getArtifact()) {
+         asset.getSolution().getArtifacts().getArtifact().add(a);
+         }
+
+         for (ArtifactType a : solution.getRequirements().getArtifact()) {
+         asset.getSolution().getRequirements().getArtifact().add(a);
+         }
+
+         for (ArtifactType a : solution.getDesign().getArtifact()) {
+         asset.getSolution().getDesign().getArtifact().add(a);
+         }
+
+         for (ArtifactType a : solution.getImplementation().getArtifact()) {
+         asset.getSolution().getImplementation().getArtifact().add(a);
+         }
+
+         for (ArtifactType a : solution.getTest().getArtifact()) {
+         asset.getSolution().getTest().getArtifact().add(a);
+         }
+
+         result = javaToxml(asset, assetId);
+         } catch (JAXBException e) {
+         }
+         */
+        return result;
     }
 
     /**
@@ -392,20 +455,17 @@ public class Repository {
      *
      * @param assetId representa o id de um ativo de software.
      */
-    String getClassification(String assetId) throws JAXBException {
+    String getClassification(String assetId) {
 
         File assetFile = new File(directory + "/" + assetId);
-        if (assetFile.exists()) {
+        try {
+            if (assetFile.exists()) {
 
-            File file = new File(directory + "/" + assetId + "/rasset.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Asset asset = (Asset) jaxbUnmarshaller.unmarshal(file);
-
-            return asset.describeClassification();
+                return readAsset(assetId).describeClassification();
+            }
+        } catch (FileNotFoundException | JAXBException exception) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
         }
-
         return "Asset Do Not Exist";
     }
 
@@ -442,20 +502,16 @@ public class Repository {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    String getUsage(String assetId) throws JAXBException {
+    String getUsage(String assetId) {
 
         File assetFile = new File(directory + "/" + assetId);
-        if (assetFile.exists()) {
-
-            File file = new File(directory + "/" + assetId + "/rasset.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Asset asset = (Asset) jaxbUnmarshaller.unmarshal(file);
-
-            return asset.describeUsage();
+        try {
+            if (assetFile.exists()) {
+                return readAsset(assetId).describeUsage();
+            }
+        } catch (FileNotFoundException | JAXBException exception) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
         }
-
         return "Asset Do Not Exist";
     }
 
@@ -493,6 +549,20 @@ public class Repository {
         List<String> assets = new ArrayList<>();
         assets.addAll(Arrays.asList(dir.list()));
         return assets;
+    }
+
+    String describeAssets() {
+
+        StringBuilder stb = new StringBuilder("\n");
+        stb.append("List of Assets: \n");
+
+        for (File f : directory.listFiles()) {
+            if (manifestExist(f)) {
+                stb.append(f.getName()).append("\n");
+            }
+        }
+
+        return stb.toString();
     }
 
     File downloadAsset(String assetId) throws FileNotFoundException {
@@ -535,6 +605,7 @@ public class Repository {
         return assistant.isRepositoryInitialized(directory);
     }
 
+<<<<<<< HEAD
     /**
      * dado id devolve ativo da lista de ativos do repositorio.
      */
@@ -575,4 +646,6 @@ public class Repository {
         }
         return false;
     }
+=======
+>>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
 }
