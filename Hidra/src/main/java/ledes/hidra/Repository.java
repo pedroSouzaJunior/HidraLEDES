@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import java.net.URL;
@@ -27,7 +26,6 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import ledes.hidra.asset.ArtifactType;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
@@ -605,7 +603,7 @@ public class Repository {
         return assistant.isRepositoryInitialized(directory);
     }
 
-<<<<<<< HEAD
+
     /**
      * dado id devolve ativo da lista de ativos do repositorio.
      */
@@ -646,6 +644,5 @@ public class Repository {
         }
         return false;
     }
-=======
->>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
+
 }

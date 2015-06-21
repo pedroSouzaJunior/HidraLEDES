@@ -64,14 +64,14 @@ public class GitFacadeTest {
     /**
      * Test of cloneRepository method, of class GitFacade.
      */
-<<<<<<< HEAD
+
     
     
     //@Test
-=======
+
     @Ignore
     @Test
->>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
+
     public void testCloneRepository() throws Exception {
         System.out.println("cloneRepository");
         File directory = dir;
@@ -193,13 +193,13 @@ public class GitFacadeTest {
     /**
      * Test of add method, of class GitFacade.
      */
-<<<<<<< HEAD
+
     
     //@Test
-=======
+
     @Ignore
     @Test
->>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
+
     public void testAdd() throws Exception {
         System.out.println("add");
         String fileName = "pull.txt";
@@ -212,12 +212,12 @@ public class GitFacadeTest {
     /**
      * Test of commit method, of class GitFacade.
      */
-<<<<<<< HEAD
+
     //@Test
-=======
+
     @Ignore
     @Test
->>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
+
     public void testCommit() throws GitAPIException {
         System.out.println("commit");
         String message = "testando pull";
@@ -232,12 +232,10 @@ public class GitFacadeTest {
      * Test of status method, of class GitFacade.
      * @throws java.lang.Exception
      */
-<<<<<<< HEAD
-    //@Test
-=======
+
     @Ignore
     @Test
->>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
+
     public void testStatus() throws Exception {
         System.out.println("status");
         GitFacade instance = new GitFacade(localPath);
@@ -279,12 +277,10 @@ public class GitFacadeTest {
     /**
      * Test of push method, of class GitFacade.
      */
-<<<<<<< HEAD
-    //@Test
-=======
+
     @Ignore
     @Test
->>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
+
     public void testPush() throws GitAPIException {
         System.out.println("push");
         String user =  "Danielli Urbieta";
@@ -300,12 +296,11 @@ public class GitFacadeTest {
      * Test of pull method, of class GitFacade.
      * @throws java.lang.Exception
      */
-<<<<<<< HEAD
-    //@Test
-=======
+
+
     @Ignore
     @Test
->>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
+
     public void testPull() throws Exception {
         System.out.println("pull");
         GitFacade instance = new GitFacade(localPath);
@@ -346,12 +341,10 @@ public class GitFacadeTest {
     /**
      * Test of checkout method, of class GitFacade.
      */
-<<<<<<< HEAD
-    //@Test
-=======
+
     @Ignore
     @Test
->>>>>>> ea3306b213543d0f8bbdd642f00ef7ef8b9af084
+
     public void testCheckout() {
         System.out.println("checkout");
         String branch = "master";
