@@ -41,8 +41,9 @@ public class Hidra {
      *
      * @param localPath - String com o caminho que o repositório será criado
      * @return - true se não houve problemas
+     * @throws java.io.IOException
      */
-    public boolean startRepository(String localPath) {
+    public boolean startRepository(String localPath) throws IOException {
         repository = new Repository(localPath);
         if (repository.isRepository());
 

@@ -100,7 +100,11 @@ public class Repository {
         assistant = new GitFacade(localPath);
     }
 
-    protected boolean init() {
+    
+    
+    protected boolean init() throws IOException {
+        new File(localPath+File.separator+".hidra").createNewFile();
+        new File(localPath+File.separator+".hidra"+File.separator+"listAsset.txt").createNewFile();
         return assistant.start(directory);
 
     }
@@ -226,7 +230,7 @@ public class Repository {
     public boolean validateAsset(String assetPath) throws SAXException, IOException {
 
         //  File schemaFile = new File("src/ledes/hidra/util/asset.xsd");
-        File schemaFile = new File(System.getProperty("user.home") + "/asset.xsd");
+        File schemaFile = new File(System.getProperty("user.home") + File.separator +"asset.xsd");
         Source xmlFile = new StreamSource(new File(assetPath + manifest));
         SchemaFactory schemaFactory = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -260,6 +264,9 @@ public class Repository {
         return validator.isValidAsset(asset);
     }
 
+    /***
+     * Exceção criada para tratar erros da validação;
+     */
     public class ValidationRuntimeException extends RuntimeException {
 
         public ValidationRuntimeException() {
@@ -321,7 +328,7 @@ public class Repository {
      */
     public boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException {
 
-        String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
+        String assetPath = new File(localPath).getAbsolutePath() + File.separator  + nameAsset + File.separator ;
         File assetFolder = new File(assetPath);
 
         // if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
@@ -422,6 +429,7 @@ public class Repository {
             } catch (GitAPIException ex) {
                 Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         } else {
             System.err.println("Erro na validação do ativo!"
                     + "\n Verifique se o nome do ativo está correto,"
@@ -533,5 +541,38 @@ public class Repository {
     private Asset findAsset(String assetId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    
+    /**
+     * Atualiza o repositório remoto com as atualizações locais.
+     * Recebe usuario e senha.
+     * @param user
+     * @param password
+     * @return 
+     */
+    public boolean updateRepository(String user, String password){
+        
+        try {
+            return assistant.push(user, password);
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+        
+    
+    }
+    
+    /**
+     * Sincroniza o repositório local com as alterações do repositório remoto.
+     * @return 
+     */
+    public boolean synchronizeRepository(){
+    
+        try {
+            return assistant.pull();
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }

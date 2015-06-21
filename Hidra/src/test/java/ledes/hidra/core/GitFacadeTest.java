@@ -63,7 +63,9 @@ public class GitFacadeTest {
     /**
      * Test of cloneRepository method, of class GitFacade.
      */
-    @Test
+    
+    
+    //@Test
     public void testCloneRepository() throws Exception {
         System.out.println("cloneRepository");
         File directory = dir;
@@ -180,7 +182,7 @@ public class GitFacadeTest {
      * Test of add method, of class GitFacade.
      */
     
-    @Test
+    //@Test
     public void testAdd() throws Exception {
         System.out.println("add");
         String fileName = "pull.txt";
@@ -193,7 +195,7 @@ public class GitFacadeTest {
     /**
      * Test of commit method, of class GitFacade.
      */
-    @Test
+    //@Test
     public void testCommit() throws GitAPIException {
         System.out.println("commit");
         String message = "testando pull";
@@ -208,7 +210,7 @@ public class GitFacadeTest {
      * Test of status method, of class GitFacade.
      * @throws java.lang.Exception
      */
-    @Test
+    //@Test
     public void testStatus() throws Exception {
         System.out.println("status");
         GitFacade instance = new GitFacade(localPath);
@@ -249,7 +251,7 @@ public class GitFacadeTest {
     /**
      * Test of push method, of class GitFacade.
      */
-    @Test
+    //@Test
     public void testPush() throws GitAPIException {
         System.out.println("push");
         String user =  "Danielli Urbieta";
@@ -265,7 +267,7 @@ public class GitFacadeTest {
      * Test of pull method, of class GitFacade.
      * @throws java.lang.Exception
      */
-    @Test
+    //@Test
     public void testPull() throws Exception {
         System.out.println("pull");
         GitFacade instance = new GitFacade(localPath);
@@ -306,7 +308,7 @@ public class GitFacadeTest {
     /**
      * Test of checkout method, of class GitFacade.
      */
-    @Test
+    //@Test
     public void testCheckout() {
         System.out.println("checkout");
         String branch = "master";
@@ -414,6 +416,125 @@ public class GitFacadeTest {
         boolean result = instance.showBranches();
         assertEquals(expResult, result);
         
+    }
+
+    /**
+     * Test of start method, of class GitFacade.
+     */
+    //@Test
+    public void testStart() {
+        System.out.println("start");
+        File directory = null;
+        GitFacade instance = null;
+        boolean expResult = false;
+        boolean result = instance.start(directory);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of isRepositoryInitialized method, of class GitFacade.
+     */
+    //@Test
+    public void testIsRepositoryInitialized_String() {
+        System.out.println("isRepositoryInitialized");
+        String directory = "";
+        GitFacade instance = null;
+        boolean expResult = false;
+        boolean result = instance.isRepositoryInitialized(directory);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setConfigRemote method, of class GitFacade.
+     */
+    @Test
+    public void testSetConfigRemote() throws Exception {
+        System.out.println("setConfigRemote");
+        String remoteRepository = "";
+        GitFacade instance = null;
+        instance.setConfigRemote(remoteRepository);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of unSetConfigRemote method, of class GitFacade.
+     */
+    @Test
+    public void testUnSetConfigRemote() {
+        System.out.println("unSetConfigRemote");
+        GitFacade instance = null;
+        instance.unSetConfigRemote();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of checkoutCreateBranch method, of class GitFacade.
+     */
+    @Test
+    public void testCheckoutCreateBranch() {
+        System.out.println("checkoutCreateBranch");
+        String branch = "";
+        GitFacade instance = null;
+        boolean expResult = false;
+        boolean result = instance.checkoutCreateBranch(branch);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of createBranch method, of class GitFacade.
+     */
+    @Test
+    public void testCreateBranch() {
+        System.out.println("createBranch");
+        String nameBranch = "";
+        GitFacade instance = null;
+        String expResult = "";
+        String result = instance.createBranch(nameBranch);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of archive method, of class GitFacade.
+     */
+    @Test
+    public void testArchive_3args() throws Exception {
+        System.out.println("archive");
+        String format = "tar";
+        String branch = "master";
+        String fileDest = "tar";
+        GitFacade instance = new GitFacade(localPath);
+        boolean expResult = true;
+        boolean result = instance.archive(format, branch, fileDest);
+        assertEquals(expResult, result);
+       
+    }
+
+    /**
+     * Test of archive method, of class GitFacade.
+     */
+   // @Test
+    public void testArchive_4args() throws Exception {
+        System.out.println("archive");
+        String format = "";
+        String branch = "";
+        String fileDest = "";
+        String prefix = "";
+        GitFacade instance = null;
+        boolean expResult = false;
+        boolean result = instance.archive(format, branch, fileDest, prefix);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**

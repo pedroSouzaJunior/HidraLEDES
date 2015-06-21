@@ -1,7 +1,10 @@
 package ledes.hidra.core;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,11 +21,16 @@ import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.RebaseResult;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.archive.ArchiveFormats;
+
 
 /**
  * This class is a Facade Pattern to jGit features. Its aim is to simplify
@@ -202,11 +210,12 @@ public class GitFacade {
      *
      * @param remoteRepository
      */
-    public void setConfigRemote(String remoteRepository) {
+    public void setConfigRemote(String remoteRepository) throws IOException {
 
         if (isRepositoryInitialized()) {
-            Config config = assistant.getRepository().getConfig();
+            StoredConfig config = assistant.getRepository().getConfig();
             config.setString("remote", "origin", "url", remoteRepository);
+            config.save();
 //            String url = config.getString("remote", "origin", "url");
 //            System.out.println("Origin comes from " + url);
 
@@ -536,6 +545,7 @@ public class GitFacade {
                 return false;
 
             }
+
         }
         return false;
     }
@@ -667,9 +677,7 @@ public class GitFacade {
                 }
                 System.out.println("Current Branch: " + assistant.getRepository().getBranch());
                 return true;
-            } catch (GitAPIException ex) {
-                Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } catch (GitAPIException | IOException ex) {
                 Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -709,4 +717,47 @@ public class GitFacade {
         return branch;
     }
 
+    /**
+     * Download de todo repositorio em formato zip.
+     *
+     * @param format
+     * @param branch
+     * @param fileDest
+     * @return
+     * @throws FileNotFoundException
+     * @throws IncorrectObjectTypeException
+     * @throws RevisionSyntaxException
+     * @throws IOException
+     * @throws GitAPIException
+     */
+    public boolean archive(String format, String branch, String fileDest) throws FileNotFoundException, IncorrectObjectTypeException, RevisionSyntaxException, IOException, GitAPIException {
+        File file = new File("/home/danielli/archive/saida.tar");
+        OutputStream out = new FileOutputStream(file);
+         ArchiveFormats.registerAll();
+        if (isRepositoryInitialized()) {
+
+            assistant.archive().setTree(assistant.getRepository().resolve(branch))
+                    .setFormat(format)
+                    .setOutputStream(out)
+                    .call();
+            return true;
+        }
+        return false;
+    }
+
+    //git archive --remote=git@github.com:foo/bar.git --prefix=path/to/ HEAD:path/to/ |  tar xvf -
+    public boolean archive(String format, String branch, String fileDest, String prefix) throws FileNotFoundException, IncorrectObjectTypeException, RevisionSyntaxException, IOException, GitAPIException {
+        
+        File file = File.createTempFile("test", fileDest);
+        OutputStream out = new FileOutputStream(fileDest);
+        if (isRepositoryInitialized()) {
+
+            assistant.archive().setTree(assistant.getRepository().resolve(branch))
+                    .setPrefix(prefix)
+                    .setFormat(format)
+                    .setOutputStream(out)
+                    .call();
+        }
+        return false;
+    }
 }

@@ -7,6 +7,7 @@ package ledes.hidra;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.asset.Asset;
@@ -55,7 +56,7 @@ public class RepositoryTest {
      * Test of init method, of class Repository.
      */
     //@Test
-    public void testInit() {
+    public void testInit() throws IOException {
 
         System.out.println("init");
         Repository instance = new Repository(localPath);
