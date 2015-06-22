@@ -43,7 +43,7 @@ public class Hidra {
      * @return - true se não houve problemas
      * @throws java.io.IOException
      */
-    public boolean startRepository(String localPath) throws IOException {
+    public boolean startRepository(String localPath) throws IOException, JAXBException {
         repository = new Repository(localPath);
         if (repository.isRepository());
 

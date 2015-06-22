@@ -28,7 +28,6 @@ public class Asset {
     protected ClassificationType classification;
     @XmlElement(required = true)
     protected UsageType usage;
-    
     protected RelatedAssets relatedAssetsList;
     @XmlAttribute(name = "name", required = true)
     protected String name;

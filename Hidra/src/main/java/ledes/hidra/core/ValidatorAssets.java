@@ -18,6 +18,7 @@ import ledes.hidra.asset.SolutionType;
 public class ValidatorAssets {
 
     private final String localAsset;
+    private final static String separator = File.separator;
 
     public ValidatorAssets(String localAsset) {
         super();
@@ -80,7 +81,7 @@ public class ValidatorAssets {
         for (ArtifactType req : asset.getSolution().getRequirements().getArtifact()) {
 
             if ("Folder".equalsIgnoreCase(req.getType())) {
-                result = isValidDirectory(localAsset + req.getReference()+"/" + req.getName());
+                result = isValidDirectory(localAsset + req.getReference()+separator + req.getName());
 
                 if (!result) {
                     reasons.append(req.getReference()).append(req.getName()).append(" is not folder\n");
@@ -130,7 +131,7 @@ public class ValidatorAssets {
         for (ArtifactType imp : asset.getSolution().getImplementation().getArtifact()) {
 
             if ("Folder".equalsIgnoreCase(imp.getType())) {
-                result = isValidDirectory(localAsset + imp.getReference()+"/" + imp.getName());
+                result = isValidDirectory(localAsset + imp.getReference()+separator + imp.getName());
 
                 if (!result) {
                     reasons.append(imp.getReference()).append(imp.getName()).append(" is not found\n");

@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -31,8 +32,8 @@ public class RepositoryTest {
     private final String localPath;
 
     public RepositoryTest() {
-        localPath = System.getProperty("user.home") + File.separator + "repo2";
-
+        localPath = System.getProperty("user.home") + File.separator + "repo3";
+       
     }
 
     @BeforeClass
@@ -55,11 +56,14 @@ public class RepositoryTest {
 
     /**
      * Test of init method, of class Repository.
+     * @throws java.io.IOException
+     * @throws javax.xml.bind.JAXBException
      */
-    //@Test
-    public void testInit() throws IOException {
+    @Test
+    public void testInit() throws IOException, JAXBException {
 
         System.out.println("init");
+        System.out.println(localPath);
         Repository instance = new Repository(localPath);
 
         //assertFalse("isRepositorio esperado eh false", instance.isRepository());
@@ -86,7 +90,7 @@ public class RepositoryTest {
     /**
      * Test of isRepository method, of class Repository.
      */
-    //@Test
+    @Test
     public void testIsRepository_0args() {
         System.out.println("isRepository");
         Repository instance = new Repository(localPath);
@@ -151,7 +155,7 @@ public class RepositoryTest {
         fail("The test case is a prototype.");
     }
 
-   // @Test
+   @Test
     public void testManifestExist() {
         System.out.println("ManifestExist");
         Repository instance = new Repository(localPath);
@@ -169,10 +173,10 @@ public class RepositoryTest {
      *
      * @throws java.lang.Exception
      */
-    //@Test
+    @Test
     public void testValidateAsset_String() throws Exception {
         System.out.println("validateAsset");
-        String assetPath = System.getProperty("user.home") + "/repo2/asset/";
+        String assetPath = System.getProperty("user.home") + "/repo3/asset/";
         Repository instance = new Repository(localPath);
         boolean expResult = true;
         boolean result = instance.validateAsset(assetPath);
@@ -185,7 +189,7 @@ public class RepositoryTest {
      *
      * @throws java.lang.Exception
      */
-    //@Test
+    @Test
     public void testReadAsset() throws Exception {
         System.out.println("readAsset");
 
@@ -199,13 +203,13 @@ public class RepositoryTest {
     /*  *
      * Test of validateAsset method, of class Repository.
      */
-    //@Test
+    @Test
     public void testValidateAsset_Asset_String() throws JAXBException, FileNotFoundException {
         System.out.println("validateAsset");
 
         Repository instance = new Repository(localPath);
         Asset asset = instance.readAsset("asset");
-        String assetPath = System.getProperty("user.home") + "/repo2/asset";
+        String assetPath = System.getProperty("user.home") + "/repo3/asset";
 
         boolean expResult = true;
         boolean result = instance.validateAsset(asset, assetPath);
@@ -216,7 +220,7 @@ public class RepositoryTest {
     /**
      * Test of addAsset method, of class Repository.
      */
-   // @Test
+   @Test
     public void testAddAsset() throws Exception {
         System.out.println("addAsset");
         String nameAsset = "asset";
@@ -448,6 +452,139 @@ public class RepositoryTest {
         Repository instance = null;
         boolean expResult = false;
         boolean result = instance.isRepository(directory);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getExceptionList method, of class Repository.
+     */
+    @Test
+    public void testGetExceptionList() {
+        System.out.println("getExceptionList");
+        Repository instance = null;
+        List<String> expResult = null;
+        List<String> result = instance.getExceptionList();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setExceptionList method, of class Repository.
+     */
+    @Test
+    public void testSetExceptionList() {
+        System.out.println("setExceptionList");
+        List<String> exceptionList = null;
+        Repository instance = null;
+        instance.setExceptionList(exceptionList);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of createSchema method, of class Repository.
+     */
+    @Ignore
+    @Test
+    public void testCreateSchema() throws Exception {
+        System.out.println("createSchema");
+        Repository instance = new Repository(localPath);
+        boolean expResult = false;
+      //  boolean result = instance.createSchema();
+       // assertEquals(expResult, result);
+  
+    }
+
+    /**
+     * Test of validateAll method, of class Repository.
+     */
+    @Test
+    public void testValidateAll() throws Exception {
+        System.out.println("validateAll");
+        String assetName = "";
+        String assetPath = "";
+        File path = null;
+        Repository instance = null;
+        boolean expResult = false;
+        boolean result = instance.validateAll(assetName, assetPath, path);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of saveChanges method, of class Repository.
+     */
+    @Test
+    public void testSaveChanges() throws Exception {
+        System.out.println("saveChanges");
+        String message = "";
+        String nameAsset = "";
+        Repository instance = null;
+        boolean expResult = false;
+        boolean result = instance.saveChanges(message, nameAsset);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of describeAssets method, of class Repository.
+     */
+    @Test
+    public void testDescribeAssets() {
+        System.out.println("describeAssets");
+        Repository instance = null;
+        String expResult = "";
+        String result = instance.describeAssets();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of updateRepository method, of class Repository.
+     */
+    @Test
+    public void testUpdateRepository() {
+        System.out.println("updateRepository");
+        String user = "";
+        String password = "";
+        Repository instance = null;
+        boolean expResult = false;
+        boolean result = instance.updateRepository(user, password);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of synchronizeRepository method, of class Repository.
+     */
+    @Test
+    public void testSynchronizeRepository() {
+        System.out.println("synchronizeRepository");
+        Repository instance = null;
+        boolean expResult = false;
+        boolean result = instance.synchronizeRepository();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of updateAsset method, of class Repository.
+     */
+    @Test
+    public void testUpdateAsset() throws Exception {
+        System.out.println("updateAsset");
+        String assetName = "";
+        Repository instance = null;
+        boolean expResult = false;
+        boolean result = instance.updateAsset(assetName);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

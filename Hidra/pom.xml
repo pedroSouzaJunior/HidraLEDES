@@ -60,7 +60,16 @@
             <artifactId>jersey-server</artifactId>
             <version>1.19</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.sun.tools.jxc.maven2</groupId>
+            <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wisdom-framework</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.8.7_1</version>
+        </dependency>
     </dependencies>
     
 </project>
