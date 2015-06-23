@@ -112,6 +112,13 @@ public class Repository {
         this.exceptionList = new ArrayList<>();
     }
 
+    /**
+     * Inizializa um repositorio com arquivos de configuração Git e Hidra
+     *
+     * @return
+     * @throws IOException
+     * @throws JAXBException
+     */
     protected boolean init() throws IOException, JAXBException {
 
         // createSchema();
@@ -130,6 +137,12 @@ public class Repository {
 
     }
 
+    /**
+     * Cria um arquivo .gitgnore para que o repositorio GIT não monitore
+     * mudanças no diretorio .gidra.
+     *
+     * @throws IOException
+     */
     private void writerIgnoreFile() throws IOException {
         try (FileWriter ignoreFile = new FileWriter(localPath + separator + ".gitignore")) {
             PrintWriter writer = new PrintWriter(ignoreFile);
@@ -155,7 +168,28 @@ public class Repository {
     }
 
     protected boolean isRepository() {
-        return assistant.isRepositoryInitialized();
+        File hidraRepo = new File(localPath + separator + ".hidra");
+        File[] matchingFilesAsset ;
+        File[] matchingFilesDB ;
+        if (hidraRepo.isDirectory()) {
+            matchingFilesAsset = hidraRepo.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+
+                    return name.equals("asset.xsd");
+                }
+            });
+            matchingFilesDB = hidraRepo.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+
+                    return name.equals("hidra.db");
+                }
+            });
+            return assistant.isRepositoryInitialized() && matchingFilesAsset.length != 0 && matchingFilesDB.length!=0;
+        }
+        else return false;
+        
     }
 
     /**
@@ -418,7 +452,7 @@ public class Repository {
                 throw new ValidationRuntimeException("File already monitored. You might want to do \"updateAsset\"");
 
             }
-            
+
             try {
                 HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
                 if (dao.insertion(asset.getName(), asset.getId()));
@@ -483,7 +517,7 @@ public class Repository {
         File assetFolder = new File(assetPath);
         Asset asset = readAsset(assetName);
         if (findAsset(readAsset(assetName))) {
-             if (validateAll(assetName, assetPath, assetFolder)) {
+            if (validateAll(assetName, assetPath, assetFolder)) {
                 try {
                     return assistant.add(assetName);
                 } catch (GitAPIException ex) {
@@ -653,13 +687,14 @@ public class Repository {
     boolean setRelatedAsset(String assetId, String relatedId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
      * Retorna o log de todo o repositório
-     * @return 
+     *
+     * @return
      */
-     String getLog() {
-       
+    String getLog() {
+
         try {
             return assistant.getLogs();
         } catch (GitAPIException ex) {
@@ -668,13 +703,15 @@ public class Repository {
         return null;
     }
 
-    /***
+    /**
+     * *
      * Retorna o log de um determinado ativo ou de um artefato.
+     *
      * @param nameAsset
-     * @return 
+     * @return
      */
     String getLog(String nameAsset) {
-       
+
         try {
             return assistant.getLogs(nameAsset);
         } catch (GitAPIException ex) {
@@ -684,13 +721,13 @@ public class Repository {
     }
 
     /**
-     * Retorna uma lista com todos os nomes dos ativos do repositorio. 
+     * Retorna uma lista com todos os nomes dos ativos do repositorio.
      *
      * @return
      */
     public Map<String, String> listAssets() {
-          HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
-          return dao.selectAll();
+        HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
+        return dao.selectAll();
     }
 
     public String describeAssets() {
@@ -743,25 +780,23 @@ public class Repository {
         Asset asset = readAsset(assetName);
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
         dao.delete(asset.getName(), asset.getId());
-        File assetDir = new File(localPath+separator+assetName);
+        File assetDir = new File(localPath + separator + assetName);
         assistant.remove(assetName);
-        
-     
+
         return deleteDir(assetDir);
     }
 
-    
     private static boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i=0; i<children.length; i++) { 
-               boolean success = deleteDir(new File(dir, children[i]));
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
                 if (!success) {
                     return false;
                 }
             }
         }
-         return dir.delete();
+        return dir.delete();
     }
 
     boolean isRepository(String directory) {
