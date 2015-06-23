@@ -29,6 +29,7 @@ public class Asset {
     @XmlElement(required = true)
     protected UsageType usage;
     protected RelatedAssets relatedAssetsList;
+    
     @XmlAttribute(name = "name", required = true)
     protected String name;
     @XmlAttribute(name = "id", required = true)
@@ -42,6 +43,14 @@ public class Asset {
     protected String version;
     @XmlAttribute(name = "short-description")
     protected String shortDescription;
+
+    public Asset() {
+        profile = new ProfileType();
+        solution = new SolutionType();
+        classification = new ClassificationType();
+        usage = new UsageType();
+        relatedAssetsList = new RelatedAssets();
+    }
 
     /**
      * *

@@ -3,12 +3,10 @@ package ledes.hidra;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
-import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
@@ -43,6 +41,7 @@ public class Hidra {
      * @param localPath - String com o caminho que o repositório será criado
      * @return - true se não houve problemas
      * @throws java.io.IOException
+     * @throws javax.xml.bind.JAXBException
      */
     public boolean startRepository(String localPath) throws IOException, JAXBException {
         repository = new Repository(localPath);
@@ -148,11 +147,12 @@ public class Hidra {
     /**
      * RF-06
      *
+     * @param assetID
      * @param classification
      * @return
      */
-    public boolean setClassification(ClassificationType classification) {
-        return repository.setClassification(classification);
+    public boolean setClassification(String assetID, ClassificationType classification) {
+        return repository.setClassification(assetID, classification);
     }
 
     /**
@@ -171,8 +171,8 @@ public class Hidra {
      * @param usage
      * @return
      */
-    public boolean setUsage(UsageType usage) {
-        return repository.setUsage(usage);
+    public boolean setUsage(String assetId, UsageType usage) {
+        return repository.setUsage(assetId,usage);
     }
 
     /**

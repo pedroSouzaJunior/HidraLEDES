@@ -263,11 +263,12 @@ public class RepositoryTest {
      *
      * @throws javax.xml.bind.JAXBException
      */
-    //@Test
+    @Test
     public void testSetSolutionType() throws JAXBException {
         System.out.println("setSolutionType");
         String assetId = "asset";
 
+        //cria novo artefato
         ArtifactType a = new ArtifactType();
         a.setId("213546");
         a.setName("ARTEFATO NOVO");
@@ -275,15 +276,23 @@ public class RepositoryTest {
         a.setType("FOLDER");
         a.setVersion("LAST VERSION");
 
+        //popula uma nova solution
         SolutionType solution = new SolutionType();
+        
         solution.getArtifacts().getArtifact().add(a);
+        
         solution.getImplementation().getArtifact().add(a);
+        
         solution.getRequirements().getArtifact().add(a);
-        solution.getDesign().getArtifact().add(a);
-        solution.getTest().getArtifact().add(a);
+        
+       solution.getDesign().getArtifact().add(a);
+        
+       solution.getTest().getArtifact().add(a);
 
         Repository instance = new Repository(localPath);
+        
         boolean expResult = true;
+        
         boolean result = instance.setSolutionType(assetId, solution);
 
         assertEquals(expResult, result);
@@ -317,8 +326,8 @@ public class RepositoryTest {
         ClassificationType classification = null;
         Repository instance = null;
         boolean expResult = false;
-        boolean result = instance.setClassification(classification);
-        assertEquals(expResult, result);
+        //boolean result = instance.setClassification(classification);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -353,8 +362,8 @@ public class RepositoryTest {
         UsageType usage = null;
         Repository instance = new Repository(localPath);
         boolean expResult = false;
-        boolean result = instance.setUsage(usage);
-        assertEquals(expResult, result);
+       // boolean result = instance.setUsage(usage);
+       // assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

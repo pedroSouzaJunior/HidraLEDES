@@ -9,8 +9,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import java.util.Arrays;
-
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -33,8 +31,14 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import ledes.hidra.asset.ArtifactActivy;
+import ledes.hidra.asset.ArtifactType;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
+import ledes.hidra.asset.Context;
+import ledes.hidra.asset.ContextReference;
+import ledes.hidra.asset.DescriptionGroup;
+import ledes.hidra.asset.RelatedAssetType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import ledes.hidra.core.GitFacade;
@@ -538,16 +542,18 @@ public class Repository {
     private boolean javaToxml(Asset asset, String assetId) {
         boolean result = false;
         try {
+            File rasset = new File(directory + separator + assetId + separator + "rasset.xml");
+
             JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             //Marshal the employees list in console
-            jaxbMarshaller.marshal(asset, System.out);
-
+            //jaxbMarshaller.marshal(asset, System.out);
             //Marshal the employees list in file
-            jaxbMarshaller.marshal(asset, new File(directory + "/" + assetId + "/rasset.xml"));
+            jaxbMarshaller.marshal(asset, rasset);
+
             result = true;
         } catch (JAXBException e) {
             System.err.println("Algo de Errado nao Esta Certo");
@@ -585,37 +591,39 @@ public class Repository {
      *
      * @param assetId representa o id de um ativo de software.
      * @param solution representa a solucao que compoe o ativo de software.
+     * @return
      */
-    boolean setSolutionType(String assetId, SolutionType solution) {
+    public boolean setSolutionType(String assetId, SolutionType solution) {
         boolean result = false;
-        /*
-         try {
-         Asset asset = xmlToAsset(assetId);
 
-         for (ArtifactType a : solution.getArtifacts().getArtifact()) {
-         asset.getSolution().getArtifacts().getArtifact().add(a);
-         }
+        try {
+            Asset asset = readAsset(assetId);
 
-         for (ArtifactType a : solution.getRequirements().getArtifact()) {
-         asset.getSolution().getRequirements().getArtifact().add(a);
-         }
+            for (ArtifactType a : solution.getArtifacts().getArtifact()) {
+                asset.getSolution().getArtifacts().getArtifact().add(a);
+            }
 
-         for (ArtifactType a : solution.getDesign().getArtifact()) {
-         asset.getSolution().getDesign().getArtifact().add(a);
-         }
+            for (ArtifactType a : solution.getRequirements().getArtifact()) {
+                asset.getSolution().getRequirements().getArtifact().add(a);
+            }
 
-         for (ArtifactType a : solution.getImplementation().getArtifact()) {
-         asset.getSolution().getImplementation().getArtifact().add(a);
-         }
+            for (ArtifactType a : solution.getDesign().getArtifact()) {
+                asset.getSolution().getDesign().getArtifact().add(a);
+            }
 
-         for (ArtifactType a : solution.getTest().getArtifact()) {
-         asset.getSolution().getTest().getArtifact().add(a);
-         }
+            for (ArtifactType a : solution.getImplementation().getArtifact()) {
+                asset.getSolution().getImplementation().getArtifact().add(a);
+            }
 
-         result = javaToxml(asset, assetId);
-         } catch (JAXBException e) {
-         }
-         */
+            for (ArtifactType a : solution.getTest().getArtifact()) {
+                asset.getSolution().getTest().getArtifact().add(a);
+            }
+
+            result = javaToxml(asset, assetId);
+        } catch (JAXBException | FileNotFoundException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return result;
     }
 
@@ -629,7 +637,7 @@ public class Repository {
      */
     String getClassification(String assetId) {
 
-        File assetFile = new File(directory + "/" + assetId);
+        File assetFile = new File(directory + separator + assetId);
         try {
             if (assetFile.exists()) {
 
@@ -661,8 +669,34 @@ public class Repository {
         return false;
     }
 
-    boolean setClassification(ClassificationType classification) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * *
+     * Método reponsável por alterar a classificação de um ativo de software.
+     *
+     * @param classification
+     * @return
+     */
+    boolean setClassification(String assetId, ClassificationType classification) {
+        boolean result = false;
+
+        try {
+
+            Asset asset = readAsset(assetId);
+
+            for (Context c : classification.getContexts()) {
+                asset.getClassification().getContexts().add(c);
+            }
+
+            for (DescriptionGroup d : classification.getDescriptionGroups()) {
+                asset.getClassification().getDescriptionGroups().add(d);
+            }
+
+            result = javaToxml(asset, assetId);
+        } catch (JAXBException | FileNotFoundException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
     }
 
     String getUsage(String assetId) {
@@ -678,8 +712,37 @@ public class Repository {
         return "Asset Do Not Exist";
     }
 
-    boolean setUsage(UsageType usage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * *
+     * Metodo responsável pela alteração do conjunto de caracteristicas
+     * relacionadas a usabilidade do ativo de software.
+     *
+     * @param assetId
+     * @param usage
+     * @return
+     */
+    boolean setUsage(String assetId, UsageType usage) {
+        boolean result = false;
+
+        try {
+
+            Asset asset = readAsset(assetId);
+
+            for (ArtifactActivy a : usage.getArtifactActivities()) {
+                asset.getUsage().getArtifactActivities().add(a);
+            }
+
+            for (ContextReference c : usage.getContextReferences()) {
+                asset.getUsage().getContextReferences().add(c);
+            }
+
+            result = javaToxml(asset, assetId);
+        } catch (JAXBException | FileNotFoundException ex) {
+
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
     }
 
     String getRelatedAssets(String assetId) {
@@ -697,7 +760,25 @@ public class Repository {
     }
 
     boolean setRelatedAsset(String assetId, String relatedId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = false;
+
+        RelatedAssetType relatedAssetType = new RelatedAssetType();
+        try {
+            Asset asset = readAsset(assetId);
+            Asset related = readAsset(relatedId);
+
+            relatedAssetType.setId(related.getId());
+            relatedAssetType.setName(related.getName());
+            relatedAssetType.setReference(directory + separator + relatedId);
+            //relatedAssetType.setRelationshipType(assetId);
+
+            asset.getRelatedAssetsList().getListOfRelatedAssets().add(relatedAssetType);
+            result = javaToxml(asset, assetId);
+        } catch (JAXBException | FileNotFoundException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
     }
 
     /**
