@@ -34,7 +34,7 @@ public class RepositoryTest {
     private final String localPath;
 
     public RepositoryTest() {
-        localPath = System.getProperty("user.home") + File.separator + "repo4";
+        localPath = System.getProperty("user.home") + File.separator + "repo2";
 
     }
 
@@ -67,7 +67,7 @@ public class RepositoryTest {
     public void testInit() throws IOException, JAXBException {
 
         System.out.println("init");
-        
+
         Repository instance = new Repository(localPath);
         boolean expResult = true;
         boolean result = instance.init();
@@ -146,7 +146,6 @@ public class RepositoryTest {
     /**
      * Test of removeRepository method, of class Repository.
      */
-    
     //@Test
     public void testRemoveRepository() {
         System.out.println("removeRepository");
@@ -207,7 +206,6 @@ public class RepositoryTest {
     /*  *
      * Test of validateAsset method, of class Repository.
      */
-    
     @Ignore
     @Test
     public void testValidateAsset_Asset_String() throws JAXBException, FileNotFoundException {
@@ -225,10 +223,10 @@ public class RepositoryTest {
 
     /**
      * Test of addAsset method, of class Repository.
+     *
      * @throws java.lang.Exception
      */
-   
-   @Ignore
+    @Ignore
     @Test
     public void testAddAsset() throws Exception {
         System.out.println("addAsset");
@@ -246,7 +244,6 @@ public class RepositoryTest {
      * @throws javax.xml.bind.JAXBException
      * @throws java.io.FileNotFoundException
      */
-    @Ignore
     @Test
     public void testGetSolution() throws JAXBException, FileNotFoundException {
         System.out.println("getSolution");
@@ -365,16 +362,16 @@ public class RepositoryTest {
     /**
      * Test of getRelatedAssets method, of class Repository.
      */
-    //@Test
+    @Test
     public void testGetRelatedAssets() {
         System.out.println("getRelatedAssets");
-        String assetId = "";
-        Repository instance = null;
-        List<Asset> expResult = null;
-        List<Asset> result = instance.getRelatedAssets(assetId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String assetId = "asset";
+        Repository instance = new Repository(localPath);
+
+        String result = instance.getRelatedAssets(assetId);
+
+        System.out.println(result);
+        assertTrue(!"Asset Do Not Exist".equals(result));
     }
 
     /**
@@ -392,9 +389,6 @@ public class RepositoryTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
- 
- 
 
     /**
      * Test of downloadAsset method, of class Repository.
@@ -416,7 +410,7 @@ public class RepositoryTest {
     /**
      * Test of removeAsset method, of class Repository.
      */
-//   @Ignore
+    @Ignore
     @Test
     public void testRemoveAsset() throws JAXBException, FileNotFoundException {
         System.out.println("removeAsset");
@@ -425,7 +419,7 @@ public class RepositoryTest {
         boolean expResult = false;
         boolean result = instance.removeAsset(assetId);
         assertEquals(expResult, result);
-       
+
     }
 
     /**
@@ -479,7 +473,7 @@ public class RepositoryTest {
         System.out.println("createSchema");
         Repository instance = new Repository(localPath);
         boolean expResult = false;
-      //  boolean result = instance.createSchema();
+        //  boolean result = instance.createSchema();
         // assertEquals(expResult, result);
 
     }
@@ -503,9 +497,9 @@ public class RepositoryTest {
 
     /**
      * Test of saveChanges method, of class Repository.
+     *
      * @throws java.lang.Exception
      */
-    
     @Test
     public void testSaveChanges() throws Exception {
         System.out.println("saveChanges");
@@ -566,7 +560,7 @@ public class RepositoryTest {
      * Test of updateAsset method, of class Repository.
      */
     @Ignore
-    
+
     @Test
     public void testUpdateAsset() throws Exception {
         System.out.println("updateAsset");
@@ -575,7 +569,7 @@ public class RepositoryTest {
         boolean expResult = true;
         boolean result = instance.updateAsset(assetName);
         assertEquals(expResult, result);
-       
+
     }
 
     /**
@@ -606,7 +600,7 @@ public class RepositoryTest {
         String expResult = "";
         String result = instance.getLog(nameAsset);
         System.out.println(result);
-       
+
     }
 
     /**
@@ -650,5 +644,5 @@ public class RepositoryTest {
             System.out.println(entry.getKey() + " - " + entry.getValue());
         }
     }
-   
+
 }

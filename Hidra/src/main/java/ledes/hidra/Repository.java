@@ -121,8 +121,8 @@ public class Repository {
      */
     protected boolean init() throws IOException, JAXBException {
 
-        // createSchema();
         boolean ret = assistant.start(directory);
+
         new File(localPath + separator + ".hidra").mkdir();
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
         dao.connection();
@@ -133,6 +133,7 @@ public class Repository {
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return ret;
 
     }
@@ -169,8 +170,8 @@ public class Repository {
 
     protected boolean isRepository() {
         File hidraRepo = new File(localPath + separator + ".hidra");
-        File[] matchingFilesAsset ;
-        File[] matchingFilesDB ;
+        File[] matchingFilesAsset;
+        File[] matchingFilesDB;
         if (hidraRepo.isDirectory()) {
             matchingFilesAsset = hidraRepo.listFiles(new FilenameFilter() {
                 @Override
@@ -186,10 +187,11 @@ public class Repository {
                     return name.equals("hidra.db");
                 }
             });
-            return assistant.isRepositoryInitialized() && matchingFilesAsset.length != 0 && matchingFilesDB.length!=0;
+            return assistant.isRepositoryInitialized() && matchingFilesAsset.length != 0 && matchingFilesDB.length != 0;
+        } else {
+            return false;
         }
-        else return false;
-        
+
     }
 
     /**
@@ -680,8 +682,18 @@ public class Repository {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    List<Asset> getRelatedAssets(String assetId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    String getRelatedAssets(String assetId) {
+        File assetFile = new File(directory + separator + assetId);
+
+        try {
+            if (assetFile.exists()) {
+                return readAsset(assetId).describeRelatedAssets();
+            }
+
+        } catch (FileNotFoundException | JAXBException exception) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return "Asset Do Not Exist";
     }
 
     boolean setRelatedAsset(String assetId, String relatedId) {
@@ -801,13 +813,6 @@ public class Repository {
 
     boolean isRepository(String directory) {
         return assistant.isRepositoryInitialized(directory);
-    }
-
-    /**
-     * dado id devolve ativo da lista de ativos do repositorio.
-     */
-    private Asset findAsset(String assetId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**

@@ -181,7 +181,7 @@ public class Hidra {
      * @param assetId
      * @return
      */
-    public List<Asset> getRelatedAssets(String assetId) {
+    public String getRelatedAssets(String assetId) {
         return repository.getRelatedAssets(assetId);
     }
 
