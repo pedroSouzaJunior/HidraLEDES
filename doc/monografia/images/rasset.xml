@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<asset name="jaxb" id="1" short-description="jaxb java architecture xml binding">
+    <profile name="Komponento Profile" id-history="komponento_03052005::core_03052005" version-major="1" version-minor="0"/>
+    <solution>
+        <artifacts>
+            <artifact name="jaxb" type="Folder" reference="/"/>
+            <artifact name="jwsdp.properties" type="File" reference="/LICENSE"/>
+        </artifacts>
+        <requirements>
+            <artifact name="java" type="Folder" reference="/Java" id="1500" version="0"></artifact>
+        </requirements>
+        <design>
+            <artifact name="index.html" type="File" reference="/jaxb/docs"/>
+        </design>
+        <implementation>
+            <artifact name="src" type="Folder" reference="/jaxb/samples/unmarshal-validate"/>
+            <artifact name="jwsdp.properties" type="File" reference="/jaxb/conf"/>
+        </implementation>
+        <test>
+            <artifact name="samples" type="Folder" reference="/jaxb"/>
+        </test>
+    </solution>
+    <classification>
+        <contexts name="Develop" id="00" description="develop context">
+            <descriptionGroup name="1212" reference="/repo/group" description="default"></descriptionGroup>
+        </contexts>
+        <descriptionGroups name="1212" reference="/repo/group" description="default"></descriptionGroups>
+    </classification>
+    <usage>
+        <artifactActivities artifactId="00" contextId="00">
+            <activities id="01" task="dev" reference="/model" role="dev" taskRole="dev">
+                <variability id="00" bindingRule="structure"></variability>
+            </activities>
+        </artifactActivities>
+        
+        <contextReferences contextId="00">
+            <activities id="00" task="modeling" reference="/model/struct" role="dev" taskRole="dev">
+                <variability id="01" bindingRule="defaultaRule"></variability>
+            </activities>
+        </contextReferences>
+    </usage>
+</asset>

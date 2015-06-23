@@ -11,10 +11,9 @@
 \usepackage{float}
 
 
-\usepackage[toc]{glossaries}
 
-\makeglossaries
-
+%\usepackage{glossary}
+%\makeglossary
 
 %\usepackage{verbatim}
 
@@ -72,10 +71,20 @@ pdfpagetransition=Dissolve]{hyperref}
 \thispagestyle{plain}
 \pagenumbering{roman}
 \setcounter{page}{2}
-Escreva o resumo aqui.
+
+
+A reutilização de softwares esta amplamente ligada a engenharia de software, ao momento em que soluções são obtidas estas são novamente utilizadas para a resolução de novos problemas similares.
+
+Uma peça essencial para o gerenciamento e controle dos componentes que comtemplam tais soluções são os repositórios, que auxiliam a garantia da qualidade no processo de desenvolvimento de softwares, visto que uma solução armazenada em um repositório padronizado condiz com o mínimo de qualidade necessária para sua utilização, ou seja, seus artefatos passaram por um processo de validação, e testes. 
+
+É conhecida a existência de diferentes tipos de repositórios, já que não só de codigo fonte são formadas as soluções para um produto, mas também de documentação, padrões de projetos, modelos e inclusives produtos similares, e o desenvolvimento de repositórios seguindo uma formalização, facilita a sistemática utilizada para a obtenção e usuabilidade de artefatos.
+
+O desenvolvimento de um repositório padronizado necessita de uma análise que resulta em orientações para a sua criação e de mecanismos que descrevam o seu funcionamento. Através de uma arquitetura anteriormente estabelecida junto a um escopo e definição de uma estrutura representativa a uma solução, inicia-se o desenvolvimento das funcionalidades de um repositório, como por exemplo, a validação e aceitação do tipo de solução que será armazenada no repositório. Estamos nos referindo a ativos de software reusáveis e o objeto de estudo deste trabalho é composto pela criação de funcionalidades de um repositório, no caso, uma biblioteca que auxilie a criação de repositórios de ativos de software que seguem o padrão determinado pelo modelo \textit{RAS (OMG 2005)}.
+
+Uma vez criada, a biblioteca auxiliará no desenvolvimento de repositórios de ativos de modo que permitirá a descoberta de suas funcinalidades por meio de serviços web facilitando a integração entre diferentes repositórios de ativos de software.
 
 \vspace{1cm}
-\hspace{-\parindent}Palavras-chave: Java, SOA, Webservices, Repositório, Ativos Reusáveis de Software.
+\hspace{-\parindent}Palavras-chave: Java, REST, Webservices, Repositório, Ativos Reusáveis de Software.
 \end{abstract}
 
 %\blankpage
@@ -85,10 +94,14 @@ Escreva o resumo aqui.
 \thispagestyle{plain}
 \pagenumbering{roman}
 \setcounter{page}{3}
-Write the abstract here.
+
+
+The software reuse is largely linked to software engineering, the time at which solutions are obtained, these are again used to solve new problems similar. An essential piece for the management and control of components that comtemplam such solutions are the repositories that help ensure quality in the software development process, as a solution stored in a standardized repository, consistent with the minimum quality required for their use, i.e., their artifacts passed through a validation process, and testing. It is known the existence of different types of repositories, as not only the source code solutions are formed for a product, but also documentation, design patterns, models and inclusives similar products, and the development of repositories following a formalization facilitates systematically used to obtain and Usuability artifacts.
+
+The development of a standardized repository requires an analysis that results in guidelines for their creation and mechanisms that describe its operation. Using a previously established architecture along with a scope and definition of a representative frame to a solution initiated the development of features of a repository, such as the validation and acceptance of the type of solution which is stored in the repository. We are referencing the reusable software assets, and the object of study of this work consists of the creation of features of a repository, if a library that helps to create repositories of software assets that follow the pattern determined by the model \textit{RAS (OMG 2005)}. Once created, the library will assist in the development of repositories of assets that will enable the discovery of their funcinalidades through web services facilitating integration between different repositories of software assets.
 
 \vspace{1cm}
-\hspace{-\parindent}Keywords: Java, SOA, Webservices, Repository, Software Reusable Assets.
+\hspace{-\parindent}Keywords: Java, REST, Webservices, Repository, Software Reusable Assets.
 \end{abstract}
 
 %\blankpage
@@ -112,7 +125,7 @@ Write the abstract here.
 \include{4_hidra}
 \include{5_conlusao}
 
-\setglossarystyle{altlisthypergroup}
+%\setglossarystyle{altlisthypergroup}
 
 
 \bibliographystyle{plain}

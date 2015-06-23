@@ -1,7 +1,34 @@
 \chapter{Introdução} \label{chapter:introducao}
 
-Texto.
 
-\section{Seção} \label{section:sec1}
+\section{Motivação e justificativa} \label{section:sec1}
 
-Caso seja necessário dividir em seções.
+
+Tomando como ponto de partida a arquitetura desenvolvida por (OSSHIRO, 2014). O desenvolvimento do projeto \textit{Hidra} dá seguimento e vem como uma ferramenta para auxiliar a criação futura de repositorios de LPNs \textit{(Linha de Processos de Negócio)} para apoiar a abordagem para Gestão de LPN (GLPN) (LANDRE, 2012).
+
+Focado na engenharia de software, a adoção de padrões de projetos para o desenvolvimento da biblioteca nos permitiu desenvolver uma ferramenta que contenha qualidade, que possa ser incrementada com novas funcionalidades, e que possui boa manutenibilidade para projetos futuros. E a fim de validar os mecanismos de funcionamento de um repositório de ativos de software, foi desenvolvido, em paralelo a biblioteca, protótipos capazes de simular as funcionalidades e serviços implementados no decorrer deste trabalho, 
+
+\section{Objetivos do trabalho} \label{section:sec1}
+
+O objetivo geral deste trabalho é desenvolver uma biblioteca em linguagem java, denominada \textit{Hidra} (em uma analogia ao nome da criatura mitológica que possuía diversas cabeças assim, como um repositório pode conter diversos ramos) \textit{(branchs)}, que auxilie no desenvolvimento de repositórios de ativos de software reusáveis, os quais estarão padronizados de acordo com o modelo \textit{(RAS)} proposto pela \textit{(OMG 2005)}.
+
+Para alcançar o objetivo proposto por este trabalho, um conjunto de objetivos específicos estão inclusos, nos quais apresentamos a seguir:
+
+\begin{itemize}
+
+\item Derivação dos requisitos da biblioteca \textit{Hidra} a partir dos requisios arquiteturais da arquitetura de referência  \textbf{Cambuci}\cite{dissertacaoOsshiro2014}.
+
+\item Definição e implementação da estrutura de dados representativa a um ativo de software condizente ao padrão \textit{RAS} 
+
+\item Definição e implementação de funcionalidades de repositório para manipulação e persistência de ativos de software.
+
+\item Definição e implementação de uma camada de Serviços, seguindo a arquitetura REST, a fim de disponibilizar mecanismos de controle e versionamento de ativos de software e integração entre diferentes tipos de repositórios 
+
+\end{itemize}
+
+
+\section{Organização do texto} \label{section:sec1}
+
+A sequência dos capítulos a seguir apresenta o conteúdo oriundo do desenvolvimento deste trabalho.
+
+O capítulo 2 apresenta o embasamento teórico e as principais definições do modelo de especificação de ativos reutilizáveis. Em seguida no capítulo 3 são apresentadas as Tecnologias e Ferramentas necessárias para o desenvolvimento da biblioteca \textit{Hidra}. Já no capítulo 4 é apresentado o estabelecimento da biblioteca \textit{Hidra} descrevendo seus requisitos Funcionais e Não Funcionais.E por fim no capítulo 5 apresentamos a conclusão em paralelo as limitações que este trabalho possui e indicações de trabalhos futuros que podem ser desenvolvidos a partir desse. 
