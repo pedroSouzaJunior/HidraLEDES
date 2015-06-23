@@ -6,6 +6,9 @@
 package ledes.hidra.dao;
 
 import java.sql.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -28,7 +31,6 @@ public class HidraDAO {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
-            System.out.println("Opened database successfully");
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS ASSET "
                     + "(ID CHAR(50) NOT NULL,"
@@ -54,11 +56,11 @@ public class HidraDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
             c.setAutoCommit(false);
-          //  System.out.println("Opened database successfully");
+            //  System.out.println("Opened database successfully");
 
             stmt = c.createStatement();
             String sql = "INSERT INTO ASSET (ID,NAME) "
-                    + "VALUES (" + id + "," + "'"+ name+"'" + "  );";
+                    + "VALUES (" + id + "," + "'" + name + "'" + "  );";
             System.out.println(sql);
             stmt.executeUpdate(sql);
 
@@ -69,7 +71,7 @@ public class HidraDAO {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-      
+
         return false;
     }
 
@@ -85,20 +87,72 @@ public class HidraDAO {
             stmt = c.createStatement();
             boolean ret;
             try (ResultSet rs = stmt.executeQuery("SELECT * FROM ASSET "
-                    + "WHERE ID = "+ id+" AND NAME = "+"'"+ name+"'"+ ";")) {
+                    + "WHERE ID = " + id + " AND NAME = " + "'" + name + "'" + ";")) {
                 ret = rs.isBeforeFirst();
             }
             stmt.close();
             c.close();
-          
+
             return ret;
         } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        
+
         return false;
     }
 
-}
+    public boolean delete(String name, String id) {
+        Connection c = null;
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
+            c.setAutoCommit(false);
 
+            stmt = c.createStatement();
+            String sql = "DELETE FROM ASSET "
+                    + "WHERE ID = " + id + " AND NAME = " + "'" + name + "'" + ";";
+            stmt.executeUpdate(sql);
+            c.commit();
+
+            stmt.close();
+            c.close();
+            return true;
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return false;
+    }
+
+    public Map<String, String> selectAll() {
+
+        Map<String, String> assetList = new HashMap<>();
+        Connection c = null;
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
+            c.setAutoCommit(false);
+           
+
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ASSET;");
+            while (rs.next()) {
+                String id = rs.getString("ID");
+                String name = rs.getString("NAME");
+
+                assetList.put(id, name);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return assetList;
+    }
+
+}

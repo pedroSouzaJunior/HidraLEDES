@@ -294,16 +294,16 @@ public class GitFacade {
      */
     public boolean commit(String message) throws GitAPIException {
 
-//        
-//        
+        
+        
         if (isRepositoryInitialized()) {
-//           
+          
             System.out.println(assistant.getRepository().getDirectory().getAbsolutePath());
             RevCommit commit = assistant.commit().setMessage(message)
                     .call();
 
-            System.out.println(commit.getId().getName());
-            System.out.println(commit.getAuthorIdent().getName());
+//            System.out.println(commit.getId().getName());
+//            System.out.println(commit.getAuthorIdent().getName());
             return true;
         }
 
@@ -347,7 +347,7 @@ public class GitFacade {
             return false;
         } else {
 
-            file = new File(localPath + "/" + filename);
+            file = new File(localPath + File.separator + filename);
 
             if (!file.exists()) {
                 System.err.println("Asset does not exist");
@@ -366,15 +366,46 @@ public class GitFacade {
         return false;
 
     }
+    
+    /**
+     * Retorna o log de todo repositório.
+     * @return
+     * @throws GitAPIException 
+     */
+    public String getLogs() throws GitAPIException
+    {
+
+        String logs = null;
+        if (!isRepositoryInitialized()) {
+            System.err.println("Repository uninitialized");
+        } else {
+
+            Iterable<RevCommit> log;
+
+            log = assistant.log().call();
+            for (RevCommit rev : log) {
+                logs = "Author: " + rev.getAuthorIdent().getName()
+                        + "\nMessage: " + rev.getFullMessage();
+                return logs;
+            }
+
+        }
+        return logs;
+    }
+
+        
+
 
     /**
-     * Retorna os logs dos commits realizados no repositorio.
+     * Retorna os logs dos commits realizados em um ativo especifico.
      *
+     * @param nameAsset
      * @return
      * @throws GitAPIException
      */
-    public String getLogs() throws GitAPIException {
+    public String getLogs(String nameAsset) throws GitAPIException {
         String logs = null;
+        
         if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
         } else {
@@ -383,7 +414,7 @@ public class GitFacade {
             //ObjectId head = repository1.resolve("HEAD");
             Iterable<RevCommit> log;
 
-            log = assistant.log().call();
+            log = assistant.log().addPath(nameAsset).call();
             for (RevCommit rev : log) {
                 logs = "Author: " + rev.getAuthorIdent().getName()
                         + "\nMessage: " + rev.getFullMessage();

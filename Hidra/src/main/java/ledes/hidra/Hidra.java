@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
@@ -127,8 +128,10 @@ public class Hidra {
      *
      * @param assetId
      * @return
+     * @throws javax.xml.bind.JAXBException
+     * @throws java.io.FileNotFoundException
      */
-    public boolean removeAsset(String assetId) {
+    public boolean removeAsset(String assetId) throws JAXBException, FileNotFoundException {
         return repository.removeAsset(assetId);
     }
 
@@ -218,7 +221,7 @@ public class Hidra {
      *
      * @return
      */
-    public List<String> listAssets() {
+    public Map<String, String> listAssets() {
         return repository.listAssets();
     }
 

@@ -32,17 +32,23 @@ public class ValidatorAssets {
     }
 
     private boolean isValidFile(final String fileName, String reference) {
-        File path = new File(localAsset + reference);
+        File path;
+        if(reference.equals("/")){
+              path = new File(localAsset + reference);
+            
+        }
+        else{
+             path = new File(localAsset + separator + reference);
+        }
+        
         File[] matchingFiles = path.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
+               
                 return name.equals(fileName);
             }
         });
 
-//        for (File matchingFile : matchingFiles) {
-//            System.out.println(matchingFile);
-//        }
 
         return matchingFiles.length != 0;
     }
@@ -52,10 +58,13 @@ public class ValidatorAssets {
         StringBuilder reasons = new StringBuilder();
         reasons.append("\n");
 
+        
         boolean result = true;
         SolutionType.Artifacts artifacts = asset.getSolution().getArtifacts();
         for (ArtifactType art : artifacts.getArtifact()) {
             if ("Folder".equalsIgnoreCase(art.getType())) {
+               
+                    
                 result = isValidDirectory(localAsset + art.getReference() + art.getName());
 
                 if (!result) {
@@ -65,6 +74,7 @@ public class ValidatorAssets {
                 }
             } else if ("File".equalsIgnoreCase(art.getType())) {
 
+                
                 result = isValidFile(art.getName(), art.getReference());
               
 

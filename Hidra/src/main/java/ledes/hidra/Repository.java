@@ -16,6 +16,8 @@ import java.net.URLConnection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
@@ -38,7 +40,6 @@ import ledes.hidra.asset.UsageType;
 import ledes.hidra.core.GitFacade;
 import ledes.hidra.core.ValidatorAssets;
 import ledes.hidra.dao.HidraDAO;
-import ledes.hidra.util.Configuration;
 import ledes.hidra.util.Properties;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.xml.sax.SAXException;
@@ -113,7 +114,7 @@ public class Repository {
 
     protected boolean init() throws IOException, JAXBException {
 
-       // createSchema();
+        // createSchema();
         boolean ret = assistant.start(directory);
         new File(localPath + separator + ".hidra").mkdir();
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
@@ -129,14 +130,14 @@ public class Repository {
 
     }
 
-    private void writerIgnoreFile() throws IOException{
-        try (FileWriter ignoreFile = new FileWriter(localPath + separator+".gitignore")) {
+    private void writerIgnoreFile() throws IOException {
+        try (FileWriter ignoreFile = new FileWriter(localPath + separator + ".gitignore")) {
             PrintWriter writer = new PrintWriter(ignoreFile);
             writer.printf(".hidra");
         }
-        
-    
+
     }
+
     /**
      * Clona um repositorio.
      *
@@ -267,9 +268,11 @@ public class Repository {
 
             @Override
             public boolean accept(File dir, String name) {
-                return name.startsWith(Configuration.properties.getProperty("ManifestName")) && name.endsWith("ManifestExtension");
+
+                return (name.startsWith("rasset") && name.endsWith("xml"));
             }
         });
+        // System.out.println("Manifest: " + Configuration.properties.getProperty("ManifestName") + Configuration.properties.getProperty("ManifestExtension"));
 
         return matchingFiles != null;
 
@@ -287,8 +290,7 @@ public class Repository {
      */
     public boolean validateAsset(String assetPath) throws SAXException, IOException {
 
-        File schemaFile = new File(localPath+separator+".hidra"+separator+"asset.xsd");
-        //File schemaFile = new File(System.getProperty("user.home") + File.separator +"asset.xsd");
+        File schemaFile = new File(localPath + separator + ".hidra" + separator + "asset.xsd");
         Source xmlFile = new StreamSource(new File(assetPath + manifest));
         SchemaFactory schemaFactory = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -345,9 +347,9 @@ public class Repository {
         }
     }
 
-    
     /**
      * Válida o ativo
+     *
      * @param assetName
      * @param assetPath
      * @param path
@@ -355,10 +357,11 @@ public class Repository {
      * @throws SAXException
      * @throws IOException
      * @throws JAXBException
-     * @throws ledes.hidra.Repository.ValidationRuntimeException 
+     * @throws ledes.hidra.Repository.ValidationRuntimeException
      */
     public boolean validateAll(String assetName, String assetPath, File path) throws SAXException, IOException, JAXBException, ValidationRuntimeException {
         boolean ret = true;
+        Asset asset = readAsset(assetName);
 
         if (!path.isDirectory()) {
             ret = false;
@@ -370,12 +373,18 @@ public class Repository {
             throw new ValidationRuntimeException("File not found manisfest in: " + path);
 
         }
-        if (validateAsset(assetPath)) {
+        if (!asset.getName().equalsIgnoreCase(assetName)) {
+            ret = false;
+            throw new ValidationRuntimeException("The asset name does not match the name described in the manifest.");
+
+        }
+
+        if (!validateAsset(assetPath)) {
             ret = false;
             throw new ValidationRuntimeException("Manifest not is valid");
 
         }
-        if (!validateAsset(readAsset(assetName), assetPath)) {
+        if (!validateAsset(asset, assetPath)) {
             ret = false;
             throw new ValidationRuntimeException("Active structure does not match the manifest file");
 
@@ -403,68 +412,88 @@ public class Repository {
         File assetFolder = new File(assetPath);
         Asset asset = readAsset(nameAsset);
 
-       
-            if (validateAll(nameAsset, assetPath, assetFolder)) {
-                try {
-                    HidraDAO dao = new HidraDAO(localPath);
-                    if (dao.insertion(asset.getName(), asset.getId()));
-                    return assistant.add(nameAsset);
-                } catch (GitAPIException ex) {
-                    Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
-                    return false;
-                }
+        if (validateAll(nameAsset, assetPath, assetFolder)) {
+            if (findAsset(asset)) {
+
+                throw new ValidationRuntimeException("File already monitored. You might want to do \"updateAsset\"");
+
             }
+            
+            try {
+                HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
+                if (dao.insertion(asset.getName(), asset.getId()));
+                return assistant.add(nameAsset);
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        } else {
 
-         else  {
-
-           
             return false;
 
         }
     }
 
-    
     /**
-     * Procura no banco de dados do repositorio, se o ativo já está sendo monitorado.
+     * Procura no banco de dados do repositorio, se o ativo já está sendo
+     * monitorado.
      *
      * @param asset
      * @return verdadeiro caso o ativo esteja sendo monitorado.
      */
     private boolean findAsset(Asset asset) {
 
-        HidraDAO dao = new HidraDAO(localPath);
+        HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
         return dao.find(asset.getName(), asset.getId());
 
     }
 
     /**
-     * Atualiza um ativo já monitorado a aréa de seleção. 
-     * Caso o ativo ainda não esteja sendo monitorado retorna falso.
-     * Caso as modificações não estejam de acordo com o padrão adotado, impede a atualização e retorna falso.
-     * 
-     * @param assetName - Recebe uma String com o nome do ativo a ser atualizado.
+     * Retorna uma lista com o estado atual do repositório.
+     *
+     * @return <String, Set<String>>
+     */
+    public Map<String, Set<String>> showStatus() {
+
+        try {
+            return assistant.status();
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    /**
+     * Atualiza um ativo já monitorado a aréa de seleção. Caso o ativo ainda não
+     * esteja sendo monitorado retorna falso. Caso as modificações não estejam
+     * de acordo com o padrão adotado, impede a atualização e retorna falso.
+     *
+     * @param assetName - Recebe uma String com o nome do ativo a ser
+     * atualizado.
      * @return
      * @throws JAXBException
      * @throws FileNotFoundException
      * @throws ledes.hidra.Repository.ValidationRuntimeException
      * @throws SAXException
-     * @throws IOException 
+     * @throws IOException
      */
     public boolean updateAsset(String assetName) throws JAXBException, FileNotFoundException, ValidationRuntimeException, SAXException, IOException {
-        if(findAsset(readAsset(assetName))){
-            if(validateAll(assetName, localPath, directory))
-            {
+        String assetPath = new File(localPath).getAbsolutePath() + File.separator + assetName + File.separator;
+        File assetFolder = new File(assetPath);
+        Asset asset = readAsset(assetName);
+        if (findAsset(readAsset(assetName))) {
+             if (validateAll(assetName, assetPath, assetFolder)) {
                 try {
                     return assistant.add(assetName);
                 } catch (GitAPIException ex) {
                     Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        
-        }
-        else {
+
+        } else {
             throw new ValidationRuntimeException("Asset unmonitored, please add the asset to area selection with 'addAsset'");
-           
+
         }
         return false;
 
@@ -581,26 +610,17 @@ public class Repository {
      * fora do padrão RAS. Recebe o nome do ativo e mensagem a ser salva.
      *
      * @param message
-     * @param nameAsset
      * @return
      * @throws SAXException
      * @throws IOException
      * @throws JAXBException
      */
-    public boolean saveChanges(String message, String nameAsset) throws SAXException, IOException, JAXBException {
-        String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
-        File assetFolder = new File(assetPath);
-        if (assetFolder.isDirectory() && manifestExist(assetFolder) && validateAsset(assetPath) && validateAsset(readAsset(nameAsset), assetPath)) {
-            try {
-                return assistant.commit(message);
-            } catch (GitAPIException ex) {
-                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    public boolean saveChanges(String message) throws SAXException, IOException, JAXBException {
+        try {
 
-        } else {
-            System.err.println("Erro na validação do ativo!"
-                    + "\n Verifique se o nome do ativo está correto,"
-                    + "\n ou se as alterações não ferem o padrão  adotado para o repositorio.");
+            return assistant.commit(message);
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -611,7 +631,7 @@ public class Repository {
 
     String getUsage(String assetId) {
 
-        File assetFile = new File(directory + "/" + assetId);
+        File assetFile = new File(directory + separator + assetId);
         try {
             if (assetFile.exists()) {
                 return readAsset(assetId).describeUsage();
@@ -633,9 +653,13 @@ public class Repository {
     boolean setRelatedAsset(String assetId, String relatedId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    String getLog(String nameAsset) {
-        String assetPath = new File(localPath).getAbsolutePath() + "/" + nameAsset + "/";
+    
+    /**
+     * Retorna o log de todo o repositório
+     * @return 
+     */
+     String getLog() {
+       
         try {
             return assistant.getLogs();
         } catch (GitAPIException ex) {
@@ -644,21 +668,32 @@ public class Repository {
         return null;
     }
 
+    /***
+     * Retorna o log de um determinado ativo ou de um artefato.
+     * @param nameAsset
+     * @return 
+     */
+    String getLog(String nameAsset) {
+       
+        try {
+            return assistant.getLogs(nameAsset);
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     /**
-     * Retorna uma lista com todos os nomes dos ativos do repositorio. PS: deve
-     * retornar apenas os arquivos adicionados a area de seleção Será resolvido
-     * com o indice.
+     * Retorna uma lista com todos os nomes dos ativos do repositorio. 
      *
      * @return
      */
-    List<String> listAssets() {
-        File dir = new File(localPath);
-        List<String> assets = new ArrayList<>();
-        assets.addAll(Arrays.asList(dir.list()));
-        return assets;
+    public Map<String, String> listAssets() {
+          HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
+          return dao.selectAll();
     }
 
-    String describeAssets() {
+    public String describeAssets() {
 
         StringBuilder stb = new StringBuilder("\n");
         stb.append("List of Assets: \n");
@@ -704,8 +739,29 @@ public class Repository {
      * @param assetName - Recebe o nome do ativo a ser removido
      * @return retorna verdadeiro caso a operação seja bem sucedida.
      */
-    boolean removeAsset(String assetName) {
-        return assistant.remove(assetName);
+    boolean removeAsset(String assetName) throws JAXBException, FileNotFoundException {
+        Asset asset = readAsset(assetName);
+        HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
+        dao.delete(asset.getName(), asset.getId());
+        File assetDir = new File(localPath+separator+assetName);
+        assistant.remove(assetName);
+        
+     
+        return deleteDir(assetDir);
+    }
+
+    
+    private static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i=0; i<children.length; i++) { 
+               boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+         return dir.delete();
     }
 
     boolean isRepository(String directory) {
