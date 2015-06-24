@@ -3,11 +3,14 @@ package ledes.hidra;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.asset.ClassificationType;
+import ledes.hidra.asset.RelatedAssetType;
+import ledes.hidra.asset.RelatedAssets;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
@@ -185,6 +188,10 @@ public class Hidra {
         return repository.getRelatedAssets(assetId);
     }
 
+    public List<RelatedAssetType> getXMLElement(String assetId) {
+        return repository.getXMLElement(assetId);
+    }
+    
     /**
      * RF-08
      *

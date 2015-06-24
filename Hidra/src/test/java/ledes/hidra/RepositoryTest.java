@@ -303,16 +303,18 @@ public class RepositoryTest {
      * Test of getClassification method, of class Repository.
      *
      * @throws javax.xml.bind.JAXBException
+     * @throws java.io.FileNotFoundException
      */
-    @Ignore
+    //@Ignore
     @Test
     public void testGetClassification() throws JAXBException, FileNotFoundException {
-        System.out.println("getClassification");
+        System.out.println("*******************getClassification******************");
         String assetId = "asset";
         Repository instance = new Repository(localPath);
         boolean expResult = true;
 
-        String result = instance.getClassification(assetId);
+        String result;
+        result = instance.getClassification(assetId);
         System.out.println(result);
         assertEquals(expResult, result != null);
     }
@@ -338,7 +340,7 @@ public class RepositoryTest {
      * @throws javax.xml.bind.JAXBException
      * @throws java.io.FileNotFoundException
      */
-    @Ignore
+    //@Ignore
     @Test
     public void testGetUsage() throws JAXBException, FileNotFoundException {
         System.out.println("getUsage");

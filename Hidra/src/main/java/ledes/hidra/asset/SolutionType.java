@@ -25,6 +25,17 @@ public class SolutionType {
     protected SolutionType.Implementation implementation;
     protected SolutionType.Test test;
 
+    public SolutionType() {
+        artifacts = new Artifacts();
+        requirements = new Requirements();
+        design = new Design();
+        implementation = new Implementation();
+        test = new Test();
+    }
+
+    
+    
+    
     /**
      * Obtém o valor da propriedade artifacts.
      * 
@@ -173,6 +184,7 @@ public class SolutionType {
 
         @XmlElement(required = true)
         protected List<ArtifactType> artifact;
+        //protected List<ArtifactType> artifact;
 
         /**
          * Gets the value of the artifact property.

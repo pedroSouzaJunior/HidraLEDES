@@ -568,11 +568,10 @@ public class Repository {
      *
      * @param assetId que representa o id de um ativo de software.
      * @return
-     * @throws javax.xml.bind.JAXBException
      */
-    String getSolution(String assetId) {
+    public String getSolution(String assetId) {
 
-        File assetFile = new File(directory + "/" + assetId);
+        File assetFile = new File(directory + separator + assetId);
         if (assetFile.exists()) {
             try {
                 return readAsset(assetId).describeSolution();
@@ -634,14 +633,16 @@ public class Repository {
      * ativo é relevante.
      *
      * @param assetId representa o id de um ativo de software.
+     * @return
      */
-    String getClassification(String assetId) {
+    public String getClassification(String assetId) {
 
         File assetFile = new File(directory + separator + assetId);
         try {
             if (assetFile.exists()) {
 
                 return readAsset(assetId).describeClassification();
+
             }
         } catch (FileNotFoundException | JAXBException exception) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
@@ -699,9 +700,9 @@ public class Repository {
         return result;
     }
 
-    String getUsage(String assetId) {
+    public String getUsage(String assetId) {
 
-        File assetFile = new File(directory + separator + assetId);
+        File assetFile = new File(directory + "/" + assetId);
         try {
             if (assetFile.exists()) {
                 return readAsset(assetId).describeUsage();
@@ -745,7 +746,7 @@ public class Repository {
         return result;
     }
 
-    String getRelatedAssets(String assetId) {
+    public String getRelatedAssets(String assetId) {
         File assetFile = new File(directory + separator + assetId);
 
         try {
@@ -757,6 +758,21 @@ public class Repository {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
         }
         return "Asset Do Not Exist";
+    }
+
+    public List<RelatedAssetType> getXMLElement(String assetId) {
+
+        File assetFile = new File(directory + separator + assetId);
+
+        try {
+
+            if (assetFile.exists()) {
+                return readAsset(assetId).getRelatedAssetsList().getListOfRelatedAssets();
+            }
+        } catch (JAXBException | FileNotFoundException exception) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return null;
     }
 
     boolean setRelatedAsset(String assetId, String relatedId) {
@@ -803,7 +819,7 @@ public class Repository {
      * @param nameAsset
      * @return
      */
-    String getLog(String nameAsset) {
+    public String getLog(String nameAsset) {
 
         try {
             return assistant.getLogs(nameAsset);
