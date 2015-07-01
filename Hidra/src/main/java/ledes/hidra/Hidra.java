@@ -3,14 +3,12 @@ package ledes.hidra;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.asset.ClassificationType;
-import ledes.hidra.asset.RelatedAssetType;
-import ledes.hidra.asset.RelatedAssets;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
@@ -29,6 +27,12 @@ import org.xml.sax.SAXException;
  * @author Danielli Urbieta e Pedro Souza Junior
  */
 public class Hidra {
+    
+    public Hidra(String localPath){
+        super();
+        repository = new Repository(localPath);
+        
+    }
 
     /**
      *
@@ -43,15 +47,18 @@ public class Hidra {
      *
      * @param localPath - String com o caminho que o repositório será criado
      * @return - true se não houve problemas
-     * @throws java.io.IOException
-     * @throws javax.xml.bind.JAXBException
+     * 
      */
-    public boolean startRepository(String localPath) throws IOException, JAXBException {
+    public boolean startRepository(String localPath)  {
         repository = new Repository(localPath);
         if (repository.isRepository());
 
-        return repository.init();
-
+        try {
+            return repository.init();
+        } catch (IOException | JAXBException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     /**
@@ -130,11 +137,15 @@ public class Hidra {
      *
      * @param assetId
      * @return
-     * @throws javax.xml.bind.JAXBException
-     * @throws java.io.FileNotFoundException
+     * 
      */
-    public boolean removeAsset(String assetId) throws JAXBException, FileNotFoundException {
-        return repository.removeAsset(assetId);
+    public boolean removeAsset(String assetId)  {
+        try {
+            return repository.removeAsset(assetId);
+        } catch (JAXBException | FileNotFoundException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     /**
@@ -188,9 +199,7 @@ public class Hidra {
         return repository.getRelatedAssets(assetId);
     }
 
-    public List<RelatedAssetType> getXMLElement(String assetId) {
-        return repository.getXMLElement(assetId);
-    }
+    
     
     /**
      * RF-08
@@ -243,4 +252,55 @@ public class Hidra {
         return repository.downloadAsset(assetId);
     }
 
+    
+    public boolean save(String message){
+    
+        try {
+            return repository.saveChanges(message);
+        } catch (SAXException | IOException | JAXBException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    
+    }
+    
+    
+    public String showLogs(String assetName){
+        return repository.getLog(assetName);
+    }
+    
+    public String showLogs(){
+        return repository.getLog();
+    }
+    
+    public Map<String, Set<String>> showStatus(){
+        return repository.showStatus();
+    
+    }
+    
+    public boolean updateAsset(String assetName){
+        try {
+            return repository.updateAsset(assetName);
+        } catch (JAXBException | Repository.ValidationRuntimeException | SAXException | IOException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    public void setUser(String name, String email){
+        repository.setUserRepo(name, email);
+    }
+    
+    public Map<String, String> getUser(){
+        return repository.getUserRepo();
+        
+    }
+   
+    public void setRemoteRepo(String url){
+         repository.setRemoteRepo(url);
+    }
+    
+    public String getRemoteRepo(){
+        return repository.getRemoteRepo();
+    }
 }

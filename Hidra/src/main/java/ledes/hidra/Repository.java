@@ -945,5 +945,74 @@ public class Repository {
         }
         return false;
     }
+    
+    /**
+     * Configura usuário do repositorio com nome e email
+     * @param name
+     * @param email 
+     */
+    public void setUserRepo(String name, String email){
+        assistant.setConfigurationUser(name, email);
+    }
+    
+    /**
+     * Retorna a configuração do usuário do repositório
+     * @return 
+     */
+    public Map<String, String> getUserRepo(){
+        return assistant.getConfigurationUser();
+    }
+    
+    /**
+     * Adiciona um repositório remoto ao repositório local
+     * @param url 
+     */
+    public void setRemoteRepo(String url){
+        setRemotePath(url);
+        try {
+            assistant.setConfigRemote(remotePath);
+        } catch (IOException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    
+    }
+    /**
+     * Retorna o caminho do repositório remoto.
+     * @return 
+     */
+    public String getRemoteRepo(){
+        return assistant.getConfigRemote();
+    }
+    
+    /**
+     * Cria uma tag simples com um nome e uma mensagem.
+     * @param name
+     * @param message
+     * @return 
+     */
+    public boolean createLightTag(String name, String message){
+        return assistant.createLightTag(name, message);
+    }
+    
+    
+    /**
+     * Cria uma tag com anotações, recebendo um nome e uma mensagem
+     * @param name
+     * @param message
+     * @return 
+     */
+    public boolean createTagAnotted(String name, String message){
+        return assistant.createAnnotatedTag(name, message);
+    }
+    
+    /**
+     * Mostra todas as tags criadas para o repositório.
+     * @return 
+     */
+    public String listTags(){
+        return assistant.listTags();
+    }
+    
 
 }
