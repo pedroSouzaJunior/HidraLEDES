@@ -1,6 +1,6 @@
 package ledes.hidra.prototype;
 
-import ledes.hidra.Hidra;
+
 import ledes.hidra.prototype.client.ClientCommands;
 import ledes.hidra.prototype.repository.RepositoryCommands;
 import ledes.hidra.util.Configuration;
@@ -19,12 +19,14 @@ public class HidraPrototype {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        setUpRepository();
+       // setUpRepository();
 
+        commands = new RepositoryCommands();
         if (args == null || args.length == 0) {
             System.out.println(commands.usage(HidraPrototype.class.getSimpleName()));
         } else {
             String command = args[0];
+            //System.out.println(command);
 
             StringBuilder arguments = new StringBuilder();
             if (args.length > 1) {
