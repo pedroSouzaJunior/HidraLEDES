@@ -952,7 +952,11 @@ public class Repository {
      * @param email 
      */
     public void setUserRepo(String name, String email){
-        assistant.setConfigurationUser(name, email);
+        try {
+            assistant.setConfigurationUser(name, email);
+        } catch (IOException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**

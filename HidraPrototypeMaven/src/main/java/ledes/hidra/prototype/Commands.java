@@ -36,14 +36,14 @@ public class Commands {
         strategies.put("save", new SaveChangesCommand());
         strategies.put("status", new ShowStatusCommand());
         strategies.put("update", new UpdateAssetCommand());
-        strategies.put("set user", new SetUserCommand());
-        strategies.put("set remote",new SetRemoteRepo());
-        strategies.put("log asset",new ShowLogsParameterCommand());
-        strategies.put("get classification", new GetClasssificationCommand());
-        strategies.put("get related", new GetRelatedAssetsCommand());
-        strategies.put("get solution", new GetSolutionCommand());
-        strategies.put("get remote", new GetRemoteRepo());
-        strategies.put("get usage", new GetUsageCommand());
+        strategies.put("set-user", new SetUserCommand());
+        strategies.put("set-remote",new SetRemoteRepo());
+        strategies.put("log-asset",new ShowLogsParameterCommand());
+        strategies.put("get-classification", new GetClasssificationCommand());
+        strategies.put("get-related", new GetRelatedAssetsCommand());
+        strategies.put("get-solution", new GetSolutionCommand());
+        strategies.put("get-remote", new GetRemoteRepo());
+        strategies.put("get-usage", new GetUsageCommand());
         strategies.put("validate", new ValidateAssetCommand());
 
         // put generic commands here
@@ -115,6 +115,8 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
+            
+            
 
             if (!hidra.startRepository(Configuration.properties.getProperty("LocalPath"))) {
             } else {
@@ -135,7 +137,7 @@ public class Commands {
         @Override
         public String execute(String arg) {
 
-            if (!hidra.addAsset(Configuration.properties.getProperty("Asset"))) {
+            if (!hidra.addAsset(arg)) {
             } else {
                 return "Asset add in " + Configuration.properties.getProperty("LocalPath");
             }
@@ -149,7 +151,7 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
-            if (!hidra.removeAsset(Configuration.properties.getProperty("Remove"))) {
+            if (!hidra.removeAsset(arg)) {
             } else {
                 return "Asset remove in " + Configuration.properties.getProperty("LocalPath");
             }
@@ -187,7 +189,7 @@ public class Commands {
         @Override
         public String execute(String arg) {
 
-            if (hidra.save(Configuration.properties.getProperty("Commit"))) {
+            if (hidra.save(arg)) {
                 return "Save Changes";
             }
             return "Fail";
@@ -199,6 +201,7 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
+           
             String result = null;
             for (Map.Entry<String, Set<String>> entry : hidra.showStatus().entrySet()) {
                 result = entry.getKey() + " : " + entry.getValue();
@@ -282,10 +285,14 @@ public class Commands {
 
     class SetUserCommand extends Command {
 
+        
         @Override
         public String execute(String arg) {
-            hidra.setUser(arg, arg);
-            return "User configuration updated";
+            
+            hidra.setUser(Configuration.properties.getProperty("UserName"), 
+                    Configuration.properties.getProperty("UserEmail"));
+            return "User configuration updated: \n"
+                    + hidra.getUser();
         }
 
     }

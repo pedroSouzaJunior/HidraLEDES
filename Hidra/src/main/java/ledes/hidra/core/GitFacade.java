@@ -155,15 +155,17 @@ public class GitFacade {
      * @param email
      *
      */
-    public void setConfigurationUser(String name, String email) {
+    public void setConfigurationUser(String name, String email) throws IOException {
 
         if (isRepositoryInitialized()) {
-            Config config;
-            org.eclipse.jgit.lib.Repository repo = assistant.getRepository();
-            repo.close();
-            config = assistant.getRepository().getConfig();
+           // Config config;
+//            org.eclipse.jgit.lib.Repository repo = assistant.getRepository();
+//            repo.close();
+            StoredConfig config = assistant.getRepository().getConfig();
             config.setString("user", null, "name", name);
             config.setString("user", null, "email", email);
+            config.save();
+            
         }
 
     }
