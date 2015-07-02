@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.RelatedAssetType;
-import ledes.hidra.asset.RelatedAssets;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
@@ -36,6 +35,20 @@ public class Hidra {
      */
     private Repository repository;
 
+    public Hidra() {
+    }
+
+    public Repository getRepository() {
+        return repository;
+    }
+
+    public void setRepository(Repository repository) {
+        this.repository = repository;
+    }
+
+    
+    
+    
     /**
      * Inicializa um repositório local sem um repositório master associado. Se
      * não existir diretório ele será criado, se já existir um repositório no
@@ -47,10 +60,13 @@ public class Hidra {
      * @throws javax.xml.bind.JAXBException
      */
     public boolean startRepository(String localPath) throws IOException, JAXBException {
+        boolean initialized = false;
         repository = new Repository(localPath);
-        if (repository.isRepository());
+        
+        if (repository.isRepository())
+            initialized = true;
 
-        return repository.init();
+        return repository.init(initialized);
 
     }
 

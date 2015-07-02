@@ -119,25 +119,28 @@ public class Repository {
     /**
      * Inizializa um repositorio com arquivos de configuração Git e Hidra
      *
+     * @param initialized
      * @return
      * @throws IOException
      * @throws JAXBException
      */
-    protected boolean init() throws IOException, JAXBException {
+    protected boolean init(boolean initialized) throws IOException, JAXBException {
 
         boolean ret = assistant.start(directory);
 
-        new File(localPath + separator + ".hidra").mkdir();
-        HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
-        dao.connection();
-        createSchema();
-        writerIgnoreFile();
-        try {
-            assistant.add(".gitignore");
-        } catch (GitAPIException ex) {
-            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (!initialized) {
 
+            new File(localPath + separator + ".hidra").mkdir();
+            HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
+            dao.connection();
+            createSchema();
+            writerIgnoreFile();
+            try {
+                assistant.add(".gitignore");
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return ret;
 
     }

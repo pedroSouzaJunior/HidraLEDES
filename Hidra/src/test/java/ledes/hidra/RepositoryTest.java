@@ -70,7 +70,7 @@ public class RepositoryTest {
 
         Repository instance = new Repository(localPath);
         boolean expResult = true;
-        boolean result = instance.init();
+        boolean result = instance.init(false);
         assertEquals(expResult, result);
 
     }
