@@ -6,8 +6,10 @@
 package ledes.hidra;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import ledes.hidra.asset.ClassificationType;
+import ledes.hidra.asset.RelatedAssetType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import org.junit.After;
@@ -16,18 +18,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  *
- * @author pedro
+ * @author danielli
  */
 public class HidraTest {
     
-    private final String localPath;
-    
     public HidraTest() {
-        localPath = System.getProperty("user.home") + File.separator + "repo2";
     }
     
     @BeforeClass
@@ -48,31 +46,28 @@ public class HidraTest {
 
     /**
      * Test of startRepository method, of class Hidra.
-     * @throws java.lang.Exception
      */
     @Test
-    public void testStartRepository() throws Exception {
+    public void testStartRepository() {
         System.out.println("startRepository");
-        
-        Hidra instance = new Hidra();
-        boolean expResult = true;
-        
-        boolean result = instance.startRepository(localPath);
-        
-        assertEquals(expResult, result);
-        
+        String localPath = "";
+        Hidra instance = null;
+        boolean expResult = false;
+        //boolean result = instance.startRepository(localPath);
+        //assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
      * Test of startSynchronizedRepository method, of class Hidra.
      */
-    @Ignore
     @Test
     public void testStartSynchronizedRepository() {
         System.out.println("startSynchronizedRepository");
         String localPath = "";
         String remotePath = "";
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         boolean expResult = false;
         boolean result = instance.startSynchronizedRepository(localPath, remotePath);
         assertEquals(expResult, result);
@@ -86,8 +81,8 @@ public class HidraTest {
     @Test
     public void testAddAsset() {
         System.out.println("addAsset");
-        String nameAsset = "";
-        Hidra instance = new Hidra();
+        String nameAsset = "ativo2";
+        Hidra instance = new Hidra("/home/danielli/prototipo");
         boolean expResult = false;
         boolean result = instance.addAsset(nameAsset);
         assertEquals(expResult, result);
@@ -102,7 +97,7 @@ public class HidraTest {
     public void testGetSolution() {
         System.out.println("getSolution");
         String assetId = "";
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         String expResult = "";
         String result = instance.getSolution(assetId);
         assertEquals(expResult, result);
@@ -118,7 +113,7 @@ public class HidraTest {
         System.out.println("setSolutionType");
         String assetId = "";
         SolutionType solution = null;
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         boolean expResult = false;
         boolean result = instance.setSolutionType(assetId, solution);
         assertEquals(expResult, result);
@@ -133,7 +128,7 @@ public class HidraTest {
     public void testValidateAsset() {
         System.out.println("validateAsset");
         String assetPath = "";
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         boolean expResult = false;
         boolean result = instance.validateAsset(assetPath);
         assertEquals(expResult, result);
@@ -148,7 +143,7 @@ public class HidraTest {
     public void testRemoveAsset() throws Exception {
         System.out.println("removeAsset");
         String assetId = "";
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         boolean expResult = false;
         boolean result = instance.removeAsset(assetId);
         assertEquals(expResult, result);
@@ -160,19 +155,15 @@ public class HidraTest {
      * Test of getClassification method, of class Hidra.
      */
     @Test
-    public void testGetClassification() throws Exception {
+    public void testGetClassification() {
         System.out.println("getClassification");
-        String assetId = "asset";
-        Hidra instance = new Hidra();
-        boolean startRepository = instance.startRepository(localPath);
-        //testStartRepository();
-        
+        String assetId = "";
+        Hidra instance = null;
         String expResult = "";
         String result = instance.getClassification(assetId);
-        
-        System.out.println(result);
-        assertTrue(result != null);
-        
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
@@ -183,7 +174,7 @@ public class HidraTest {
         System.out.println("setClassification");
         String assetID = "";
         ClassificationType classification = null;
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         boolean expResult = false;
         boolean result = instance.setClassification(assetID, classification);
         assertEquals(expResult, result);
@@ -198,7 +189,7 @@ public class HidraTest {
     public void testGetUsage() {
         System.out.println("getUsage");
         String assetId = "";
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         String expResult = "";
         String result = instance.getUsage(assetId);
         assertEquals(expResult, result);
@@ -214,7 +205,7 @@ public class HidraTest {
         System.out.println("setUsage");
         String assetId = "";
         UsageType usage = null;
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         boolean expResult = false;
         boolean result = instance.setUsage(assetId, usage);
         assertEquals(expResult, result);
@@ -229,10 +220,25 @@ public class HidraTest {
     public void testGetRelatedAssets() {
         System.out.println("getRelatedAssets");
         String assetId = "";
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         String expResult = "";
         String result = instance.getRelatedAssets(assetId);
         assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getXMLElement method, of class Hidra.
+     */
+    @Test
+    public void testGetXMLElement() {
+        System.out.println("getXMLElement");
+        String assetId = "";
+        Hidra instance = null;
+        List<RelatedAssetType> expResult = null;
+        //List<RelatedAssetType> result = instance.getXMLElement(assetId);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -245,7 +251,7 @@ public class HidraTest {
         System.out.println("setRelatedAsset");
         String assetId = "";
         String relatedId = "";
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         boolean expResult = false;
         boolean result = instance.setRelatedAsset(assetId, relatedId);
         assertEquals(expResult, result);
@@ -260,7 +266,7 @@ public class HidraTest {
     public void testGetLog() {
         System.out.println("getLog");
         String assetName = "";
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         String expResult = "";
         String result = instance.getLog(assetName);
         assertEquals(expResult, result);
@@ -274,7 +280,7 @@ public class HidraTest {
     @Test
     public void testListAssets() {
         System.out.println("listAssets");
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         Map<String, String> expResult = null;
         Map<String, String> result = instance.listAssets();
         assertEquals(expResult, result);
@@ -289,7 +295,7 @@ public class HidraTest {
     public void testDownloadAsset() throws Exception {
         System.out.println("downloadAsset");
         String assetId = "";
-        Hidra instance = new Hidra();
+        Hidra instance = null;
         File expResult = null;
         File result = instance.downloadAsset(assetId);
         assertEquals(expResult, result);

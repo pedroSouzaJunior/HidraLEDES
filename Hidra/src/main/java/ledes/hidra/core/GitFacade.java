@@ -155,15 +155,17 @@ public class GitFacade {
      * @param email
      *
      */
-    public void setConfigurationUser(String name, String email) {
+    public void setConfigurationUser(String name, String email) throws IOException {
 
         if (isRepositoryInitialized()) {
-            Config config;
-            org.eclipse.jgit.lib.Repository repo = assistant.getRepository();
-            repo.close();
-            config = assistant.getRepository().getConfig();
+           // Config config;
+//            org.eclipse.jgit.lib.Repository repo = assistant.getRepository();
+//            repo.close();
+            StoredConfig config = assistant.getRepository().getConfig();
             config.setString("user", null, "name", name);
             config.setString("user", null, "email", email);
+            config.save();
+            
         }
 
     }
@@ -381,7 +383,7 @@ public class GitFacade {
         } else {
 
             Iterable<RevCommit> log;
-
+            
             log = assistant.log().call();
             for (RevCommit rev : log) {
                 logs = "Author: " + rev.getAuthorIdent().getName()
@@ -649,22 +651,24 @@ public class GitFacade {
      *
      * @return
      */
-    public boolean listTags() {
+    public String listTags() {
 
+        String tags = null;
         if (isRepositoryInitialized()) {
+            
             try {
                 for (org.eclipse.jgit.lib.Ref ref : assistant.tagList().call()) {
 
-                    System.out.println(ref.getName());
+                    tags = "\n "+ref.getName();
 
                 }
 
-                return true;
+                return tags;
             } catch (GitAPIException ex) {
                 Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return false;
+        return tags;
     }
 
     public boolean tagDelete(String nameTags) {
