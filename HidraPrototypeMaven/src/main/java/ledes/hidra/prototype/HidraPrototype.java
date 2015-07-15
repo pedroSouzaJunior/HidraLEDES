@@ -31,7 +31,8 @@ public class HidraPrototype {
             StringBuilder arguments = new StringBuilder();
             if (args.length > 1) {
                 for (int i = 1; i < args.length; ++i) {
-                    arguments.append(args[i]).append(' ');
+                    //arguments.append(args[i]).append(' ');
+                    arguments.append(args[i]);
                 }
             }
 

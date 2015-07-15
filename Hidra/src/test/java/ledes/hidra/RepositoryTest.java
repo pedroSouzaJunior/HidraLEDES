@@ -35,7 +35,7 @@ public class RepositoryTest {
 
     public RepositoryTest() {
         localPath = System.getProperty("user.home") + File.separator + "repo2";
-
+        //localPath = "/home/pedro/REPOSITORIO";
     }
 
     @BeforeClass
@@ -92,6 +92,7 @@ public class RepositoryTest {
     /**
      * Test of isRepository method, of class Repository.
      */
+    @Ignore
     @Test
     public void testIsRepository_0args() {
         System.out.println("isRepository");
@@ -246,7 +247,7 @@ public class RepositoryTest {
      */
     @Test
     public void testGetSolution() throws JAXBException, FileNotFoundException {
-        System.out.println("getSolution");
+        System.out.println("-------------getSolution");
 
         String assetId = "asset";
         Repository instance = new Repository(localPath);
@@ -263,6 +264,7 @@ public class RepositoryTest {
      *
      * @throws javax.xml.bind.JAXBException
      */
+    @Ignore
     @Test
     public void testSetSolutionType() throws JAXBException {
         System.out.println("setSolutionType");
@@ -305,7 +307,7 @@ public class RepositoryTest {
      * @throws javax.xml.bind.JAXBException
      * @throws java.io.FileNotFoundException
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testGetClassification() throws JAXBException, FileNotFoundException {
         System.out.println("*******************getClassification******************");
@@ -340,7 +342,7 @@ public class RepositoryTest {
      * @throws javax.xml.bind.JAXBException
      * @throws java.io.FileNotFoundException
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testGetUsage() throws JAXBException, FileNotFoundException {
         System.out.println("getUsage");
@@ -373,6 +375,7 @@ public class RepositoryTest {
     /**
      * Test of getRelatedAssets method, of class Repository.
      */
+    @Ignore
     @Test
     public void testGetRelatedAssets() {
         System.out.println("getRelatedAssets");
@@ -451,6 +454,7 @@ public class RepositoryTest {
     /**
      * Test of getExceptionList method, of class Repository.
      */
+    @Ignore
     @Test
     public void testGetExceptionList() {
         System.out.println("getExceptionList");
@@ -465,6 +469,7 @@ public class RepositoryTest {
     /**
      * Test of setExceptionList method, of class Repository.
      */
+    @Ignore
     @Test
     public void testSetExceptionList() {
         System.out.println("setExceptionList");
@@ -492,6 +497,7 @@ public class RepositoryTest {
     /**
      * Test of validateAll method, of class Repository.
      */
+    @Ignore
     @Test
     public void testValidateAll() throws Exception {
         System.out.println("validateAll");
@@ -511,6 +517,7 @@ public class RepositoryTest {
      *
      * @throws java.lang.Exception
      */
+    @Ignore
     @Test
     public void testSaveChanges() throws Exception {
         System.out.println("saveChanges");
@@ -526,6 +533,7 @@ public class RepositoryTest {
     /**
      * Test of describeAssets method, of class Repository.
      */
+    @Ignore
     @Test
     public void testDescribeAssets() {
         System.out.println("describeAssets");
@@ -540,6 +548,7 @@ public class RepositoryTest {
     /**
      * Test of updateRepository method, of class Repository.
      */
+    @Ignore
     @Test
     public void testUpdateRepository() {
         System.out.println("updateRepository");
@@ -556,6 +565,7 @@ public class RepositoryTest {
     /**
      * Test of synchronizeRepository method, of class Repository.
      */
+    @Ignore
     @Test
     public void testSynchronizeRepository() {
         System.out.println("synchronizeRepository");
@@ -571,7 +581,6 @@ public class RepositoryTest {
      * Test of updateAsset method, of class Repository.
      */
     @Ignore
-
     @Test
     public void testUpdateAsset() throws Exception {
         System.out.println("updateAsset");
@@ -603,6 +612,7 @@ public class RepositoryTest {
     /**
      * Test of getLog method, of class Repository.
      */
+    @Ignore
     @Test
     public void testGetLog() {
         System.out.println("getLog");
@@ -617,6 +627,7 @@ public class RepositoryTest {
     /**
      * Test of getLog method, of class Repository.
      */
+    @Ignore
     @Test
     public void testGetLog_0args() {
         System.out.println("getLog");
@@ -631,6 +642,7 @@ public class RepositoryTest {
     /**
      * Test of getLog method, of class Repository.
      */
+    @Ignore
     @Test
     public void testGetLog_String() {
         System.out.println("getLog");
@@ -646,6 +658,7 @@ public class RepositoryTest {
     /**
      * Test of listAssets method, of class Repository.
      */
+    @Ignore
     @Test
     public void testListAssets() {
         System.out.println("listAssets");

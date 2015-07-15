@@ -1,8 +1,12 @@
 package ledes.hidra.prototype;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
 import ledes.hidra.util.Configuration;
 
@@ -118,9 +122,13 @@ public class Commands {
             
             
 
-            if (!hidra.startRepository(Configuration.properties.getProperty("LocalPath"))) {
-            } else {
-                return "Repository Inizialized in " + Configuration.properties.getProperty("LocalPath");
+            try {
+                if (!hidra.startRepository(Configuration.properties.getProperty("LocalPath"))) {
+                } else {
+                    return "Repository Inizialized in " + Configuration.properties.getProperty("LocalPath");
+                }
+            } catch (IOException | JAXBException ex) {
+                Logger.getLogger(Commands.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             return "Fail ";
@@ -137,6 +145,7 @@ public class Commands {
         @Override
         public String execute(String arg) {
 
+            System.out.println(arg+"a");
             if (!hidra.addAsset(arg)) {
             } else {
                 return "Asset add in " + Configuration.properties.getProperty("LocalPath");

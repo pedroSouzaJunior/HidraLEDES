@@ -108,6 +108,7 @@ public class Hidra {
      */
     public boolean addAsset(String nameAsset) {
         try {
+           
             return repository.addAsset(nameAsset);
         } catch (SAXException | IOException | JAXBException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);

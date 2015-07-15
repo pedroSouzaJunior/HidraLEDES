@@ -451,6 +451,7 @@ public class Repository {
      */
     public boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException {
 
+        
         String assetPath = new File(localPath).getAbsolutePath() + File.separator + nameAsset + File.separator;
         File assetFolder = new File(assetPath);
         Asset asset = readAsset(nameAsset);
@@ -524,7 +525,9 @@ public class Repository {
     public boolean updateAsset(String assetName) throws JAXBException, FileNotFoundException, ValidationRuntimeException, SAXException, IOException {
         String assetPath = new File(localPath).getAbsolutePath() + File.separator + assetName + File.separator;
         File assetFolder = new File(assetPath);
+        
         Asset asset = readAsset(assetName);
+        
         if (findAsset(readAsset(assetName))) {
             if (validateAll(assetName, assetPath, assetFolder)) {
                 try {
@@ -584,7 +587,7 @@ public class Repository {
 
         }
 
-        return "Asset Do Not Exist";
+        return null;
 
     }
 
