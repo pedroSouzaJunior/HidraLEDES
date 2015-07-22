@@ -15,6 +15,8 @@ import ledes.hidra.services.HidraServices;
 import org.primefaces.model.UploadedFile;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -27,6 +29,7 @@ import org.primefaces.event.FileUploadEvent;
  * @author pedro
  */
 @ManagedBean
+@SessionScoped
 public class Controller implements Serializable {
 
     private static final long serialVerionUID = 1L;
@@ -45,12 +48,25 @@ public class Controller implements Serializable {
         System.out.println(result);
     }
 
-    public void upload() {
-        if (file != null) {
-            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-            //FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+    public void fileUploadListener(FileUploadEvent e) {
+        // Get uploaded file from the FileUploadEvent
+        this.file = e.getFile();
+        // Print out the information of the file
+        System.out.println("\n\n\n\nUploaded File Name Is :: " + file.getFileName() +
+                " :: Uploaded File Size :: " + file.getSize());
+    }
 
+    public void recebeArquivos(FileUploadEvent event) throws FileNotFoundException, IOException {
+        byte[] arquivoBinario = event.getFile().getContents();
+
+        //A partir daqui você tem o arquivo e pode fazer o que achar melhor com ele
+        //Segue exemplo
+        File f = new File("/var/wwww/hidra.com/hidra/REPOSITORIO/");
+
+        FileOutputStream fos = new FileOutputStream(f);
+        System.out.println("***************" + event.getFile().getFileName());
+        fos.write(arquivoBinario);
+        fos.close();
     }
 
     public void fileUploadAction(FileUploadEvent event) {
@@ -78,6 +94,23 @@ public class Controller implements Serializable {
         } catch (Exception ex) {
             System.out.println("Erro no upload de imagem" + ex);
         }
+    }
+
+    public void doUpload(FileUploadEvent fileUploadEvent) {
+
+        UploadedFile uploadedFile = fileUploadEvent.getFile();
+
+        String fileNameUploaded = uploadedFile.getFileName();
+
+        long fileSizeUploaded = uploadedFile.getSize();
+
+        String infoAboutFile = "<br/> Arquivo recebido: <b>"
+                + fileNameUploaded + "</b><br/>" + "Tamanho do Arquivo: <b>"
+                + fileSizeUploaded + "</b>";
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        facesContext.addMessage(null, new FacesMessage("Sucesso", infoAboutFile));
     }
 
     public String getPath() {
