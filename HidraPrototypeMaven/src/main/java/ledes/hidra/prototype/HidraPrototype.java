@@ -21,7 +21,7 @@ public class HidraPrototype {
     public static void main(String[] args) {
        // setUpRepository();
 
-        commands = new RepositoryCommands();
+        commands = new Commands();
         if (args == null || args.length == 0) {
             System.out.println(commands.usage(HidraPrototype.class.getSimpleName()));
         } else {

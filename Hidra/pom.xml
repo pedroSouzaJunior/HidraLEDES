@@ -71,7 +71,7 @@
             <version>3.8.7_1</version>
         </dependency>
     </dependencies>
-    
+    <name>Hidra</name>
 </project>
 
 

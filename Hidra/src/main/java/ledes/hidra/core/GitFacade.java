@@ -86,7 +86,40 @@ public class GitFacade {
         return true;
 
     }
+    
+    
+    /**
+     * Method responsible for cloning a remote repository in a local directory that requires authentication with https protocol.
+     * The destination directory should be empty.
+     * @param directory
+     * @param remotePath
+     * @param user
+     * @param password
+     * @return
+     * @throws GitAPIException 
+     */
 
+    public boolean cloneRepository(File directory, String remotePath,String user, String password) throws GitAPIException{
+     
+        UsernamePasswordCredentialsProvider credential = new UsernamePasswordCredentialsProvider( user, password );
+        if (directory.exists() && directory.listFiles().length != 0) {
+            System.out.println("Repository not empty , Canceled Operation");
+            return false;
+        } else {
+            assistant = Git.cloneRepository().setURI(remotePath).setCredentialsProvider(credential)
+                    .setDirectory(directory).call();
+
+            try {
+                System.out.println("Repository successfully cloned "
+                        + assistant.getRepository().getDirectory());
+            } finally {
+                assistant.close();
+            }
+            return true;
+        }
+    }
+    
+    
     /**
      * Method responsible for cloning a remote repository in a local directory.
      * The destination directory should be empty.

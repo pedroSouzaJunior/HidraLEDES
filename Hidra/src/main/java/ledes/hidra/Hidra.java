@@ -97,6 +97,26 @@ public class Hidra {
         repository = new Repository(localPath, remotePath);
         return repository.cloneRepository();
     }
+    
+    
+    /**
+     * Cria, em um diretório vazio, uma cópia de um repositório indicado que requer autentificação com protocolo https.  Se o
+     * diretório não existir, ele será criado. Se o diretório não for vazio, ou
+     * tiver um repositório vazio inicializado, retornará erro.
+     *
+     * @param localPath - String que indica o caminho onde o repositório sera
+     * copiado
+     * @param remotePath - String que indica a URL - caso seja um repositório
+     * remoto - ou o caminho do repositorio a ser copiado
+     * @param user - String com o usuario do repositorio
+     * @param password - String com a senha do usuario do repositorio
+     * @return
+     */
+    public boolean startSynchronizedRepository(String localPath, String remotePath, String user, String password) {
+        repository = new Repository(localPath, remotePath);
+        return repository.cloneRepository(user, password);
+    }
+
 
   
     /**

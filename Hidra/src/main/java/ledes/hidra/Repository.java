@@ -160,7 +160,7 @@ public class Repository {
     }
 
     /**
-     * Clona um repositorio.
+     * Clona um repositorio. Sem necessidade de autentificação
      *
      * @return
      */
@@ -175,6 +175,18 @@ public class Repository {
         return false;
     }
 
+    
+    protected boolean cloneRepository(String user, String password){
+     try {
+            assistant.cloneRepository(directory, remotePath, user, password);
+            return true;
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+    
     protected boolean isRepository() {
         File hidraRepo = new File(localPath + separator + ".hidra");
         File[] matchingFilesAsset;
