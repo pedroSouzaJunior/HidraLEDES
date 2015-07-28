@@ -952,12 +952,14 @@ public class Repository {
     /**
      * Sincroniza o repositório local com as alterações do repositório remoto.
      *
+     * @param user
+     * @param password
      * @return
      */
-    public boolean synchronizeRepository() {
+    public boolean synchronizeRepository(String user, String password) {
 
         try {
-            return assistant.pull();
+            return assistant.pull(user, password);
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }

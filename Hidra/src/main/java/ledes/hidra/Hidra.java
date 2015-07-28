@@ -307,6 +307,14 @@ public class Hidra {
     }
     
     
+    public boolean synchronize(String user, String password){
+        
+            return repository.synchronizeRepository(user, password);
+        
+    
+    }
+    
+    
     public String showLogs(String assetName){
         return repository.getLog(assetName);
     }
@@ -345,4 +353,7 @@ public class Hidra {
     public String getRemoteRepo(){
         return repository.getRemoteRepo();
     }
+    
+    
+  
 }

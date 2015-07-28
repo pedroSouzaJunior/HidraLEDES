@@ -468,6 +468,7 @@ public class GitFacade {
      * @param user
      * @param password
      * @return
+     * @throws org.eclipse.jgit.api.errors.GitAPIException
      */
     public boolean push(String user, String password) throws GitAPIException {
         if (isRepositoryInitialized()) {
@@ -496,22 +497,26 @@ public class GitFacade {
     /**
      * Atualiza o repositorio local.
      *
+     * @param user
+     * @param password
      * @return
      * @throws GitAPIException
      */
-    public boolean pull() throws GitAPIException {
+    public boolean pull(String user, String password) throws GitAPIException {
+        
+        CredentialsProvider credential = new UsernamePasswordCredentialsProvider(user, password);
 
         if (isRepositoryInitialized()) {
             if (hasRemoteRepository()) {
                 PullResult pullResult;
 
-                pullResult = assistant.pull().call();
+                pullResult = assistant.pull().setCredentialsProvider(credential).call();
 
                 System.out.println(pullResult);
 
                 MergeResult mergeResult = pullResult.getMergeResult();
                 if (mergeResult != null) {
-                    //TODO     
+                    resolveConflictsMerge(mergeResult);
                 }
                 RebaseResult rebaseResult = pullResult.getRebaseResult();
                 if (rebaseResult != null) {
