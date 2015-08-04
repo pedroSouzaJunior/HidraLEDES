@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<asset short-description="jaxb java architecture xml binding" id="1" name="jaxb">
+    <profile name="" id-history="" version-major="" version-minor=""></profile>
+    <solution>
+        <artifacts>
+            <artifact name="" type="" reference="" id="" version=""></artifact>
+            <artifact name="" type="" reference="" id="" version=""></artifact>
+            <artifact name="" type="" reference="" id="" version=""></artifact>
+        </artifacts>
+        <requirements>
+            <artifact name="" type="" reference="" id="" version=""></artifact>
+        </requirements>
+        <design>
+            <artifact name="" type="" reference="" id="" version=""></artifact>
+        </design>
+        <implementation>
+            <artifact name="" type="" reference="" id="" version=""></artifact>
+        </implementation>
+        <test>
+            <artifact name="" type="" reference="" id="" version=""></artifact>
+        </test>
+    </solution>
+    <classification>
+        <contexts name="" id="" description="">
+            <descriptionGroup name="" reference="" description=""></descriptionGroup>
+            <descriptionGroup name="" reference="" description=""></descriptionGroup>
+            <descriptionGroup name="" reference="" description=""></descriptionGroup>
+        </contexts>
+        <contexts name="" id="" description="">
+            <descriptionGroup name="" reference="" description=""></descriptionGroup>
+        </contexts>
+        <contexts name="" id="" description="">
+            <descriptionGroup name="" reference="" description=""></descriptionGroup>
+        </contexts>
+        <descriptionGroups name="" reference="" description=""></descriptionGroups>
+        <descriptionGroups name="" reference="" description=""></descriptionGroups>
+        <descriptionGroups name="" reference="" description=""></descriptionGroups>
+    </classification>
+    <usage>
+        <artifactActivities artifactId="" contextId="">
+            <activities id="" task="" reference="" role="" taskRole="">
+                <variability id="" bindingRule=""></variability>
+                <variability id="" bindingRule=""></variability>
+                <variability id="" bindingRule=""></variability>
+            </activities>
+            <activities id="" task="" reference="" role="" taskRole="">
+                <variability id="" bindingRule=""></variability>
+            </activities>
+            <activities id="" task="" reference="" role="" taskRole="">
+                <variability id="" bindingRule=""></variability>
+            </activities>
+        </artifactActivities>
+        <artifactActivities artifactId="" contextId="">
+            <activities id="" task="" reference="" role="" taskRole="">
+                <variability id="" bindingRule=""></variability>
+            </activities>
+        </artifactActivities>
+        <artifactActivities artifactId="" contextId="">
+            <activities id="" task="" reference="" role="" taskRole="">
+                <variability id="" bindingRule=""></variability>
+            </activities>
+        </artifactActivities>
+        <contextReferences contextId="">
+            <activities id="" task="" reference="" role="" taskRole="">
+                <variability id="" bindingRule=""></variability>
+            </activities>
+        </contextReferences>
+        <contextReferences contextId="">
+            <activities id="" task="" reference="" role="" taskRole="">
+                <variability id="" bindingRule=""></variability>
+            </activities>
+        </contextReferences>
+        <contextReferences contextId="">
+            <activities id="" task="" reference="" role="" taskRole="">
+                <variability id="" bindingRule=""></variability>
+            </activities>
+        </contextReferences>
+    </usage>
+    <relatedAssetsList>
+        <listOfRelatedAssets name="" id="" reference="" relationshipType=""></listOfRelatedAssets>
+        <listOfRelatedAssets name="" id="" reference="" relationshipType=""></listOfRelatedAssets>
+        <listOfRelatedAssets name="" id="" reference="" relationshipType=""></listOfRelatedAssets>
+    </relatedAssetsList>
+    <relatedAssetsList>
+        <listOfRelatedAssets name="" id="" reference="" relationshipType=""></listOfRelatedAssets>
+    </relatedAssetsList>
+    <relatedAssetsList>
+        <listOfRelatedAssets name="" id="" reference="" relationshipType=""></listOfRelatedAssets>
+    </relatedAssetsList>
+
+</asset>
