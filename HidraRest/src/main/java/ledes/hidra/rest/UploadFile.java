@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ledes.hidra.services;
+package ledes.hidra.rest;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
@@ -36,7 +36,7 @@ public class UploadFile {
             @FormDataParam("path") String repository) {
 
         saveToDisk(uploadedFileInputStream, fileDetail, repository);
-        enableMonitoring(fileDetail, repository);
+        //enableMonitoring(fileDetail, repository);
 
         return "File Uploaded sucessfully in: " + repository;
     }

@@ -1,29 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package ledes.hidra.services;
+package ledes.hidra.rest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
+import ledes.hidra.rest.model.Command;
 
 /**
  *
- * @author pedro
+ * @author pedro e danielli
  */
 @Path("/services")
 public class Services {
@@ -34,28 +36,18 @@ public class Services {
         return hidra;
     }
 
-    @GET
-    @Path("/teste")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response teste() {
-
-        String sucess = "Tudo Celto.";
-
-        return Response.ok(sucess).build();
-    }
-
-    @GET
+    @POST
     @Path("/construct")
-    public Response construct(@Context UriInfo info) {
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response construct(Command command) {
 
-        String path = info.getQueryParameters().getFirst("path");
+        if (command.getLocalPath() != null) {
 
-        if (path != null) {
-
-            hidra = new Hidra(path);
+            hidra = new Hidra(command.getLocalPath());
 
             try {
-                hidra.startRepository(path);
+                hidra.startRepository(command.getLocalPath());
             } catch (IOException ex) {
                 Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
             } catch (JAXBException ex) {
@@ -63,10 +55,59 @@ public class Services {
             }
 
             return Response
-                    .status(200)
-                    .entity("repository was created in : " + path).build();
+                    .status(201)
+                    .entity("repository was created in : " + command.getLocalPath()).build();
         }
         return Response.status(500).entity("Error in server").build();
+    }
+
+    @POST
+    @Path("/insert")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response insertAsset(Command command) {
+
+        String uploadedFileLocation = command.getLocalPath() + File.separator + command.getAssetFile().getName();
+        InputStream in;
+        int read = 0;
+        byte[] bytes = new byte[1024];
+
+        if (command.getAssetFile() != null && command.getLocalPath() != null) {
+            try {
+                OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+                in = new FileInputStream(command.getAssetFile());
+                try {
+                    while ((read = in.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            return Response.status(201).entity("File uploade successfully in: " + command.getLocalPath()).build();
+        }
+        return Response.status(500).entity("Error in server").build();
+    }
+
+    /**
+     * *************************************************************************
+     * a partir daqui sao metodos de teste, e coisinhas que eu estava estudando
+     * daqui pra cima sao os metodos que ja estao funcionando.
+     *
+     *
+     * *************************************************************************
+     */
+    @GET
+    @Path("gettest")
+    @Produces(MediaType.APPLICATION_XML)
+    public Command getCommand() {
+
+        Command com = new Command("/var/www/hidra.com/hidra/danielli");
+        com.setAssetFile(new File("/home/pedro/Documentos/qsort.c"));
+        return com;
     }
 
     @GET
