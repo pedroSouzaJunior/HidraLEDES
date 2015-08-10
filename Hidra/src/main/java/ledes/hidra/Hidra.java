@@ -3,15 +3,26 @@ package ledes.hidra;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBException;
+import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
+import javax.xml.bind.JAXBContext;
+
+import javax.xml.bind.JAXBElement;
+
+import javax.xml.bind.JAXBException;
+
+import javax.xml.bind.Marshaller;
+import ledes.hidra.asset.Activity;
+import ledes.hidra.asset.ArtifactType;
 
 /**
  * This class provides all operation of a repository, by manipulating Repository
@@ -27,11 +38,11 @@ import org.xml.sax.SAXException;
  * @author Danielli Urbieta e Pedro Souza Junior
  */
 public class Hidra {
-    
-    public Hidra(String localPath){
+
+    public Hidra(String localPath) {
         super();
         repository = new Repository(localPath);
-        
+
     }
 
     /**
@@ -51,9 +62,6 @@ public class Hidra {
         this.repository = repository;
     }
 
-    
-    
-    
     /**
      * Inicializa um repositório local sem um repositório master associado. Se
      * não existir diretório ele será criado, se já existir um repositório no
@@ -63,16 +71,16 @@ public class Hidra {
      * @return - true se não houve problemas
      * @throws java.io.IOException
      * @throws javax.xml.bind.JAXBException
-     * 
+     *
      */
-
     public boolean startRepository(String localPath) throws IOException, JAXBException {
         boolean initialized = false;
 
         repository = new Repository(localPath);
-        
-        if (repository.isRepository())
+
+        if (repository.isRepository()) {
             initialized = true;
+        }
         try {
             return repository.init(initialized);
         } catch (IOException | JAXBException ex) {
@@ -97,12 +105,12 @@ public class Hidra {
         repository = new Repository(localPath, remotePath);
         return repository.cloneRepository();
     }
-    
-    
+
     /**
-     * Cria, em um diretório vazio, uma cópia de um repositório indicado que requer autentificação com protocolo https.  Se o
-     * diretório não existir, ele será criado. Se o diretório não for vazio, ou
-     * tiver um repositório vazio inicializado, retornará erro.
+     * Cria, em um diretório vazio, uma cópia de um repositório indicado que
+     * requer autentificação com protocolo https. Se o diretório não existir,
+     * ele será criado. Se o diretório não for vazio, ou tiver um repositório
+     * vazio inicializado, retornará erro.
      *
      * @param localPath - String que indica o caminho onde o repositório sera
      * copiado
@@ -117,18 +125,16 @@ public class Hidra {
         return repository.cloneRepository(user, password);
     }
 
-
-  
     /**
      * RF-01
      *
      * @param nameAsset
      * @return
-     * 
+     *
      */
     public boolean addAsset(String nameAsset) {
         try {
-           
+
             return repository.addAsset(nameAsset);
         } catch (SAXException | IOException | JAXBException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
@@ -142,7 +148,6 @@ public class Hidra {
      * @param assetId
      * @return
      */
-
     public String getSolution(String assetId) {
         return repository.getSolution(assetId);
 
@@ -155,7 +160,7 @@ public class Hidra {
      * @param solution
      * @return
      */
-    public boolean setSolutionType(String assetId, SolutionType solution){
+    public boolean setSolutionType(String assetId, SolutionType solution) {
         return repository.setSolutionType(assetId, solution);
     }
 
@@ -179,9 +184,9 @@ public class Hidra {
      *
      * @param assetId
      * @return
-     * 
+     *
      */
-    public boolean removeAsset(String assetId)  {
+    public boolean removeAsset(String assetId) {
         try {
             return repository.removeAsset(assetId);
         } catch (JAXBException | FileNotFoundException ex) {
@@ -196,7 +201,7 @@ public class Hidra {
      * @param assetId
      * @return
      */
-    public String getClassification(String assetId){
+    public String getClassification(String assetId) {
         return repository.getClassification(assetId);
     }
 
@@ -217,7 +222,7 @@ public class Hidra {
      * @param assetId
      * @return
      */
-    public String getUsage(String assetId){
+    public String getUsage(String assetId) {
         return repository.getUsage(assetId);
     }
 
@@ -228,7 +233,7 @@ public class Hidra {
      * @return
      */
     public boolean setUsage(String assetId, UsageType usage) {
-        return repository.setUsage(assetId,usage);
+        return repository.setUsage(assetId, usage);
     }
 
     /**
@@ -241,8 +246,6 @@ public class Hidra {
         return repository.getRelatedAssets(assetId);
     }
 
-    
-    
     /**
      * RF-08
      *
@@ -273,7 +276,6 @@ public class Hidra {
 //    public String getLog(String assetId) {
 //        return repository.getLog(assetId, false);
 //    }
-
     /**
      * RF-10
      *
@@ -294,41 +296,42 @@ public class Hidra {
         return repository.downloadAsset(assetId);
     }
 
-    
-    public boolean save(String message){
-    
+    public boolean save(String message) {
+
         try {
             return repository.saveChanges(message);
         } catch (SAXException | IOException | JAXBException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-    
+
     }
-    
-    
-    public boolean synchronize(String user, String password){
-        
-            return repository.synchronizeRepository(user, password);
-        
-    
+
+    public boolean synchronize(String user, String password) {
+
+        return repository.synchronizeRepository(user, password);
+
     }
-    
-    
-    public String showLogs(String assetName){
+
+    public boolean update(String user, String password) {
+
+        return repository.updateRepository(user, password);
+    }
+
+    public String showLogs(String assetName) {
         return repository.getLog(assetName);
     }
-    
-    public String showLogs(){
+
+    public String showLogs() {
         return repository.getLog();
     }
-    
-    public Map<String, Set<String>> showStatus(){
+
+    public Map<String, Set<String>> showStatus() {
         return repository.showStatus();
-    
+
     }
-    
-    public boolean updateAsset(String assetName){
+
+    public boolean updateAsset(String assetName) {
         try {
             return repository.updateAsset(assetName);
         } catch (JAXBException | Repository.ValidationRuntimeException | SAXException | IOException ex) {
@@ -336,24 +339,106 @@ public class Hidra {
         }
         return false;
     }
-    
-    public void setUser(String name, String email){
+
+    public void setUser(String name, String email) {
         repository.setUserRepo(name, email);
     }
-    
-    public Map<String, String> getUser(){
+
+    public Map<String, String> getUser() {
         return repository.getUserRepo();
-        
+
     }
-   
-    public void setRemoteRepo(String url){
-         repository.setRemoteRepo(url);
+
+    public void setRemoteRepo(String url) {
+        repository.setRemoteRepo(url);
     }
-    
-    public String getRemoteRepo(){
+
+    public String getRemoteRepo() {
         return repository.getRemoteRepo();
     }
+
+    public void createTemplateAsset() throws JAXBException {
+
+        Asset asset = new Asset();
+        asset.setId("1");
+        asset.setName("Asset");
+        asset.setSolution(createDefaultSolution());
+
+        // File file = new File("C:\\file.xml");
+        JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
+        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+        // output pretty printed
+        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        //  jaxbMarshaller.marshal(asset, file);
+        jaxbMarshaller.marshal(asset, System.out);
+
+    }
+
+    public SolutionType createDefaultSolution() {
+
+        ArtifactType art = new ArtifactType();
+        SolutionType sol = new SolutionType();
+        SolutionType.Design des = new SolutionType.Design();
+        art.setId("1");
+        art.setName("design");
+        art.setReference(File.separator + "Design");
+        art.setType("Folder");
+        des.getArtifact().add(art);
+        sol.setDesign(des);
+        
+        SolutionType.Artifacts arts = new SolutionType.Artifacts();
+        art = new ArtifactType();
+        art.setId("1");
+        art.setName("artifacts");
+        art.setReference(File.separator + "Artifacts");
+        art.setType("Folder");
+        arts.getArtifact().add(art);
+        sol.setArtifacts(arts);
+        
+        
+        SolutionType.Implementation impl= new SolutionType.Implementation();
+        art = new ArtifactType();
+        art.setId("1");
+        art.setName("implementation");
+        art.setReference(File.separator + "Implementation");
+        art.setType("Folder");
+        impl.getArtifact().add(art);
+        sol.setImplementation(impl);
+        
+        SolutionType.Requirements req = new SolutionType.Requirements();
+        art = new ArtifactType();
+        art.setId("1");
+        art.setName("requirements");
+        art.setReference(File.separator + "Requirements");
+        art.setType("Folder");
+        req.getArtifact().add(art);
+        sol.setRequirements(req);
+        
+        
+        SolutionType.Test test = new SolutionType.Test();
+        art = new ArtifactType();
+        art.setId("1");
+        art.setName("test");
+        art.setReference(File.separator + "Test");
+        art.setType("Folder");
+        test.getArtifact().add(art);
+        sol.setTest(test);
+
+        return sol;
+    }
     
+    public UsageType createUsageDefault(){
     
-  
+        UsageType usage = new UsageType();
+        Activity act = new Activity();
+        act.setId("1");
+        act.setReference(File.separator+ "usage");
+        act.setRole("");
+        act.setTask("");
+        act.setTaskRole("");
+       return usage;
+    }
+
 }
