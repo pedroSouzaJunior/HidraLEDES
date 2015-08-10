@@ -42,12 +42,12 @@ public class Services {
     @Produces(MediaType.APPLICATION_XML)
     public Response construct(Command command) {
 
-        if (command.getLocalPath() != null) {
+        if (command.getDestiny() != null) {
 
-            hidra = new Hidra(command.getLocalPath());
+            hidra = new Hidra(command.getDestiny());
 
             try {
-                hidra.startRepository(command.getLocalPath());
+                hidra.startRepository(command.getDestiny());
             } catch (IOException ex) {
                 Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
             } catch (JAXBException ex) {
@@ -56,7 +56,7 @@ public class Services {
 
             return Response
                     .status(201)
-                    .entity("repository was created in : " + command.getLocalPath()).build();
+                    .entity("repository was created in : " + command.getDestiny()).build();
         }
         return Response.status(500).entity("Error in server").build();
     }
@@ -67,12 +67,12 @@ public class Services {
     @Produces(MediaType.APPLICATION_XML)
     public Response insertAsset(Command command) {
 
-        String uploadedFileLocation = command.getLocalPath() + File.separator + command.getAssetFile().getName();
+        String uploadedFileLocation = command.getDestiny() + File.separator + command.getAssetFile().getName();
         InputStream in;
         int read = 0;
         byte[] bytes = new byte[1024];
 
-        if (command.getAssetFile() != null && command.getLocalPath() != null) {
+        if (command.getAssetFile() != null && command.getDestiny() != null) {
             try {
                 OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
                 in = new FileInputStream(command.getAssetFile());
@@ -80,6 +80,8 @@ public class Services {
                     while ((read = in.read(bytes)) != -1) {
                         out.write(bytes, 0, read);
                     }
+                    out.flush();
+                    out.close();
                 } catch (IOException ex) {
                     Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -87,7 +89,7 @@ public class Services {
                 Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            return Response.status(201).entity("File uploade successfully in: " + command.getLocalPath()).build();
+            return Response.status(201).entity("File uploade successfully in: " + command.getDestiny()).build();
         }
         return Response.status(500).entity("Error in server").build();
     }

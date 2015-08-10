@@ -15,22 +15,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Command {
 
-    private String localPath;
+    private String destiny;
     private File assetFile;
 
     public Command() {
     }
 
     public Command(String localPath) {
-        this.localPath = localPath;
+        this.destiny = localPath;
     }
 
-    public String getLocalPath() {
-        return localPath;
+    public String getDestiny() {
+        return destiny;
     }
 
-    public void setLocalPath(String localPath) {
-        this.localPath = localPath;
+    public void setDestiny(String destiny) {
+        this.destiny = destiny;
     }
 
     public File getAssetFile() {
