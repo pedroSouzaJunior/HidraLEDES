@@ -21,6 +21,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
+import ledes.hidra.resources.HidraResources;
+import ledes.hidra.resources.Zipper;
 import ledes.hidra.rest.model.Command;
 
 /**
@@ -65,17 +67,22 @@ public class Services {
     @Path("/insert")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response insertAsset(Command command) {
+    public Response insertAsset(Command command) throws IOException {
 
-        String uploadedFileLocation = command.getDestiny() + File.separator + command.getAssetFile().getName();
+        //zipando arquivo
+        Zipper zipper = new Zipper();
+        zipper.criarZip(command.getAssetFile(), command.getAssetFile().listFiles());
+
+        //enviando arquivo ao servidor
+        String uploadedFileLocation = command.getDestiny() + File.separator + zipper.getArquivoZipAtual().getName();
         InputStream in;
         int read = 0;
         byte[] bytes = new byte[1024];
 
-        if (command.getAssetFile() != null && command.getDestiny() != null) {
+        if (zipper.getArquivoZipAtual() != null && command.getDestiny() != null) {
             try {
                 OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-                in = new FileInputStream(command.getAssetFile());
+                in = new FileInputStream(zipper.getArquivoZipAtual());
                 try {
                     while ((read = in.read(bytes)) != -1) {
                         out.write(bytes, 0, read);
@@ -90,6 +97,29 @@ public class Services {
             }
 
             return Response.status(201).entity("File uploade successfully in: " + command.getDestiny()).build();
+        }
+        return Response.status(500).entity("Error in server").build();
+    }
+
+    @POST
+    @Path("/addasset")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response addAsset(Command command) throws IOException {
+
+        File destiny = new File(command.getDestiny());
+        File asset = new File(destiny.getPath() + File.separator + command.getAssetFile().getName() + ".zip");
+        boolean exist = false;
+        HidraResources resources = new HidraResources();
+        Zipper zipper = new Zipper();
+
+        //TODO: verificar se esta passando certo
+            exist = resources.assetExist(destiny, "" /*command.getAssetFile().getName()*/);
+
+        if (false != exist) {
+            System.out.println("oooOOOOOOOOOOOOOOHHHHHHH");
+            //zipper.extrairZip(asset, destiny);
+            return Response.status(200).entity("asset ok").build();
         }
         return Response.status(500).entity("Error in server").build();
     }
