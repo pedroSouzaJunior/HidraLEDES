@@ -217,5 +217,5 @@ public class Zipper {
     }
 
     private File arquivoZipAtual;
-    private static final int TAMANHO_BUFFER = 2048; // 2 Kb
+    private static final int TAMANHO_BUFFER = 10000; // 5 Kb
 }

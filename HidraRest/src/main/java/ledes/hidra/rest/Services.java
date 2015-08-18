@@ -89,6 +89,7 @@ public class Services {
                     }
                     out.flush();
                     out.close();
+                    zipper.getArquivoZipAtual().delete();
                 } catch (IOException ex) {
                     Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -106,21 +107,38 @@ public class Services {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response addAsset(Command command) throws IOException {
+        Hidra hidra = new Hidra(command.getDestiny());
 
-        File destiny = new File(command.getDestiny());
-        File asset = new File(destiny.getPath() + File.separator + command.getAssetFile().getName() + ".zip");
-        boolean exist = false;
+        File destiny = new File(command.getDestiny() + File.separator + command.getAssetFile().getName());
+
+        File asset = new File(destiny.getParent() + File.separator + command.getAssetFile().getName() + ".zip");
+
         HidraResources resources = new HidraResources();
         Zipper zipper = new Zipper();
 
-        //TODO: verificar se esta passando certo
-            exist = resources.assetExist(destiny, "" /*command.getAssetFile().getName()*/);
+        if (resources.assetExist(destiny.getParentFile(), command.getAssetFile().getName())) {
 
-        if (false != exist) {
-            System.out.println("oooOOOOOOOOOOOOOOHHHHHHH");
-            //zipper.extrairZip(asset, destiny);
-            return Response.status(200).entity("asset ok").build();
+            zipper.extrairZip(asset, destiny);
+            hidra.addAsset(command.getAssetFile().getName());
+            asset.delete();
+
+            return Response.status(200).entity("ativo adicionado com sucesso").build();
         }
+        return Response.status(500).entity("arquivo nao encontrado").build();
+    }
+
+    @POST
+    @Path("/submit")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response submit(Command command) {
+
+        Hidra hidra = new Hidra(command.getDestiny());
+        
+        if (hidra.save(command.getSubmitMessage())) {
+            return Response.status(200).entity("ok").build();
+        }
+
         return Response.status(500).entity("Error in server").build();
     }
 
@@ -139,6 +157,7 @@ public class Services {
 
         Command com = new Command("/var/www/hidra.com/hidra/danielli");
         com.setAssetFile(new File("/home/pedro/Documentos/qsort.c"));
+        com.setSubmitMessage("Message to commit default");
         return com;
     }
 

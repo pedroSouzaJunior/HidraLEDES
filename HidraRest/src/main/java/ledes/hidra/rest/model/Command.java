@@ -17,6 +17,7 @@ public class Command {
 
     private String destiny;
     private File assetFile;
+    private String submitMessage;
 
     public Command() {
     }
@@ -39,6 +40,14 @@ public class Command {
 
     public void setAssetFile(File assetFile) {
         this.assetFile = assetFile;
+    }
+
+    public String getSubmitMessage() {
+        return submitMessage;
+    }
+
+    public void setSubmitMessage(String submitMessage) {
+        this.submitMessage = submitMessage;
     }
 
 }
