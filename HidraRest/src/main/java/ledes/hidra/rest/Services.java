@@ -134,7 +134,7 @@ public class Services {
     public Response submit(Command command) {
 
         Hidra hidra = new Hidra(command.getDestiny());
-        
+
         if (hidra.save(command.getSubmitMessage())) {
             return Response.status(200).entity("ok").build();
         }
@@ -142,6 +142,106 @@ public class Services {
         return Response.status(500).entity("Error in server").build();
     }
 
+    @POST
+    @Path("/solution")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getSolution(Command command) {
+
+        Hidra hidra = new Hidra(command.getDestiny());
+        String solution = hidra.getSolution(command.getAssetFile().getName());
+
+        if (!solution.isEmpty()) {
+            return Response.status(200).entity(solution).build();
+        }
+
+        return Response.status(500).entity("Error in Server").build();
+    }
+
+    @POST
+    @Path("/classification")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getClassification(Command command) {
+
+        Hidra hidra = new Hidra(command.getDestiny());
+        String classification = hidra.getClassification(command.getAssetFile().getName());
+
+        if (!classification.isEmpty()) {
+            return Response.status(200).entity(classification).build();
+        }
+
+        return Response.status(500).entity("Error in Server").build();
+    }
+    
+    @POST
+    @Path("/usage")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getUsage(Command command) {
+
+        Hidra hidra = new Hidra(command.getDestiny());
+        String usage = hidra.getUsage(command.getAssetFile().getName());
+
+        if (!usage.isEmpty()) {
+            return Response.status(200).entity(usage).build();
+        }
+
+        return Response.status(500).entity("Error in Server").build();
+    }
+    
+    
+    
+    @POST
+    @Path("/related")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getRelatedAssets(Command command) {
+
+        Hidra hidra = new Hidra(command.getDestiny());
+        String related = hidra.getRelatedAssets(command.getAssetFile().getName());
+
+        if (!related.isEmpty()) {
+            return Response.status(200).entity(related).build();
+        }
+
+        return Response.status(500).entity("Error in Server").build();
+    }
+    
+    
+    
+    @POST
+    @Path("/log")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getLog(Command command) {
+
+        Hidra hidra = new Hidra(command.getDestiny());
+        String log = hidra.getLog(command.getAssetFile().getName());
+
+        if (!log.isEmpty()) {
+            return Response.status(200).entity(log).build();
+        }
+
+        return Response.status(500).entity("Error in Server").build();
+    }
+
+    @POST
+    @Path("/showLogs")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getStatus(Command command) {
+
+        Hidra hidra = new Hidra(command.getDestiny());
+        String logs = hidra.showLogs();
+
+        if (!logs.isEmpty()) {
+            return Response.status(200).entity(logs).build();
+        }
+
+        return Response.status(500).entity("Error in Server").build();
+    }
+    
     /**
      * *************************************************************************
      * a partir daqui sao metodos de teste, e coisinhas que eu estava estudando
