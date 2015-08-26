@@ -3,8 +3,6 @@ package ledes.hidra;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -16,7 +14,6 @@ import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
 import javax.xml.bind.JAXBContext;
 
-import javax.xml.bind.JAXBElement;
 
 import javax.xml.bind.JAXBException;
 
@@ -54,10 +51,19 @@ public class Hidra {
     public Hidra() {
     }
 
+    
+    /**
+     * Retorna um repositorio Hidra.
+     * @return 
+     */
     public Repository getRepository() {
         return repository;
     }
 
+    /**
+     * Define o repositório Hidra.
+     * @param repository 
+     */
     public void setRepository(Repository repository) {
         this.repository = repository;
     }
@@ -127,7 +133,8 @@ public class Hidra {
 
     /**
      * RF-01
-     *
+     * Adiciona um ativo válido com seus artefatos ao repositório.
+     * Recebe nome do ativo no repositório
      * @param nameAsset
      * @return
      *
@@ -166,7 +173,7 @@ public class Hidra {
 
     /**
      * RF-04
-     *
+     * Permite verificar se um ativo é válido de acordo com o padrão RAS adotado.
      * @param assetPath
      * @return
      */
@@ -180,15 +187,15 @@ public class Hidra {
     }
 
     /**
-     * RF-05
+     * Remove um ativo do repositório. 
      *
-     * @param assetId
+     * @param assetName - Recebe o nome do ativo a ser removido.
      * @return
      *
      */
-    public boolean removeAsset(String assetId) {
+    public boolean removeAsset(String assetName) {
         try {
-            return repository.removeAsset(assetId);
+            return repository.removeAsset(assetName);
         } catch (JAXBException | FileNotFoundException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -207,7 +214,7 @@ public class Hidra {
 
     /**
      * RF-06
-     *
+     * Define a classificação de um ativo.
      * @param assetID
      * @param classification
      * @return
@@ -218,7 +225,7 @@ public class Hidra {
 
     /**
      * RF-07, RF-14
-     *
+     * Retorna a utilização (Usage) de um ativo.
      * @param assetId
      * @return
      */
@@ -228,7 +235,7 @@ public class Hidra {
 
     /**
      * RF-07
-     *
+     * Define o usage de um ativo.
      * @param usage
      * @return
      */
@@ -238,7 +245,7 @@ public class Hidra {
 
     /**
      * RF-08
-     *
+     * Retorna a dependência (RelatedAssets) entre ativos.
      * @param assetId
      * @return
      */
@@ -248,9 +255,10 @@ public class Hidra {
 
     /**
      * RF-08
+     * Define a dependência entre os ativos.
      *
-     * @param assetId
-     * @param relatedId
+     * @param assetId - Ativo que deseja registrar dependência
+     * @param relatedId - Ativo que se tem dependência.
      * @return
      */
     public boolean setRelatedAsset(String assetId, String relatedId) {
@@ -259,7 +267,7 @@ public class Hidra {
 
     /**
      * RF-09
-     *
+     * Retorna informações sobre mudanças de um ativo específico.
      * @param assetName
      * @return
      */
@@ -267,19 +275,19 @@ public class Hidra {
         return repository.getLog(assetName);
     }
 
-//    /**
-//     * RF-09
-//     *
-//     * @param assetId
-//     * @return
-//     */
-//    public String getLog(String assetId) {
-//        return repository.getLog(assetId, false);
-//    }
+    
+    /**
+     * Retorna informações sobre mudanças em todo repositório.
+     * @return 
+     */
+    public String getLog() {
+        return repository.getLog();
+    }
+
     /**
      * RF-10
-     *
-     * @return
+     * Retorna uma lista com todos os ativos validados e monitorados no repositório.
+     * @return 
      */
     public Map<String, String> listAssets() {
         return repository.listAssets();
@@ -287,8 +295,8 @@ public class Hidra {
 
     /**
      * RF-11
-     *
-     * @param assetId
+     * Realiza o download do ativo em formato compactado.
+     * @param assetId - Nome do ativo
      * @return
      * @throws java.io.FileNotFoundException
      */
@@ -296,6 +304,12 @@ public class Hidra {
         return repository.downloadAsset(assetId);
     }
 
+    /**
+     * Salva todas as alterações realizadas no repositório.
+     * É obrigatório o envio de uma mensagem informando as alterações realizadas.
+     * @param message
+     * @return 
+     */
     public boolean save(String message) {
 
         try {
@@ -307,30 +321,45 @@ public class Hidra {
 
     }
 
+    /**
+     * Atualiza o repositório local com as mudanças do repositório remoto.
+     * É necessário autentificação para habilitar acesso.
+     * @param user - String 
+     * @param password - String
+     * @return 
+     */
     public boolean synchronize(String user, String password) {
 
         return repository.synchronizeRepository(user, password);
 
     }
 
-    public boolean update(String user, String password) {
+    /**
+     * Envia as alterações do repositório local ao repositório remoto.
+     * @param user
+     * @param password
+     * @return String
+     */
+    public String update(String user, String password) {
 
         return repository.updateRepository(user, password);
     }
 
-    public String showLogs(String assetName) {
-        return repository.getLog(assetName);
-    }
-
-    public String showLogs() {
-        return repository.getLog();
-    }
-
+    
+    /**
+     * Retorna informações sobre o estado do repositório.
+     * @return 
+     */
     public Map<String, Set<String>> showStatus() {
         return repository.showStatus();
 
     }
 
+    /**
+     * Atualiza um ativo.
+     * @param assetName
+     * @return 
+     */
     public boolean updateAsset(String assetName) {
         try {
             return repository.updateAsset(assetName);
@@ -340,19 +369,36 @@ public class Hidra {
         return false;
     }
 
+    /**
+     * Define o usuário do repositório.
+     * @param name
+     * @param email 
+     */
     public void setUser(String name, String email) {
         repository.setUserRepo(name, email);
     }
 
+    /**
+     * Retorna o usuário atual do repositório
+     * @return 
+     */
     public Map<String, String> getUser() {
         return repository.getUserRepo();
 
     }
 
+    /**
+     * Define o repositório remoto de um repositório local.
+     * @param url 
+     */
     public void setRemoteRepo(String url) {
         repository.setRemoteRepo(url);
     }
 
+    /**
+     * Retorna informações sobre o repositório remoto
+     * @return 
+     */
     public String getRemoteRepo() {
         return repository.getRemoteRepo();
     }

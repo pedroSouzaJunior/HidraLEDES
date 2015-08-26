@@ -892,7 +892,7 @@ public class Repository {
      * @param assetName - Recebe o nome do ativo a ser removido
      * @return retorna verdadeiro caso a operação seja bem sucedida.
      */
-    boolean removeAsset(String assetName) throws JAXBException, FileNotFoundException {
+    public boolean removeAsset(String assetName) throws JAXBException, FileNotFoundException {
         Asset asset = readAsset(assetName);
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
         dao.delete(asset.getName(), asset.getId());
@@ -927,14 +927,16 @@ public class Repository {
      * @param password
      * @return
      */
-    public boolean updateRepository(String user, String password) {
+    public String updateRepository(String user, String password) {
 
         try {
-            return assistant.push(user, password);
+            assistant.push(user, password);
+            return "Repository Updated ";
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+             return ex.getMessage();
         }
-        return false;
+       
 
     }
 

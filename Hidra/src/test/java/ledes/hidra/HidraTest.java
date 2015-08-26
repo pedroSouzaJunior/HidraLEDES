@@ -170,14 +170,15 @@ public class HidraTest {
      */
     @Test
     public void testValidateAsset() {
+        
         System.out.println("validateAsset");
-        String assetPath = "";
-        Hidra instance = new Hidra();
-        boolean expResult = false;
+        String assetPath = "/home/danielli/repo3/jaxb/";
+        Hidra instance = new Hidra("/home/danielli/repo3");
+        boolean expResult = true;
         boolean result = instance.validateAsset(assetPath);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       
     }
 
     /**
