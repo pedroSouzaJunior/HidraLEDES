@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -21,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
+import ledes.hidra.asset.SolutionType;
 import ledes.hidra.resources.HidraResources;
 import ledes.hidra.resources.Zipper;
 import ledes.hidra.rest.model.Command;
@@ -240,6 +243,31 @@ public class Services {
         }
 
         return Response.status(500).entity("Error in Server").build();
+    }
+    
+    @POST
+    @Path("/removeasset")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response remove(Command command){
+    
+        Hidra hidra = new Hidra(command.getDestiny());
+        
+        if (hidra.removeAsset(command.getAssetFile().getName())) {
+            return Response.status(200).entity("Ativo removido com Sucesso").build();
+        }
+        
+       return Response.status(500).entity("Erro Interno ").build();
+    }
+    
+    @POST
+    @Path("defineSolution")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response defineSolution(Command command){
+    
+        SolutionType Sol = new SolutionType();
+        return Response.status(200).entity("funciona").build();
     }
     
     /**
