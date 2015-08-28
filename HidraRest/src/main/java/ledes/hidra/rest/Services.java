@@ -11,11 +11,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -23,13 +21,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
+import ledes.hidra.asset.ArtifactType;
+import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.resources.HidraResources;
 import ledes.hidra.resources.Zipper;
 import ledes.hidra.rest.model.Command;
 
 /**
- *
+ * Classe Responsavel pelo tratamento de servicos do projeto Hidra.
+ * 
  * @author pedro e danielli
  */
 @Path("/services")
@@ -41,6 +42,12 @@ public class Services {
         return hidra;
     }
 
+    /***
+     * Metodo resposavel pela inicializacao de um repositorio utilizando a classe
+     * Command
+     * @param command
+     * @return 
+     */
     @POST
     @Path("/construct")
     @Consumes(MediaType.APPLICATION_XML)
@@ -66,6 +73,12 @@ public class Services {
         return Response.status(500).entity("Error in server").build();
     }
 
+    /***
+     * Metodo utilizado para upload de ativos para o repositorio remoto.
+     * @param command
+     * @return
+     * @throws IOException 
+     */
     @POST
     @Path("/insert")
     @Consumes(MediaType.APPLICATION_XML)
@@ -105,6 +118,13 @@ public class Services {
         return Response.status(500).entity("Error in server").build();
     }
 
+    /***
+     * Metodo utilizado em conjunto do metodo insert para adicao de ativos no
+     * repositorio remoto
+     * @param command
+     * @return
+     * @throws IOException 
+     */
     @POST
     @Path("/addasset")
     @Consumes(MediaType.APPLICATION_XML)
@@ -130,6 +150,12 @@ public class Services {
         return Response.status(500).entity("arquivo nao encontrado").build();
     }
 
+    /***
+     * Metodo utilizado para realizar um commit das modificacoes em ativos no
+     * repositorio remoto
+     * @param command
+     * @return 
+     */
     @POST
     @Path("/submit")
     @Consumes(MediaType.APPLICATION_XML)
@@ -145,6 +171,12 @@ public class Services {
         return Response.status(500).entity("Error in server").build();
     }
 
+    /***
+     * Metodo responsavel pela obtencao dos valores que representam a Solution
+     * de um ativo de software
+     * @param command
+     * @return 
+     */
     @POST
     @Path("/solution")
     @Consumes(MediaType.APPLICATION_XML)
@@ -161,6 +193,12 @@ public class Services {
         return Response.status(500).entity("Error in Server").build();
     }
 
+    /***
+     * Metodo responsavel pela obtencao dos valores que representam a Classification
+     * de um ativo de software
+     * @param command
+     * @return 
+     */
     @POST
     @Path("/classification")
     @Consumes(MediaType.APPLICATION_XML)
@@ -176,7 +214,13 @@ public class Services {
 
         return Response.status(500).entity("Error in Server").build();
     }
-    
+
+    /***
+     * Metodo responsaveis pela obtencao dos valores que representam o Usage de um ativo
+     * de software
+     * @param command
+     * @return 
+     */
     @POST
     @Path("/usage")
     @Consumes(MediaType.APPLICATION_XML)
@@ -192,9 +236,13 @@ public class Services {
 
         return Response.status(500).entity("Error in Server").build();
     }
-    
-    
-    
+
+    /***
+     * Metodo responsavel pela obtencao dos valores que representam os ativos 
+     * Relacionados 
+     * @param command
+     * @return 
+     */
     @POST
     @Path("/related")
     @Consumes(MediaType.APPLICATION_XML)
@@ -210,9 +258,7 @@ public class Services {
 
         return Response.status(500).entity("Error in Server").build();
     }
-    
-    
-    
+
     @POST
     @Path("/log")
     @Consumes(MediaType.APPLICATION_XML)
@@ -244,32 +290,73 @@ public class Services {
 
         return Response.status(500).entity("Error in Server").build();
     }
-    
+
     @POST
     @Path("/removeasset")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response remove(Command command){
-    
+    public Response remove(Command command) {
+
         Hidra hidra = new Hidra(command.getDestiny());
-        
+
         if (hidra.removeAsset(command.getAssetFile().getName())) {
             return Response.status(200).entity("Ativo removido com Sucesso").build();
         }
-        
-       return Response.status(500).entity("Erro Interno ").build();
+
+        return Response.status(500).entity("Erro Interno ").build();
     }
-    
+
     @POST
-    @Path("defineSolution")
+    @Path("/defineSolution")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response defineSolution(Command command){
-    
+    public SolutionType defineSolution(Command command) {
+
+        ArtifactType art = new ArtifactType();
+        art.setId("10");
+        art.setName("PASTA");
+        art.setReference("/OUTRA_PASTA");
+        art.setType("Folder");
+        art.setVersion("00012");
+
         SolutionType Sol = new SolutionType();
-        return Response.status(200).entity("funciona").build();
+        Sol.getArtifacts().getArtifact().add(null);
+        Sol.getDesign().getArtifact().add(null);
+        Sol.getImplementation().getArtifact().add(null);
+        Sol.getRequirements().getArtifact().add(null);
+        Sol.getTest().getArtifact().add(null);
+
+        return null;
     }
-    
+
+    @GET
+    @Path("/asset")
+    @Produces(MediaType.APPLICATION_XML)
+    public Asset getAsset() {
+
+        Asset asset = new Asset();
+        asset.setId("003");
+
+        ArtifactType art = new ArtifactType();
+        art.setId("10");
+        art.setName("PASTA");
+        art.setReference("/OUTRA_PASTA");
+        art.setType("Folder");
+        art.setVersion("00012");
+
+        SolutionType Sol = new SolutionType();
+        Sol.getArtifacts().getArtifact().add(art);
+        Sol.getDesign().getArtifact().add(art);
+        Sol.getImplementation().getArtifact().add(art);
+        Sol.getRequirements().getArtifact().add(art);
+        Sol.getTest().getArtifact().add(art);
+        
+        asset.setSolution(Sol);
+
+        return asset;
+
+    }
+
     /**
      * *************************************************************************
      * a partir daqui sao metodos de teste, e coisinhas que eu estava estudando
