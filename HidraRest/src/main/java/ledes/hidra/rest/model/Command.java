@@ -17,7 +17,9 @@ public class Command {
 
     private String destiny;
     private File assetFile;
+    private String assetName;
     private String submitMessage;
+    private String pathToDownload;
 
     public Command() {
     }
@@ -48,6 +50,22 @@ public class Command {
 
     public void setSubmitMessage(String submitMessage) {
         this.submitMessage = submitMessage;
+    }
+
+    public String getAssetName() {
+        return assetName;
+    }
+
+    public void setAssetName(String assetName) {
+        this.assetName = assetName;
+    }
+
+    public String getPathToDownload() {
+        return pathToDownload;
+    }
+
+    public void setPathToDownload(String pathToDownload) {
+        this.pathToDownload = pathToDownload;
     }
 
 }

@@ -38,6 +38,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 public class Services {
 
     private static final String UPLOAD_PATH_TEMP = File.separator + ".hidra" + File.separator + ".temp" + File.separator + ".uploads";
+    private static final String DOWNLOAD_PATH_TEMP = File.separator + ".hidra" + File.separator + ".temp" + File.separator + ".downloads";
     private Hidra hidra;
 
     public Hidra getHidra() {
@@ -394,6 +395,8 @@ public class Services {
 
         Command com = new Command("/var/www/hidra.com/hidra/danielli");
         com.setAssetFile(new File("/home/pedro/Documentos/qsort.c"));
+        com.setAssetName("jaxb");
+        com.setPathToDownload("/home/pedro/Downloads/downHidra");
         com.setSubmitMessage("Message to commit default");
         return com;
     }
@@ -417,32 +420,46 @@ public class Services {
     @Path("/downloadAsset")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getFile(Command command) {
+    public Response getFile(Command command) throws IOException {
 
-        String downloadedFileLocation = command.getDestiny() + File.separator + command.getAssetFile().getName();
+        Hidra hidra = new Hidra(command.getDestiny());
+        Zipper zipper = new Zipper();
+        File assetFile = new File(command.getDestiny() + File.separator + command.getAssetName());
 
-        InputStream in;
-        int read = 0;
-        byte[] bytes = new byte[1024];
+        System.out.println("Destiny: " + command.getDestiny() + DOWNLOAD_PATH_TEMP + File.separator + command.getAssetName());
 
-        try {
-            OutputStream out = new FileOutputStream(new File(downloadedFileLocation));
-            in = new FileInputStream(command.getAssetFile());
+        File destiny = new File(command.getDestiny() + DOWNLOAD_PATH_TEMP + File.separator + command.getAssetName() + ".zip");
+
+        if (hidra.findAsset(command.getAssetName())) {
+            zipper.criarZip(assetFile, assetFile.listFiles());
+            zipper.getArquivoZipAtual().renameTo(new File(destiny, command.getAssetName()));
+
+            String downloadedFileLocation = command.getPathToDownload() + File.separator + command.getAssetName() + ".zip";
+
+            InputStream in;
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
             try {
-                while ((read = in.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
+                OutputStream out = new FileOutputStream(new File(downloadedFileLocation));
+                in = new FileInputStream(zipper.getArquivoZipAtual());
+                try {
+                    while ((read = in.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                    out.flush();
+                    out.close();
+                    zipper.getArquivoZipAtual().delete();
+                } catch (IOException ex) {
+                    Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                out.flush();
-                out.close();
-
-            } catch (IOException ex) {
+            } catch (FileNotFoundException ex) {
                 Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-        return Response.status(201).entity("File uploade successfully in: " + command.getDestiny()).build();
+            return Response.status(201).entity("File download successfully in: " + command.getPathToDownload()).build();
+        }
+        return Response.status(500).entity("ERROR ").build();
     }
 
 }
