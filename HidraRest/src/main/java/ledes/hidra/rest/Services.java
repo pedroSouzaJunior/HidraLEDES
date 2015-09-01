@@ -282,7 +282,7 @@ public class Services {
     public Response getStatus(Command command) {
 
         Hidra hidra = new Hidra(command.getDestiny());
-        String logs = hidra.showLogs();
+        String logs = hidra.getLog();
 
         if (!logs.isEmpty()) {
             return Response.status(200).entity(logs).build();
