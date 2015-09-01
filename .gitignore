@@ -16,4 +16,7 @@
 /HidraPrototypeMaven/build/
 /HidraPrototypeMaven/target/
 Hidra/target/maven-archiver/
+/HidraRest/target/test-classes/
+/HidraRest/target/classes/
+
 
