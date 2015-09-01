@@ -120,6 +120,8 @@ public class Repository {
         if (!initialized) {
 
             new File(localPath + separator + ".hidra").mkdir();
+            new File(localPath + separator + ".hidra" + separator + ".temp").mkdir();
+            new File(localPath + separator + ".hidra" + separator + ".temp" + separator + ".Uploads").mkdir();
             HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
             dao.connection();
             createSchema();
