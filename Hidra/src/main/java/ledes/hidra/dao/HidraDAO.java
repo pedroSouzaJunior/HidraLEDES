@@ -101,6 +101,33 @@ public class HidraDAO {
 
         return false;
     }
+    
+    public boolean find(String name) {
+        Connection c = null;
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+
+            stmt = c.createStatement();
+            boolean ret;
+            try (ResultSet rs = stmt.executeQuery("SELECT * FROM ASSET "
+                    + "WHERE  NAME = " + "'" + name + "'" + ";")) {
+                ret = rs.isBeforeFirst();
+            }
+            stmt.close();
+            c.close();
+
+            return ret;
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+
+        return false;
+    }
 
     public boolean delete(String name, String id) {
         Connection c = null;

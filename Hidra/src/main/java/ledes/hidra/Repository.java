@@ -167,9 +167,8 @@ public class Repository {
         return false;
     }
 
-    
-    protected boolean cloneRepository(String user, String password){
-     try {
+    protected boolean cloneRepository(String user, String password) {
+        try {
             assistant.cloneRepository(directory, remotePath, user, password);
             return true;
         } catch (GitAPIException ex) {
@@ -178,7 +177,7 @@ public class Repository {
 
         return false;
     }
-    
+
     protected boolean isRepository() {
         File hidraRepo = new File(localPath + separator + ".hidra");
         File[] matchingFilesAsset;
@@ -455,7 +454,6 @@ public class Repository {
      */
     public boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException {
 
-        
         String assetPath = new File(localPath).getAbsolutePath() + File.separator + nameAsset + File.separator;
         File assetFolder = new File(assetPath);
         Asset asset = readAsset(nameAsset);
@@ -489,11 +487,17 @@ public class Repository {
      * @param asset
      * @return verdadeiro caso o ativo esteja sendo monitorado.
      */
-    private boolean findAsset(Asset asset) {
+    public boolean findAsset(Asset asset) {
 
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
         return dao.find(asset.getName(), asset.getId());
 
+    }
+
+    public boolean findAsset(String assetName) {
+
+        HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
+        return dao.find(assetName);
     }
 
     /**
@@ -529,9 +533,9 @@ public class Repository {
     public boolean updateAsset(String assetName) throws JAXBException, FileNotFoundException, ValidationRuntimeException, SAXException, IOException {
         String assetPath = new File(localPath).getAbsolutePath() + File.separator + assetName + File.separator;
         File assetFolder = new File(assetPath);
-        
+
         Asset asset = readAsset(assetName);
-        
+
         if (findAsset(readAsset(assetName))) {
             if (validateAll(assetName, assetPath, assetFolder)) {
                 try {
@@ -937,9 +941,8 @@ public class Repository {
             return "Repository Updated ";
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
-             return ex.getMessage();
+            return ex.getMessage();
         }
-       
 
     }
 
@@ -959,78 +962,83 @@ public class Repository {
         }
         return false;
     }
-    
+
     /**
      * Configura usuário do repositorio com nome e email
+     *
      * @param name
-     * @param email 
+     * @param email
      */
-    public void setUserRepo(String name, String email){
+    public void setUserRepo(String name, String email) {
         try {
             assistant.setConfigurationUser(name, email);
         } catch (IOException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Retorna a configuração do usuário do repositório
-     * @return 
+     *
+     * @return
      */
-    public Map<String, String> getUserRepo(){
+    public Map<String, String> getUserRepo() {
         return assistant.getConfigurationUser();
     }
-    
+
     /**
      * Adiciona um repositório remoto ao repositório local
-     * @param url 
+     *
+     * @param url
      */
-    public void setRemoteRepo(String url){
+    public void setRemoteRepo(String url) {
         setRemotePath(url);
         try {
             assistant.setConfigRemote(remotePath);
         } catch (IOException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    
+
     }
+
     /**
      * Retorna o caminho do repositório remoto.
-     * @return 
+     *
+     * @return
      */
-    public String getRemoteRepo(){
+    public String getRemoteRepo() {
         return assistant.getConfigRemote();
     }
-    
+
     /**
      * Cria uma tag simples com um nome e uma mensagem.
+     *
      * @param name
      * @param message
-     * @return 
+     * @return
      */
-    public boolean createLightTag(String name, String message){
+    public boolean createLightTag(String name, String message) {
         return assistant.createLightTag(name, message);
     }
-    
-    
+
     /**
      * Cria uma tag com anotações, recebendo um nome e uma mensagem
+     *
      * @param name
      * @param message
-     * @return 
+     * @return
      */
-    public boolean createTagAnotted(String name, String message){
+    public boolean createTagAnotted(String name, String message) {
         return assistant.createAnnotatedTag(name, message);
     }
-    
+
     /**
      * Mostra todas as tags criadas para o repositório.
-     * @return 
+     *
+     * @return
      */
-    public String listTags(){
+    public String listTags() {
         return assistant.listTags();
     }
-    
 
 }
