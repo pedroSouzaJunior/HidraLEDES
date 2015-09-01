@@ -188,7 +188,7 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
-            return hidra.showLogs();
+            return hidra.getLog();
         }
 
     }
