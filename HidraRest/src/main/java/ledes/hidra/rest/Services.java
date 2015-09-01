@@ -37,6 +37,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 @Path("/services")
 public class Services {
 
+    private static final String UPLOAD_PATH_TEMP = File.separator + ".hidra" + File.separator + ".temp" + File.separator + ".uploads";
     private Hidra hidra;
 
     public Hidra getHidra() {
@@ -95,7 +96,7 @@ public class Services {
         zipper.criarZip(command.getAssetFile(), command.getAssetFile().listFiles());
 
         //enviando arquivo ao servidor
-        String uploadedFileLocation = command.getDestiny() + File.separator + zipper.getArquivoZipAtual().getName();
+        String uploadedFileLocation = command.getDestiny() + UPLOAD_PATH_TEMP + File.separator + zipper.getArquivoZipAtual().getName();
         InputStream in;
         int read = 0;
         byte[] bytes = new byte[1024];
@@ -137,18 +138,22 @@ public class Services {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response addAsset(Command command) throws IOException {
+
         Hidra hidra = new Hidra(command.getDestiny());
 
         File destiny = new File(command.getDestiny() + File.separator + command.getAssetFile().getName());
 
-        File asset = new File(destiny.getParent() + File.separator + command.getAssetFile().getName() + ".zip");
+        File dezipado = new File(command.getDestiny() + UPLOAD_PATH_TEMP + File.separator + command.getAssetFile().getName());
+
+        File asset = new File(destiny.getParent() + UPLOAD_PATH_TEMP + File.separator + command.getAssetFile().getName() + ".zip");
 
         HidraResources resources = new HidraResources();
         Zipper zipper = new Zipper();
 
-        if (resources.assetExist(destiny.getParentFile(), command.getAssetFile().getName())) {
+        if (resources.assetExist(dezipado.getParentFile(), command.getAssetFile().getName())) {
 
-            zipper.extrairZip(asset, destiny);
+            zipper.extrairZip(asset, dezipado);
+            dezipado.renameTo(new File(command.getDestiny(), command.getAssetFile().getName()));
             hidra.addAsset(command.getAssetFile().getName());
             asset.delete();
 
@@ -408,17 +413,36 @@ public class Services {
 
     }
 
-    @GET
-    @Path("/pedro")
-    @Produces("application/zip")
-    public Response getFile() {
+    @POST
+    @Path("/downloadAsset")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getFile(Command command) {
 
-        final String FILE_PATH = "/home/pedro/MyFile.zip";
-        File file = new File(FILE_PATH);
+        String downloadedFileLocation = command.getDestiny() + File.separator + command.getAssetFile().getName();
 
-        ResponseBuilder response = Response.ok((Object) file);
-        response.header("Content-Disposition", "attachment; filename=newfile.zip");
+        InputStream in;
+        int read = 0;
+        byte[] bytes = new byte[1024];
 
-        return response.build();
+        try {
+            OutputStream out = new FileOutputStream(new File(downloadedFileLocation));
+            in = new FileInputStream(command.getAssetFile());
+            try {
+                while ((read = in.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+                out.flush();
+                out.close();
+
+            } catch (IOException ex) {
+                Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return Response.status(201).entity("File uploade successfully in: " + command.getDestiny()).build();
     }
+
 }
