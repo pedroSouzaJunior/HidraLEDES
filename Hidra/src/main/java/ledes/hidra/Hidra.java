@@ -278,7 +278,7 @@ public class Hidra {
     
     /**
      * Retorna informações sobre mudanças em todo repositório.
-     * @return 
+     * @return  
      */
     public String getLog() {
         return repository.getLog();
@@ -401,6 +401,10 @@ public class Hidra {
      */
     public String getRemoteRepo() {
         return repository.getRemoteRepo();
+    }
+    
+    public boolean findAsset(String assetName){
+        return repository.findAsset(assetName);
     }
 
     public void createTemplateAsset() throws JAXBException {
