@@ -27,10 +27,11 @@ import ledes.hidra.asset.SolutionType;
 import ledes.hidra.resources.HidraResources;
 import ledes.hidra.resources.Zipper;
 import ledes.hidra.rest.model.Command;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 /**
  * Classe Responsavel pelo tratamento de servicos do projeto Hidra.
- * 
+ *
  * @author pedro e danielli
  */
 @Path("/services")
@@ -42,11 +43,13 @@ public class Services {
         return hidra;
     }
 
-    /***
-     * Metodo resposavel pela inicializacao de um repositorio utilizando a classe
-     * Command
+    /**
+     * *
+     * Metodo resposavel pela inicializacao de um repositorio utilizando a
+     * classe Command
+     *
      * @param command
-     * @return 
+     * @return
      */
     @POST
     @Path("/construct")
@@ -73,11 +76,13 @@ public class Services {
         return Response.status(500).entity("Error in server").build();
     }
 
-    /***
+    /**
+     * *
      * Metodo utilizado para upload de ativos para o repositorio remoto.
+     *
      * @param command
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     @POST
     @Path("/insert")
@@ -118,12 +123,14 @@ public class Services {
         return Response.status(500).entity("Error in server").build();
     }
 
-    /***
+    /**
+     * *
      * Metodo utilizado em conjunto do metodo insert para adicao de ativos no
      * repositorio remoto
+     *
      * @param command
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     @POST
     @Path("/addasset")
@@ -150,11 +157,13 @@ public class Services {
         return Response.status(500).entity("arquivo nao encontrado").build();
     }
 
-    /***
+    /**
+     * *
      * Metodo utilizado para realizar um commit das modificacoes em ativos no
      * repositorio remoto
+     *
      * @param command
-     * @return 
+     * @return
      */
     @POST
     @Path("/submit")
@@ -171,11 +180,13 @@ public class Services {
         return Response.status(500).entity("Error in server").build();
     }
 
-    /***
+    /**
+     * *
      * Metodo responsavel pela obtencao dos valores que representam a Solution
      * de um ativo de software
+     *
      * @param command
-     * @return 
+     * @return
      */
     @POST
     @Path("/solution")
@@ -193,11 +204,13 @@ public class Services {
         return Response.status(500).entity("Error in Server").build();
     }
 
-    /***
-     * Metodo responsavel pela obtencao dos valores que representam a Classification
-     * de um ativo de software
+    /**
+     * *
+     * Metodo responsavel pela obtencao dos valores que representam a
+     * Classification de um ativo de software
+     *
      * @param command
-     * @return 
+     * @return
      */
     @POST
     @Path("/classification")
@@ -215,11 +228,13 @@ public class Services {
         return Response.status(500).entity("Error in Server").build();
     }
 
-    /***
-     * Metodo responsaveis pela obtencao dos valores que representam o Usage de um ativo
-     * de software
+    /**
+     * *
+     * Metodo responsaveis pela obtencao dos valores que representam o Usage de
+     * um ativo de software
+     *
      * @param command
-     * @return 
+     * @return
      */
     @POST
     @Path("/usage")
@@ -237,11 +252,13 @@ public class Services {
         return Response.status(500).entity("Error in Server").build();
     }
 
-    /***
-     * Metodo responsavel pela obtencao dos valores que representam os ativos 
-     * Relacionados 
+    /**
+     * *
+     * Metodo responsavel pela obtencao dos valores que representam os ativos
+     * Relacionados
+     *
      * @param command
-     * @return 
+     * @return
      */
     @POST
     @Path("/related")
@@ -350,7 +367,7 @@ public class Services {
         Sol.getImplementation().getArtifact().add(art);
         Sol.getRequirements().getArtifact().add(art);
         Sol.getTest().getArtifact().add(art);
-        
+
         asset.setSolution(Sol);
 
         return asset;
@@ -389,5 +406,19 @@ public class Services {
                 .entity("getUsers is called, from : " + from + ", to : " + to
                         + ", orderBy" + orderBy.toString()).build();
 
+    }
+
+    @GET
+    @Path("/pedro")
+    @Produces("application/zip")
+    public Response getFile() {
+
+        final String FILE_PATH = "/home/pedro/MyFile.zip";
+        File file = new File(FILE_PATH);
+
+        ResponseBuilder response = Response.ok((Object) file);
+        response.header("Content-Disposition", "attachment; filename=newfile.zip");
+
+        return response.build();
     }
 }
