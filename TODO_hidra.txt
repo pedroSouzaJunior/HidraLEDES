@@ -1,0 +1,28 @@
+
+TO DO:
+
+- Ajustar validador para não permitir pastas vazias. (D) -- Urgente 
+- Merge e diff.
+
+Serviços
+- Clone (StartSynchronized) -- Pedro
+
+
+
+- AddAsset -- testar 
+- setSolution
+- validateAsset
+
+- setClassification
+- setUsage
+- setRelatedAsset
+
+- listAsset -- Falta criar obj xml pro Map.
+- downloadAsset -- Testar e mover .zip temporário para a pasta .hidra/.temp/.download
+- pull (synchronize)
+- showStatus -- Dani 
+- updateAsset
+- setUser
+- getUser
+- setRemoteRepo
+- getRemoteRepo
