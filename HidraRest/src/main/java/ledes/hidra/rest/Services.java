@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
@@ -37,6 +38,8 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 @Path("/services")
 public class Services {
 
+    private static final String UPLOAD_PATH_TEMP = File.separator + ".hidra" + File.separator + ".temp" + File.separator + ".uploads";
+    private static final String DOWNLOAD_PATH_TEMP = File.separator + ".hidra" + File.separator + ".temp" + File.separator + ".downloads";
     private Hidra hidra;
 
     public Hidra getHidra() {
@@ -95,7 +98,7 @@ public class Services {
         zipper.criarZip(command.getAssetFile(), command.getAssetFile().listFiles());
 
         //enviando arquivo ao servidor
-        String uploadedFileLocation = command.getDestiny() + File.separator + zipper.getArquivoZipAtual().getName();
+        String uploadedFileLocation = command.getDestiny() + UPLOAD_PATH_TEMP + File.separator + zipper.getArquivoZipAtual().getName();
         InputStream in;
         int read = 0;
         byte[] bytes = new byte[1024];
@@ -137,18 +140,22 @@ public class Services {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response addAsset(Command command) throws IOException {
+
         Hidra hidra = new Hidra(command.getDestiny());
 
         File destiny = new File(command.getDestiny() + File.separator + command.getAssetFile().getName());
 
-        File asset = new File(destiny.getParent() + File.separator + command.getAssetFile().getName() + ".zip");
+        File dezipado = new File(command.getDestiny() + UPLOAD_PATH_TEMP + File.separator + command.getAssetFile().getName());
+
+        File asset = new File(destiny.getParent() + UPLOAD_PATH_TEMP + File.separator + command.getAssetFile().getName() + ".zip");
 
         HidraResources resources = new HidraResources();
         Zipper zipper = new Zipper();
 
-        if (resources.assetExist(destiny.getParentFile(), command.getAssetFile().getName())) {
+        if (resources.assetExist(dezipado.getParentFile(), command.getAssetFile().getName())) {
 
-            zipper.extrairZip(asset, destiny);
+            zipper.extrairZip(asset, dezipado);
+            dezipado.renameTo(new File(command.getDestiny(), command.getAssetFile().getName()));
             hidra.addAsset(command.getAssetFile().getName());
             asset.delete();
 
@@ -389,6 +396,8 @@ public class Services {
 
         Command com = new Command("/var/www/hidra.com/hidra/danielli");
         com.setAssetFile(new File("/home/pedro/Documentos/qsort.c"));
+        com.setAssetName("jaxb");
+        com.setPathToDownload("/home/pedro/Downloads/downHidra");
         com.setSubmitMessage("Message to commit default");
         return com;
     }
@@ -408,17 +417,63 @@ public class Services {
 
     }
 
-    @GET
-    @Path("/pedro")
-    @Produces("application/zip")
-    public Response getFile() {
+    @POST
+    @Path("/downloadAsset")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getFile(Command command) throws IOException {
 
-        final String FILE_PATH = "/home/pedro/MyFile.zip";
-        File file = new File(FILE_PATH);
+        Hidra hidra = new Hidra(command.getDestiny());
+        Zipper zipper = new Zipper();
+        File assetFile = new File(command.getDestiny() + File.separator + command.getAssetName());
 
-        ResponseBuilder response = Response.ok((Object) file);
-        response.header("Content-Disposition", "attachment; filename=newfile.zip");
+        System.out.println("Destiny: " + command.getDestiny() + DOWNLOAD_PATH_TEMP + File.separator + command.getAssetName());
 
-        return response.build();
+        File destiny = new File(command.getDestiny() + DOWNLOAD_PATH_TEMP + File.separator + command.getAssetName() + ".zip");
+
+        if (hidra.findAsset(command.getAssetName())) {
+            zipper.criarZip(assetFile, assetFile.listFiles());
+            zipper.getArquivoZipAtual().renameTo(new File(destiny, command.getAssetName()));
+
+            String downloadedFileLocation = command.getPathToDownload() + File.separator + command.getAssetName() + ".zip";
+
+            InputStream in;
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            try {
+                OutputStream out = new FileOutputStream(new File(downloadedFileLocation));
+                in = new FileInputStream(zipper.getArquivoZipAtual());
+                try {
+                    while ((read = in.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                    out.flush();
+                    out.close();
+                    zipper.getArquivoZipAtual().delete();
+                } catch (IOException ex) {
+                    Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            return Response.status(201).entity("File download successfully in: " + command.getPathToDownload()).build();
+        }
+        return Response.status(500).entity("ERROR ").build();
+    }
+
+    @POST
+    @Path("/getAssetsAvailable")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response listAssets(Command command) {
+
+        Hidra hidra = new Hidra(command.getDestiny());
+
+        for (Map.Entry<String, String> entry : hidra.listAssets().entrySet()) {
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+        }
+        return Response.status(200).entity("Tudo celto").build();
     }
 }
