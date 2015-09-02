@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
@@ -462,4 +463,17 @@ public class Services {
         return Response.status(500).entity("ERROR ").build();
     }
 
+    @POST
+    @Path("/getAssetsAvailable")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response listAssets(Command command) {
+
+        Hidra hidra = new Hidra(command.getDestiny());
+
+        for (Map.Entry<String, String> entry : hidra.listAssets().entrySet()) {
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+        }
+        return Response.status(200).entity("Tudo celto").build();
+    }
 }
