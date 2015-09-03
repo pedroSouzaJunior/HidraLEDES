@@ -28,7 +28,6 @@ import ledes.hidra.asset.SolutionType;
 import ledes.hidra.resources.HidraResources;
 import ledes.hidra.resources.Zipper;
 import ledes.hidra.rest.model.Command;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 /**
  * Classe Responsavel pelo tratamento de servicos do projeto Hidra.
@@ -38,8 +37,11 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 @Path("/services")
 public class Services {
 
-    private static final String UPLOAD_PATH_TEMP = File.separator + ".hidra" + File.separator + ".temp" + File.separator + ".uploads";
-    private static final String DOWNLOAD_PATH_TEMP = File.separator + ".hidra" + File.separator + ".temp" + File.separator + ".downloads";
+    private static final String separator = File.separator;
+    private static final String extension = ".zip";
+    private static final String UPLOAD_PATH_TEMP = separator + ".hidra" + separator + ".temp" + separator + ".uploads";
+    private static final String DOWNLOAD_PATH_TEMP = separator + ".hidra" + separator + ".temp" + separator + ".downloads";
+
     private Hidra hidra;
 
     public Hidra getHidra() {
@@ -98,7 +100,7 @@ public class Services {
         zipper.criarZip(command.getAssetFile(), command.getAssetFile().listFiles());
 
         //enviando arquivo ao servidor
-        String uploadedFileLocation = command.getDestiny() + UPLOAD_PATH_TEMP + File.separator + zipper.getArquivoZipAtual().getName();
+        String uploadedFileLocation = command.getDestiny() + UPLOAD_PATH_TEMP + separator + zipper.getArquivoZipAtual().getName();
         InputStream in;
         int read = 0;
         byte[] bytes = new byte[1024];
@@ -143,11 +145,11 @@ public class Services {
 
         Hidra hidra = new Hidra(command.getDestiny());
 
-        File destiny = new File(command.getDestiny() + File.separator + command.getAssetFile().getName());
+        File destiny = new File(command.getDestiny() + separator + command.getAssetFile().getName());
 
-        File dezipado = new File(command.getDestiny() + UPLOAD_PATH_TEMP + File.separator + command.getAssetFile().getName());
+        File dezipado = new File(command.getDestiny() + UPLOAD_PATH_TEMP + separator + command.getAssetFile().getName());
 
-        File asset = new File(destiny.getParent() + UPLOAD_PATH_TEMP + File.separator + command.getAssetFile().getName() + ".zip");
+        File asset = new File(destiny.getParent() + UPLOAD_PATH_TEMP + separator + command.getAssetFile().getName() + extension);
 
         HidraResources resources = new HidraResources();
         Zipper zipper = new Zipper();
@@ -181,7 +183,7 @@ public class Services {
         Hidra hidra = new Hidra(command.getDestiny());
 
         if (hidra.save(command.getSubmitMessage())) {
-            return Response.status(200).entity("ok").build();
+            return Response.status(200).entity("Commit Accomplished").build();
         }
 
         return Response.status(500).entity("Error in server").build();
@@ -381,14 +383,6 @@ public class Services {
 
     }
 
-    /**
-     * *************************************************************************
-     * a partir daqui sao metodos de teste, e coisinhas que eu estava estudando
-     * daqui pra cima sao os metodos que ja estao funcionando.
-     *
-     *
-     * *************************************************************************
-     */
     @GET
     @Path("gettest")
     @Produces(MediaType.APPLICATION_XML)
@@ -399,6 +393,12 @@ public class Services {
         com.setAssetName("jaxb");
         com.setPathToDownload("/home/pedro/Downloads/downHidra");
         com.setSubmitMessage("Message to commit default");
+        com.setRemoteRepository("http://hidra.com/hidra/REPOSITORIO");
+        com.setRepositoryLocalCopy("/home/pedro/localParaClonar");
+        com.setUser("pedro");
+        com.setPassword("220891");
+        com.setAssetUpdate(new File("/home/pedro/AreaDeTestes/jaxb"));
+        com.setRepositoryPath("/var/www/hidra.com/hidra/HIDRA");
         return com;
     }
 
@@ -423,19 +423,16 @@ public class Services {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getFile(Command command) throws IOException {
 
-        Hidra hidra = new Hidra(command.getDestiny());
         Zipper zipper = new Zipper();
-        File assetFile = new File(command.getDestiny() + File.separator + command.getAssetName());
-
-        System.out.println("Destiny: " + command.getDestiny() + DOWNLOAD_PATH_TEMP + File.separator + command.getAssetName());
-
-        File destiny = new File(command.getDestiny() + DOWNLOAD_PATH_TEMP + File.separator + command.getAssetName() + ".zip");
+        Hidra hidra = new Hidra(command.getDestiny());
+        File assetFile = new File(command.getDestiny() + separator + command.getAssetName());
+        File destiny = new File(command.getDestiny() + DOWNLOAD_PATH_TEMP + separator + command.getAssetName() + extension);
 
         if (hidra.findAsset(command.getAssetName())) {
             zipper.criarZip(assetFile, assetFile.listFiles());
             zipper.getArquivoZipAtual().renameTo(new File(destiny, command.getAssetName()));
 
-            String downloadedFileLocation = command.getPathToDownload() + File.separator + command.getAssetName() + ".zip";
+            String downloadedFileLocation = command.getPathToDownload() + separator + command.getAssetName() + extension;
 
             InputStream in;
             int read = 0;
@@ -475,5 +472,144 @@ public class Services {
             System.out.println(entry.getKey() + "/" + entry.getValue());
         }
         return Response.status(200).entity("Tudo celto").build();
+    }
+
+    @POST
+    @Path("/cloneRepository")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response cloneRepository(Command command) {
+
+        Hidra hidra = new Hidra();
+
+        try {
+            if (hidra.startSynchronizedRepository(command.getRepositoryLocalCopy(), command.getRemoteRepository())) {
+
+                return Response.status(200).entity("Local Copy has been created").build();
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return Response.status(500).entity("Error in Server").build();
+    }
+
+    @POST
+    @Path("/cloneAuthorization")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response cloneAuthorizedRepository(Command command) {
+
+        Hidra hidra = new Hidra();
+
+        try {
+            if (hidra.startSynchronizedRepository(command.getRepositoryLocalCopy(), command.getRemoteRepository(),
+                    command.getUser(), command.getPassword())) {
+                return Response.status(200).entity("Local Copy has been created").build();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return Response.status(500).entity("Could not clone remote repository").build();
+    }
+
+    @POST
+    @Path("/upadateRepository")
+    @Consumes(MediaType.APPLICATION_XML)
+    public Response updateRepository(Command command) {
+
+        String result;
+        Hidra hidra = new Hidra(command.getDestiny());
+
+        try {
+            result = hidra.update(command.getUser(), command.getPassword());
+
+            if (result.equals("Repository Updated ")) {
+                return Response.status(200).entity(result).build();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Response.status(500).entity("Erron Server internal").build();
+    }
+
+    @POST
+    @Path("/updateLocalRepository")
+    @Consumes(MediaType.APPLICATION_XML)
+    public Response updateLocalRepository(Command command) {
+
+        boolean result = false;
+        Hidra hidra = new Hidra(command.getDestiny());
+
+        try {
+            result = hidra.synchronize(command.getUser(), command.getPassword());
+            if (result) {
+                return Response.status(200).entity("Successfully synchronized repository").build();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return Response.status(500).entity("Please add a remote repository").build();
+    }
+
+    @POST
+    @Path("/updateAsset")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response updateAsset(Command command) throws IOException {
+
+        int read = 0;
+        InputStream in;
+        boolean result = false;
+        Zipper zipper = new Zipper();
+        byte[] bytes = new byte[1024];
+        File upgrade = command.getAssetUpdate();
+        Hidra hidra = new Hidra(command.getRepositoryPath());
+        File fileZiped = new File(command.getDestiny() + separator
+                + UPLOAD_PATH_TEMP + separator + command.getAssetName() + extension);
+
+        result = hidra.findAsset(command.getAssetName());
+
+        if (result) {
+
+            zipper.criarZip(upgrade, upgrade.listFiles());
+
+            try {
+                OutputStream out = new FileOutputStream(fileZiped);
+                in = new FileInputStream(zipper.getArquivoZipAtual());
+                try {
+                    while ((read = in.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                    out.flush();
+                    out.close();
+                    zipper.getArquivoZipAtual().delete();
+                } catch (IOException ex) {
+                    Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            
+            
+            /**********************************************
+            zipper.setArquivoZipAtual(fileZiped);
+            
+            * TODO: Zipar ativo corretamente esta zipando apenas os arquivos da pasta
+            e não a pasta em si.
+            * descompactar dentro da pasta upload
+            * validar ativo atualizado
+            * adicionar
+            * commitar.
+            */
+            return Response.status(201).entity("File uploaded successfully in: " + command.getDestiny()).build();
+        }
+
+        return Response.status(
+                500).entity("Assets are not monitored - Use Insert + AddAsset").build();
     }
 }

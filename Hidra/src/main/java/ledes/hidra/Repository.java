@@ -139,14 +139,14 @@ public class Repository {
 
     /**
      * Cria um arquivo .gitgnore para que o repositorio GIT não monitore
-     * mudanças no diretorio .gidra.
+     * mudanças no diretorio .hidra.
      *
      * @throws IOException
      */
     private void writerIgnoreFile() throws IOException {
         try (FileWriter ignoreFile = new FileWriter(localPath + separator + ".gitignore")) {
             PrintWriter writer = new PrintWriter(ignoreFile);
-            writer.printf(".hidra");
+            //writer.printf(".hidra");
         }
 
     }

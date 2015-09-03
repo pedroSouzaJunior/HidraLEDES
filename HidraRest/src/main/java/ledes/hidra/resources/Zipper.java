@@ -212,7 +212,7 @@ public class Zipper {
         return arquivoZipAtual;
     }
 
-    private void setArquivoZipAtual(File arquivoZipAtual) {
+    public void setArquivoZipAtual(File arquivoZipAtual) {
         this.arquivoZipAtual = arquivoZipAtual;
     }
 
