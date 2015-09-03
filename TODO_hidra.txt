@@ -2,14 +2,16 @@
 TO DO:
 
 - Ajustar validador para não permitir pastas vazias. (D) -- Urgente 
-- Merge e diff.
+- Merge e diff
+- Verificar mudanças no banco (monitorar)
 
 Serviços
-- Clone (StartSynchronized) -- Pedro
+- Clone (StartSynchronized) -- Pedro [feito]
+- Clone (StartSynchronized with autentication) -- Pedro [feito]
 
 
 
-- AddAsset -- testar 
+- AddAsset -- testar (Dependendo do validador)
 - setSolution
 - validateAsset
 
@@ -18,11 +20,17 @@ Serviços
 - setRelatedAsset
 
 - listAsset -- Falta criar obj xml pro Map.
-- downloadAsset -- Testar e mover .zip temporário para a pasta .hidra/.temp/.download
-- pull (synchronize)
-- showStatus -- Dani 
-- updateAsset
+- downloadAsset -- Testar e mover .zip temporário para a pasta .hidra/.temp/.download  (corrigir zip para zipar a pasta não só o conteudo)
+- pull (synchronize) 				[Feito]
+- push 						[Feito]
+- showStatus -- Dani (Criar objt xml) 
+- updateAsset					(Em andamento)
 - setUser
 - getUser
 - setRemoteRepo
 - getRemoteRepo
+
+
+obs: colocar arquivos ocultos nas pastas .uploads / .downloads para que não fiquem vazias.
+- Fazer uploads com Http.
+	
