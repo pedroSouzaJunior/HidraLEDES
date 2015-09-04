@@ -1,12 +1,7 @@
 package ledes.hidra.rest;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -22,16 +17,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
-import ledes.hidra.asset.ArtifactType;
-import ledes.hidra.asset.Asset;
-import ledes.hidra.asset.SolutionType;
 import ledes.hidra.resources.HidraResources;
 import ledes.hidra.resources.Zipper;
 import ledes.hidra.rest.model.Command;
 
 /**
- * Classe Responsavel pelo tratamento de servicos do projeto Hidra.
+ * Classe Services - responsavel por transcrever as funcionalidades do projeto
+ * Hidra na forma de Web Services. Consome XML padronizado (Command) capaz de
+ * comportar informações necessarias para a execucao dos metodos da biblioteca
+ * Hidra.
  *
+ * @version 1.0
  * @author pedro e danielli
  */
 @Path("/services")
@@ -49,12 +45,12 @@ public class Services {
     }
 
     /**
-     * *
-     * Metodo resposavel pela inicializacao de um repositorio utilizando a
-     * classe Command
+     * Servico responsavel pela inicializacao de um repositorio Hidra. Consome
+     * XML padronizado (Command) contendo o caminho absoluto de onde deve ser
+     * criado e inicializado o repositorio hidra.
      *
      * @param command
-     * @return
+     * @return Response Object
      */
     @POST
     @Path("/construct")
@@ -82,56 +78,9 @@ public class Services {
     }
 
     /**
-     * *
-     * Metodo utilizado para upload de ativos para o repositorio remoto.
-     *
-     * @param command
-     * @return
-     * @throws IOException
-     */
-    @POST
-    @Path("/insert")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
-    public Response insertAsset(Command command) throws IOException {
-
-        //zipando arquivo
-        Zipper zipper = new Zipper();
-        zipper.criarZip(command.getAssetFile(), command.getAssetFile().listFiles());
-
-        //enviando arquivo ao servidor
-        String uploadedFileLocation = command.getDestiny() + UPLOAD_PATH_TEMP + separator + zipper.getArquivoZipAtual().getName();
-        InputStream in;
-        int read = 0;
-        byte[] bytes = new byte[1024];
-
-        if (zipper.getArquivoZipAtual() != null && command.getDestiny() != null) {
-            try {
-                OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-                in = new FileInputStream(zipper.getArquivoZipAtual());
-                try {
-                    while ((read = in.read(bytes)) != -1) {
-                        out.write(bytes, 0, read);
-                    }
-                    out.flush();
-                    out.close();
-                    zipper.getArquivoZipAtual().delete();
-                } catch (IOException ex) {
-                    Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            return Response.status(201).entity("File uploade successfully in: " + command.getDestiny()).build();
-        }
-        return Response.status(500).entity("Error in server").build();
-    }
-
-    /**
-     * *
-     * Metodo utilizado em conjunto do metodo insert para adicao de ativos no
-     * repositorio remoto
+     * Servico responsavel por adicionar ativos a area de monitoramento do
+     * repositorio. Consome XML padronizado (Command) contendo o nome do ativo
+     * que se deseja monitorar.
      *
      * @param command
      * @return
@@ -167,9 +116,9 @@ public class Services {
     }
 
     /**
-     * *
-     * Metodo utilizado para realizar um commit das modificacoes em ativos no
-     * repositorio remoto
+     * Servico responsavel por gravar as alteracoes no repositorio. Consome XML
+     * padronizado (Command) contendo o caminho absoluto do repositorio que se
+     * deseja utilizar.
      *
      * @param command
      * @return
@@ -190,9 +139,10 @@ public class Services {
     }
 
     /**
-     * *
-     * Metodo responsavel pela obtencao dos valores que representam a Solution
-     * de um ativo de software
+     * Servico responsavel por obter os dados referentes a um Solution de um
+     * ativo de software armezenado no repositorio. Consome um XML padronizado
+     * (Command) contendo o caminho absoluto do repositorio que se deseja
+     * utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -214,9 +164,10 @@ public class Services {
     }
 
     /**
-     * *
-     * Metodo responsavel pela obtencao dos valores que representam a
-     * Classification de um ativo de software
+     * Servico responsavel por obter os dados referentes a Classification de um
+     * ativo de software armezenado no repositorio. Consome um XML padronizado
+     * (Command) contendo o caminho absoluto do repositorio que se deseja
+     * utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -238,9 +189,10 @@ public class Services {
     }
 
     /**
-     * *
-     * Metodo responsaveis pela obtencao dos valores que representam o Usage de
-     * um ativo de software
+     * Servico responsavel por obter os dados referentes ao Usage de um ativo de
+     * software armezenado no repositorio. Consome um XML padronizado (Command)
+     * contendo o caminho absoluto do repositorio que se deseja utilizar em
+     * conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -262,9 +214,10 @@ public class Services {
     }
 
     /**
-     * *
-     * Metodo responsavel pela obtencao dos valores que representam os ativos
-     * Relacionados
+     * Servico responsavel por obter os dados referentes aos Ativos relacionados
+     * a um determinado ativo de software armezenado no repositorio. Consome um
+     * XML padronizado (Command) contendo o caminho absoluto do repositorio que
+     * se deseja utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -317,6 +270,15 @@ public class Services {
         return Response.status(500).entity("Error in Server").build();
     }
 
+    /**
+     * Servico responsavel por remover um ativo de software armezenado no
+     * repositorio. Consome um XML padronizado (Command) contendo o caminho
+     * absoluto do repositorio que se deseja utilizar em conjunto com o nome do
+     * ativo que se deseja remover.
+     *
+     * @param command
+     * @return
+     */
     @POST
     @Path("/removeasset")
     @Consumes(MediaType.APPLICATION_XML)
@@ -330,57 +292,6 @@ public class Services {
         }
 
         return Response.status(500).entity("Erro Interno ").build();
-    }
-
-    @POST
-    @Path("/defineSolution")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
-    public SolutionType defineSolution(Command command) {
-
-        ArtifactType art = new ArtifactType();
-        art.setId("10");
-        art.setName("PASTA");
-        art.setReference("/OUTRA_PASTA");
-        art.setType("Folder");
-        art.setVersion("00012");
-
-        SolutionType Sol = new SolutionType();
-        Sol.getArtifacts().getArtifact().add(null);
-        Sol.getDesign().getArtifact().add(null);
-        Sol.getImplementation().getArtifact().add(null);
-        Sol.getRequirements().getArtifact().add(null);
-        Sol.getTest().getArtifact().add(null);
-
-        return null;
-    }
-
-    @GET
-    @Path("/asset")
-    @Produces(MediaType.APPLICATION_XML)
-    public Asset getAsset() {
-
-        Asset asset = new Asset();
-        asset.setId("003");
-
-        ArtifactType art = new ArtifactType();
-        art.setId("10");
-        art.setName("PASTA");
-        art.setReference("/OUTRA_PASTA");
-        art.setType("Folder");
-        art.setVersion("00012");
-
-        SolutionType Sol = new SolutionType();
-        Sol.getArtifacts().getArtifact().add(art);
-        Sol.getDesign().getArtifact().add(art);
-        Sol.getImplementation().getArtifact().add(art);
-        Sol.getRequirements().getArtifact().add(art);
-        Sol.getTest().getArtifact().add(art);
-
-        asset.setSolution(Sol);
-
-        return asset;
-
     }
 
     @GET
@@ -417,49 +328,15 @@ public class Services {
 
     }
 
-    @POST
-    @Path("/downloadAsset")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getFile(Command command) throws IOException {
-
-        Zipper zipper = new Zipper();
-        Hidra hidra = new Hidra(command.getDestiny());
-        File assetFile = new File(command.getDestiny() + separator + command.getAssetName());
-        File destiny = new File(command.getDestiny() + DOWNLOAD_PATH_TEMP + separator + command.getAssetName() + extension);
-
-        if (hidra.findAsset(command.getAssetName())) {
-            zipper.criarZip(assetFile, assetFile.listFiles());
-            zipper.getArquivoZipAtual().renameTo(new File(destiny, command.getAssetName()));
-
-            String downloadedFileLocation = command.getPathToDownload() + separator + command.getAssetName() + extension;
-
-            InputStream in;
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            try {
-                OutputStream out = new FileOutputStream(new File(downloadedFileLocation));
-                in = new FileInputStream(zipper.getArquivoZipAtual());
-                try {
-                    while ((read = in.read(bytes)) != -1) {
-                        out.write(bytes, 0, read);
-                    }
-                    out.flush();
-                    out.close();
-                    zipper.getArquivoZipAtual().delete();
-                } catch (IOException ex) {
-                    Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            return Response.status(201).entity("File download successfully in: " + command.getPathToDownload()).build();
-        }
-        return Response.status(500).entity("ERROR ").build();
-    }
-
+    /**
+     * Servico responsavel por obter os dados referentes a quais ativos de
+     * software estao armezenado no repositorio. Consome um XML padronizado
+     * (Command) contendo o caminho absoluto do repositorio que se deseja
+     * utilizar em conjunto com o nome do ativo que se busca.
+     *
+     * @param command
+     * @return
+     */
     @POST
     @Path("/getAssetsAvailable")
     @Consumes(MediaType.APPLICATION_XML)
@@ -474,6 +351,14 @@ public class Services {
         return Response.status(200).entity("Assets Avaliables").build();
     }
 
+    /**
+     * Servico responsavel por criar uma copia local de um repositorio. Consome
+     * um XML padronizado (Command) contendo o caminho absoluto do repositorio
+     * que se deseja clonar e tambem o caminho absoluto do diretorio destino.
+     *
+     * @param command
+     * @return
+     */
     @POST
     @Path("/cloneRepository")
     @Consumes(MediaType.APPLICATION_XML)
@@ -495,6 +380,15 @@ public class Services {
         return Response.status(500).entity("Error in Server").build();
     }
 
+    /**
+     * Servico responsavel por criar uma copia local de um repositorio remoto
+     * atravez de autenticacao. Consome um XML padronizado (Command) contendo a
+     * URL do repositorio que se deseja clonar e tambem o caminho absoluto do
+     * diretorio destino e usuario e senha para acesso ao repositorio remoto.
+     *
+     * @param command
+     * @return
+     */
     @POST
     @Path("/cloneAuthorization")
     @Consumes(MediaType.APPLICATION_XML)
@@ -515,6 +409,14 @@ public class Services {
         return Response.status(500).entity("Could not clone remote repository").build();
     }
 
+    /**
+     * Servico responsavel por atualizar repositorio remoto com as modificacoes
+     * e informacoes do repositorio local. Consome XML padronizado (Command)
+     * contendo o caminho absoluto do repositorio local.
+     *
+     * @param command
+     * @return
+     */
     @POST
     @Path("/upadateRepository")
     @Consumes(MediaType.APPLICATION_XML)
@@ -535,6 +437,16 @@ public class Services {
         return Response.status(500).entity("Erron Server internal").build();
     }
 
+    /**
+     * Servico responsavel por atualizar o repositorio local com modificacoes
+     * que foram aplicadas ao seu respectivo repositorio remoto. Consome XML
+     * padronizado (Command) que contem o caminho absoluto do repositorio que se
+     * deseja atualizar. O repositorio deve possuir ligacao a um repositorio
+     * remoto
+     *
+     * @param command
+     * @return
+     */
     @POST
     @Path("/updateLocalRepository")
     @Consumes(MediaType.APPLICATION_XML)
@@ -555,57 +467,4 @@ public class Services {
         return Response.status(500).entity("Please add a remote repository").build();
     }
 
-    @POST
-    @Path("/updateAsset")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
-    public Response updateAsset(Command command) throws IOException {
-
-        int read = 0;
-        InputStream in;
-        boolean result = false;
-        Zipper zipper = new Zipper();
-        byte[] bytes = new byte[1024];
-        File upgrade = command.getAssetUpdate();
-        Hidra hidra = new Hidra(command.getRepositoryPath());
-        File fileZiped = new File(command.getDestiny() + separator
-                + UPLOAD_PATH_TEMP + separator + command.getAssetName() + extension);
-
-        result = hidra.findAsset(command.getAssetName());
-
-        if (result) {
-
-            zipper.criarZip(upgrade, upgrade.listFiles());
-
-            try {
-                OutputStream out = new FileOutputStream(fileZiped);
-                in = new FileInputStream(zipper.getArquivoZipAtual());
-                try {
-                    while ((read = in.read(bytes)) != -1) {
-                        out.write(bytes, 0, read);
-                    }
-                    out.flush();
-                    out.close();
-                    zipper.getArquivoZipAtual().delete();
-                    return Response.status(201).entity("File uploaded successfully in: " + command.getDestiny()).build();
-                } catch (IOException ex) {
-                    Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            /**
-             * ********************************************
-             * zipper.setArquivoZipAtual(fileZiped);
-             *
-             * TODO: Zipar ativo corretamente esta zipando apenas os arquivos da
-             * pasta e não a pasta em si. descompactar dentro da pasta upload
-             * validar ativo atualizado adicionar commitar.
-             */
-        }
-
-        return Response.status(
-                500).entity("Assets are not monitored - Use Insert + AddAsset").build();
-    }
 }
