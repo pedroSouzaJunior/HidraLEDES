@@ -33,4 +33,11 @@ Serviços
 
 obs: colocar arquivos ocultos nas pastas .uploads / .downloads para que não fiquem vazias.
 - Fazer uploads com Http.
+
+COLOCAR NO PORTAL:
+
+	javadoc
+	MOnografia
+	Link pro repositorio do github / Ledes
+	Arquivo jar da Hidra / Prototipo. War dos Services.
 	

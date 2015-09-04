@@ -471,7 +471,7 @@ public class Services {
         for (Map.Entry<String, String> entry : hidra.listAssets().entrySet()) {
             System.out.println(entry.getKey() + "/" + entry.getValue());
         }
-        return Response.status(200).entity("Tudo celto").build();
+        return Response.status(200).entity("Assets Avaliables").build();
     }
 
     @POST
@@ -587,6 +587,7 @@ public class Services {
                     out.flush();
                     out.close();
                     zipper.getArquivoZipAtual().delete();
+                    return Response.status(201).entity("File uploaded successfully in: " + command.getDestiny()).build();
                 } catch (IOException ex) {
                     Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -594,19 +595,14 @@ public class Services {
                 Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            
-            
-            /**********************************************
-            zipper.setArquivoZipAtual(fileZiped);
-            
-            * TODO: Zipar ativo corretamente esta zipando apenas os arquivos da pasta
-            e não a pasta em si.
-            * descompactar dentro da pasta upload
-            * validar ativo atualizado
-            * adicionar
-            * commitar.
-            */
-            return Response.status(201).entity("File uploaded successfully in: " + command.getDestiny()).build();
+            /**
+             * ********************************************
+             * zipper.setArquivoZipAtual(fileZiped);
+             *
+             * TODO: Zipar ativo corretamente esta zipando apenas os arquivos da
+             * pasta e não a pasta em si. descompactar dentro da pasta upload
+             * validar ativo atualizado adicionar commitar.
+             */
         }
 
         return Response.status(
