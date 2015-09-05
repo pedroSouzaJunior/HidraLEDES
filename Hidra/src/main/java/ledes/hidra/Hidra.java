@@ -14,7 +14,6 @@ import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
 import javax.xml.bind.JAXBContext;
 
-
 import javax.xml.bind.JAXBException;
 
 import javax.xml.bind.Marshaller;
@@ -51,10 +50,10 @@ public class Hidra {
     public Hidra() {
     }
 
-    
     /**
      * Retorna um repositorio Hidra.
-     * @return 
+     *
+     * @return
      */
     public Repository getRepository() {
         return repository;
@@ -62,7 +61,8 @@ public class Hidra {
 
     /**
      * Define o repositório Hidra.
-     * @param repository 
+     *
+     * @param repository
      */
     public void setRepository(Repository repository) {
         this.repository = repository;
@@ -128,13 +128,19 @@ public class Hidra {
      */
     public boolean startSynchronizedRepository(String localPath, String remotePath, String user, String password) {
         repository = new Repository(localPath, remotePath);
-        return repository.cloneRepository(user, password);
+        boolean result = repository.cloneRepository(user, password);
+
+        if (result == false) {
+            File file = new File(repository.getLocalPath());
+            file.delete();
+        }
+        return result;
     }
 
     /**
-     * RF-01
-     * Adiciona um ativo válido com seus artefatos ao repositório.
-     * Recebe nome do ativo no repositório
+     * RF-01 Adiciona um ativo válido com seus artefatos ao repositório. Recebe
+     * nome do ativo no repositório
+     *
      * @param nameAsset
      * @return
      *
@@ -172,8 +178,9 @@ public class Hidra {
     }
 
     /**
-     * RF-04
-     * Permite verificar se um ativo é válido de acordo com o padrão RAS adotado.
+     * RF-04 Permite verificar se um ativo é válido de acordo com o padrão RAS
+     * adotado.
+     *
      * @param assetPath
      * @return
      */
@@ -187,7 +194,7 @@ public class Hidra {
     }
 
     /**
-     * Remove um ativo do repositório. 
+     * Remove um ativo do repositório.
      *
      * @param assetName - Recebe o nome do ativo a ser removido.
      * @return
@@ -213,8 +220,8 @@ public class Hidra {
     }
 
     /**
-     * RF-06
-     * Define a classificação de um ativo.
+     * RF-06 Define a classificação de um ativo.
+     *
      * @param assetID
      * @param classification
      * @return
@@ -224,8 +231,8 @@ public class Hidra {
     }
 
     /**
-     * RF-07, RF-14
-     * Retorna a utilização (Usage) de um ativo.
+     * RF-07, RF-14 Retorna a utilização (Usage) de um ativo.
+     *
      * @param assetId
      * @return
      */
@@ -234,8 +241,8 @@ public class Hidra {
     }
 
     /**
-     * RF-07
-     * Define o usage de um ativo.
+     * RF-07 Define o usage de um ativo.
+     *
      * @param usage
      * @return
      */
@@ -244,8 +251,8 @@ public class Hidra {
     }
 
     /**
-     * RF-08
-     * Retorna a dependência (RelatedAssets) entre ativos.
+     * RF-08 Retorna a dependência (RelatedAssets) entre ativos.
+     *
      * @param assetId
      * @return
      */
@@ -254,8 +261,7 @@ public class Hidra {
     }
 
     /**
-     * RF-08
-     * Define a dependência entre os ativos.
+     * RF-08 Define a dependência entre os ativos.
      *
      * @param assetId - Ativo que deseja registrar dependência
      * @param relatedId - Ativo que se tem dependência.
@@ -266,8 +272,8 @@ public class Hidra {
     }
 
     /**
-     * RF-09
-     * Retorna informações sobre mudanças de um ativo específico.
+     * RF-09 Retorna informações sobre mudanças de um ativo específico.
+     *
      * @param assetName
      * @return
      */
@@ -275,27 +281,28 @@ public class Hidra {
         return repository.getLog(assetName);
     }
 
-    
     /**
      * Retorna informações sobre mudanças em todo repositório.
-     * @return  
+     *
+     * @return
      */
     public String getLog() {
         return repository.getLog();
     }
 
     /**
-     * RF-10
-     * Retorna uma lista com todos os ativos validados e monitorados no repositório.
-     * @return 
+     * RF-10 Retorna uma lista com todos os ativos validados e monitorados no
+     * repositório.
+     *
+     * @return
      */
     public Map<String, String> listAssets() {
         return repository.listAssets();
     }
 
     /**
-     * RF-11
-     * Realiza o download do ativo em formato compactado.
+     * RF-11 Realiza o download do ativo em formato compactado.
+     *
      * @param assetId - Nome do ativo
      * @return
      * @throws java.io.FileNotFoundException
@@ -305,10 +312,11 @@ public class Hidra {
     }
 
     /**
-     * Salva todas as alterações realizadas no repositório.
-     * É obrigatório o envio de uma mensagem informando as alterações realizadas.
+     * Salva todas as alterações realizadas no repositório. É obrigatório o
+     * envio de uma mensagem informando as alterações realizadas.
+     *
      * @param message
-     * @return 
+     * @return
      */
     public boolean save(String message) {
 
@@ -322,11 +330,12 @@ public class Hidra {
     }
 
     /**
-     * Atualiza o repositório local com as mudanças do repositório remoto.
-     * É necessário autentificação para habilitar acesso.
-     * @param user - String 
+     * Atualiza o repositório local com as mudanças do repositório remoto. É
+     * necessário autentificação para habilitar acesso.
+     *
+     * @param user - String
      * @param password - String
-     * @return 
+     * @return
      */
     public boolean synchronize(String user, String password) {
 
@@ -336,6 +345,7 @@ public class Hidra {
 
     /**
      * Envia as alterações do repositório local ao repositório remoto.
+     *
      * @param user
      * @param password
      * @return String
@@ -345,10 +355,10 @@ public class Hidra {
         return repository.updateRepository(user, password);
     }
 
-    
     /**
      * Retorna informações sobre o estado do repositório.
-     * @return 
+     *
+     * @return
      */
     public Map<String, Set<String>> showStatus() {
         return repository.showStatus();
@@ -357,8 +367,9 @@ public class Hidra {
 
     /**
      * Atualiza um ativo.
+     *
      * @param assetName
-     * @return 
+     * @return
      */
     public boolean updateAsset(String assetName) {
         try {
@@ -371,8 +382,9 @@ public class Hidra {
 
     /**
      * Define o usuário do repositório.
+     *
      * @param name
-     * @param email 
+     * @param email
      */
     public void setUser(String name, String email) {
         repository.setUserRepo(name, email);
@@ -380,7 +392,8 @@ public class Hidra {
 
     /**
      * Retorna o usuário atual do repositório
-     * @return 
+     *
+     * @return
      */
     public Map<String, String> getUser() {
         return repository.getUserRepo();
@@ -389,7 +402,8 @@ public class Hidra {
 
     /**
      * Define o repositório remoto de um repositório local.
-     * @param url 
+     *
+     * @param url
      */
     public void setRemoteRepo(String url) {
         repository.setRemoteRepo(url);
@@ -397,13 +411,14 @@ public class Hidra {
 
     /**
      * Retorna informações sobre o repositório remoto
-     * @return 
+     *
+     * @return
      */
     public String getRemoteRepo() {
         return repository.getRemoteRepo();
     }
-    
-    public boolean findAsset(String assetName){
+
+    public boolean findAsset(String assetName) {
         return repository.findAsset(assetName);
     }
 
@@ -437,7 +452,7 @@ public class Hidra {
         art.setType("Folder");
         des.getArtifact().add(art);
         sol.setDesign(des);
-        
+
         SolutionType.Artifacts arts = new SolutionType.Artifacts();
         art = new ArtifactType();
         art.setId("1");
@@ -446,9 +461,8 @@ public class Hidra {
         art.setType("Folder");
         arts.getArtifact().add(art);
         sol.setArtifacts(arts);
-        
-        
-        SolutionType.Implementation impl= new SolutionType.Implementation();
+
+        SolutionType.Implementation impl = new SolutionType.Implementation();
         art = new ArtifactType();
         art.setId("1");
         art.setName("implementation");
@@ -456,7 +470,7 @@ public class Hidra {
         art.setType("Folder");
         impl.getArtifact().add(art);
         sol.setImplementation(impl);
-        
+
         SolutionType.Requirements req = new SolutionType.Requirements();
         art = new ArtifactType();
         art.setId("1");
@@ -465,8 +479,7 @@ public class Hidra {
         art.setType("Folder");
         req.getArtifact().add(art);
         sol.setRequirements(req);
-        
-        
+
         SolutionType.Test test = new SolutionType.Test();
         art = new ArtifactType();
         art.setId("1");
@@ -478,17 +491,17 @@ public class Hidra {
 
         return sol;
     }
-    
-    public UsageType createUsageDefault(){
-    
+
+    public UsageType createUsageDefault() {
+
         UsageType usage = new UsageType();
         Activity act = new Activity();
         act.setId("1");
-        act.setReference(File.separator+ "usage");
+        act.setReference(File.separator + "usage");
         act.setRole("");
         act.setTask("");
         act.setTaskRole("");
-       return usage;
+        return usage;
     }
 
 }

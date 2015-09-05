@@ -40,6 +40,7 @@ public class Services {
     private static final String extension = ".zip";
     private static final String UPLOAD_PATH_TEMP = separator + ".hidra" + separator + ".temp" + separator + ".uploads";
     private static final String DOWNLOAD_PATH_TEMP = separator + ".hidra" + separator + ".temp" + separator + ".downloads";
+    private static final String DEFAULT_MESSAGE_SUBMIT = "Sending changes to repository";
 
     private Hidra hidra;
 
@@ -113,12 +114,20 @@ public class Services {
         if (path.isEmpty() || assetName.isEmpty()) {
             throw new DataNotFoundException("The absolute path of the repository Or Asset Name has not been set");
         }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
+        }
+        if (!new File(path + separator + assetName).exists()) {
+            throw new IOException("Asset informed was not found");
+        }
 
         hidra = new Hidra(path);
         if (hidra.addAsset(assetName)) {
             result.setMessage("The asset: " + assetName + " has been added to the repository");
             result.setStatusMessage(200);
-            return Response.status(500).entity(result).build();
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
         }
 
         throw new Exception("File already monitored. You might want to do \"updateAsset\"");
@@ -131,20 +140,164 @@ public class Services {
      *
      * @param command
      * @return
+     * @throws java.io.IOException
      */
     @POST
     @Path("/submit")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response submit(Command command) {
+    public Response submit(Command command) throws IOException, Exception {
 
-        Hidra hidra = new Hidra(command.getDestiny());
+        Hidra hidra;
+        ResultMessage result = new ResultMessage();
+        String path = command.getRepositoryPath();
+        String message = command.getSubmitMessage().isEmpty() ? DEFAULT_MESSAGE_SUBMIT : command.getSubmitMessage();
 
-        if (hidra.save(command.getSubmitMessage())) {
-            return Response.status(200).entity("Commit Accomplished").build();
+        if (path.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository has not been set");
+        }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
         }
 
-        return Response.status(500).entity("Error in server").build();
+        hidra = new Hidra(path);
+        if (hidra.save(command.getSubmitMessage())) {
+            result.setMessage(message);
+            result.setStatusMessage(200);
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
+        }
+
+        throw new Exception("Could not commit changes to the repository");
+    }
+
+    /**
+     * Servico responsavel por remover um ativo de software armezenado no
+     * repositorio. Consome um XML padronizado (Command) contendo o caminho
+     * absoluto do repositorio que se deseja utilizar em conjunto com o nome do
+     * ativo que se deseja remover.
+     *
+     * @param command
+     * @return
+     * @throws java.io.IOException
+     */
+    @POST
+    @Path("/removeAsset")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response remove(Command command) throws IOException, Exception {
+
+        ResultMessage result = new ResultMessage();
+        String path = command.getRepositoryPath();
+        String assetName = command.getAssetName();
+
+        if (path.isEmpty() || assetName.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository Or Asset Name has not been set");
+        }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
+        }
+        if (!new File(path + separator + assetName).exists()) {
+            throw new IOException("Asset informed was not found");
+        }
+
+        hidra = new Hidra(path);
+        if (hidra.removeAsset(assetName)) {
+            result.setMessage("Asset removed Success");
+            result.setStatusMessage(200);
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
+        }
+
+        throw new Exception("Could not remove Asset");
+    }
+
+    /**
+     * Servico responsavel por criar uma copia local de um repositorio. Consome
+     * um XML padronizado (Command) contendo o caminho absoluto do repositorio
+     * que se deseja clonar e tambem o caminho absoluto do diretorio destino.
+     *
+     * @param command
+     * @return
+     * @throws java.io.IOException
+     */
+    @POST
+    @Path("/cloneRepository")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response cloneRepository(Command command) throws IOException, Exception {
+
+        Hidra hidra = new Hidra();
+        ResultMessage result = new ResultMessage();
+        String remotePath = command.getRemoteRepository();
+        String cloneToDirectory = command.getRepositoryLocalCopy();
+
+        if (remotePath.isEmpty() || cloneToDirectory.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the remote repository Or the destiny has not been set");
+        }
+        if (new File(cloneToDirectory).exists() && new File(cloneToDirectory).listFiles().length != 0) {
+            throw new IOException("Destination already exists");
+        }
+
+        if (hidra.startSynchronizedRepository(cloneToDirectory, remotePath)) {
+            result.setMessage("Repository successfully cloned in " + cloneToDirectory);
+            result.setStatusMessage(200);
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
+        }
+
+        throw new Exception("Could not clone remote repository");
+    }
+
+    /**
+     * Servico responsavel por criar uma copia local de um repositorio remoto
+     * atravez de autenticacao. Consome um XML padronizado (Command) contendo a
+     * URL do repositorio que se deseja clonar e tambem o caminho absoluto do
+     * diretorio destino e usuario e senha para acesso ao repositorio remoto.
+     *
+     * @param command
+     * @return
+     * @throws java.io.IOException
+     */
+    @POST
+    @Path("/cloneAuthorization")
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_XML)
+    public Response cloneAuthorizedRepository(Command command) throws IOException, Exception {
+
+        Hidra hidra = new Hidra();
+        String user = command.getUser();
+        String password = command.getPassword();
+        ResultMessage result = new ResultMessage();
+        String remotePath = command.getRemoteRepository();
+        String cloneToDirectory = command.getRepositoryLocalCopy();
+
+        if (remotePath.isEmpty() || cloneToDirectory.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the remote repository Or the destiny has not been set");
+        }
+        if (user.isEmpty() || password.isEmpty()) {
+            throw new DataNotFoundException("User or Password has not been set");
+        }
+        if (new File(cloneToDirectory).exists() && new File(cloneToDirectory).listFiles().length != 0) {
+            throw new IOException("Destination already exists");
+        }
+
+        boolean resultado = hidra.startSynchronizedRepository(cloneToDirectory, remotePath, user, password);
+        System.out.println(resultado);
+        /*
+         if (hidra.startSynchronizedRepository(cloneToDirectory, remotePath, user, password)) {
+         result.setMessage("Repository successfully cloned in " + cloneToDirectory);
+         result.setStatusMessage(200);
+         return Response
+         .status(Status.OK)
+         .entity(result).build();
+         }
+         */
+        throw new Exception("Could not clone remote repository: User or Password incorrect");
+
     }
 
     /**
@@ -160,16 +313,31 @@ public class Services {
     @Path("/solution")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getSolution(Command command) {
+    public Response getSolution(Command command) throws IOException {
 
-        Hidra hidra = new Hidra(command.getDestiny());
-        String solution = hidra.getSolution(command.getAssetFile().getName());
+        Hidra hidra;
+        String solution;
+        String assetName = command.getAssetName();
+        String path = command.getRepositoryPath();
+        ResultMessage result = new ResultMessage();
 
-        if (!solution.isEmpty()) {
-            return Response.status(200).entity(solution).build();
+        if (path.isEmpty() || assetName.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository Or Asset Name has not been set");
+        }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
         }
 
-        return Response.status(500).entity("Error in Server").build();
+        hidra = new Hidra(path);
+        solution = hidra.getSolution(assetName);
+        result.setMessage("the asset is described by: ");
+        result.setStatusMessage(200);
+
+        return Response
+                .status(Status.OK)
+                .entity(result)
+                .entity(solution).build();
+
     }
 
     /**
@@ -185,16 +353,30 @@ public class Services {
     @Path("/classification")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getClassification(Command command) {
+    public Response getClassification(Command command) throws IOException {
 
-        Hidra hidra = new Hidra(command.getDestiny());
-        String classification = hidra.getClassification(command.getAssetFile().getName());
+        Hidra hidra;
+        String classification;
+        String assetName = command.getAssetName();
+        String path = command.getRepositoryPath();
+        ResultMessage result = new ResultMessage();
 
-        if (!classification.isEmpty()) {
-            return Response.status(200).entity(classification).build();
+        if (path.isEmpty() || assetName.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository Or Asset Name has not been set");
+        }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
         }
 
-        return Response.status(500).entity("Error in Server").build();
+        hidra = new Hidra(path);
+        classification = hidra.getClassification(assetName);
+        result.setMessage("the asset is classified by: ");
+        result.setStatusMessage(200);
+
+        return Response
+                .status(Status.OK)
+                .entity(result)
+                .entity(classification).build();
     }
 
     /**
@@ -210,16 +392,30 @@ public class Services {
     @Path("/usage")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getUsage(Command command) {
+    public Response getUsage(Command command) throws IOException {
 
-        Hidra hidra = new Hidra(command.getDestiny());
-        String usage = hidra.getUsage(command.getAssetFile().getName());
+        Hidra hidra;
+        String usage;
+        String assetName = command.getAssetName();
+        String path = command.getRepositoryPath();
+        ResultMessage result = new ResultMessage();
 
-        if (!usage.isEmpty()) {
-            return Response.status(200).entity(usage).build();
+        if (path.isEmpty() || assetName.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository Or Asset Name has not been set");
+        }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
         }
 
-        return Response.status(500).entity("Error in Server").build();
+        hidra = new Hidra(path);
+        usage = hidra.getUsage(assetName);
+        result.setMessage("the use of the asset is given by: ");
+        result.setStatusMessage(200);
+
+        return Response
+                .status(Status.OK)
+                .entity(result)
+                .entity(usage).build();
     }
 
     /**
@@ -232,19 +428,33 @@ public class Services {
      * @return
      */
     @POST
-    @Path("/related")
+    @Path("/relatedAssets")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getRelatedAssets(Command command) {
+    public Response getRelatedAssets(Command command) throws IOException {
 
-        Hidra hidra = new Hidra(command.getDestiny());
-        String related = hidra.getRelatedAssets(command.getAssetFile().getName());
+        Hidra hidra;
+        String relatedAssets;
+        String assetName = command.getAssetName();
+        String path = command.getRepositoryPath();
+        ResultMessage result = new ResultMessage();
 
-        if (!related.isEmpty()) {
-            return Response.status(200).entity(related).build();
+        if (path.isEmpty() || assetName.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository Or Asset Name has not been set");
+        }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
         }
 
-        return Response.status(500).entity("Error in Server").build();
+        hidra = new Hidra(path);
+        relatedAssets = hidra.getRelatedAssets(assetName);
+        result.setMessage("Related assets: ");
+        result.setStatusMessage(200);
+
+        return Response
+                .status(Status.OK)
+                .entity(result)
+                .entity(relatedAssets).build();
     }
 
     @POST
@@ -279,30 +489,6 @@ public class Services {
         return Response.status(500).entity("Error in Server").build();
     }
 
-    /**
-     * Servico responsavel por remover um ativo de software armezenado no
-     * repositorio. Consome um XML padronizado (Command) contendo o caminho
-     * absoluto do repositorio que se deseja utilizar em conjunto com o nome do
-     * ativo que se deseja remover.
-     *
-     * @param command
-     * @return
-     */
-    @POST
-    @Path("/removeasset")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
-    public Response remove(Command command) {
-
-        Hidra hidra = new Hidra(command.getDestiny());
-
-        if (hidra.removeAsset(command.getAssetFile().getName())) {
-            return Response.status(200).entity("Ativo removido com Sucesso").build();
-        }
-
-        return Response.status(500).entity("Erro Interno ").build();
-    }
-
     @GET
     @Path("gettest")
     @Produces(MediaType.APPLICATION_XML)
@@ -311,7 +497,11 @@ public class Services {
         Command com = new Command();
         com.setAssetName("jaxb");
         com.setRepositoryPath("/var/www/hidra.com/hidra/FINAL");
-
+        com.setRemoteRepository("/var/www/hidra.com/hidra/HIDRA");
+        com.setRepositoryLocalCopy("/home/pedro/CloneOfHidra");
+        com.setUser("pedro");
+        com.setPassword("220891");
+        com.setSubmitMessage("Enviando alterações para o repositório");
         return com;
     }
 
@@ -351,64 +541,6 @@ public class Services {
             System.out.println(entry.getKey() + "/" + entry.getValue());
         }
         return Response.status(200).entity("Assets Avaliables").build();
-    }
-
-    /**
-     * Servico responsavel por criar uma copia local de um repositorio. Consome
-     * um XML padronizado (Command) contendo o caminho absoluto do repositorio
-     * que se deseja clonar e tambem o caminho absoluto do diretorio destino.
-     *
-     * @param command
-     * @return
-     */
-    @POST
-    @Path("/cloneRepository")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
-    public Response cloneRepository(Command command) {
-
-        Hidra hidra = new Hidra();
-
-        try {
-            if (hidra.startSynchronizedRepository(command.getRepositoryLocalCopy(), command.getRemoteRepository())) {
-
-                return Response.status(200).entity("Local Copy has been created").build();
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return Response.status(500).entity("Error in Server").build();
-    }
-
-    /**
-     * Servico responsavel por criar uma copia local de um repositorio remoto
-     * atravez de autenticacao. Consome um XML padronizado (Command) contendo a
-     * URL do repositorio que se deseja clonar e tambem o caminho absoluto do
-     * diretorio destino e usuario e senha para acesso ao repositorio remoto.
-     *
-     * @param command
-     * @return
-     */
-    @POST
-    @Path("/cloneAuthorization")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
-    public Response cloneAuthorizedRepository(Command command) {
-
-        Hidra hidra = new Hidra();
-
-        try {
-            if (hidra.startSynchronizedRepository(command.getRepositoryLocalCopy(), command.getRemoteRepository(),
-                    command.getUser(), command.getPassword())) {
-                return Response.status(200).entity("Local Copy has been created").build();
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return Response.status(500).entity("Could not clone remote repository").build();
     }
 
     /**
