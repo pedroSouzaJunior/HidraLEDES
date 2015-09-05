@@ -15,11 +15,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
+import ledes.hidra.exception.DataNotFoundException;
 import ledes.hidra.resources.HidraResources;
 import ledes.hidra.resources.Zipper;
 import ledes.hidra.rest.model.Command;
+import ledes.hidra.rest.model.ResultMessage;
 
 /**
  * Classe Services - responsavel por transcrever as funcionalidades do projeto
@@ -51,30 +54,41 @@ public class Services {
      *
      * @param command
      * @return Response Object
+     * @throws java.io.IOException
      */
     @POST
     @Path("/construct")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response construct(Command command) {
+    public Response construct(Command command) throws IOException {
 
-        if (command.getDestiny() != null) {
+        hidra = new Hidra();
+        ResultMessage result = new ResultMessage();
+        String path = command.getRepositoryPath();
 
-            hidra = new Hidra(command.getDestiny());
-
-            try {
-                hidra.startRepository(command.getDestiny());
-            } catch (IOException ex) {
-                Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (JAXBException ex) {
-                Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            return Response
-                    .status(201)
-                    .entity("repository was created in : " + command.getDestiny()).build();
+        if (path.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository has not been set");
         }
-        return Response.status(500).entity("Error in server").build();
+        if (new File(path).isDirectory()) {
+            throw new IOException("Repository with this name already exists");
+        }
+
+        try {
+
+            hidra.startRepository(path);
+            result.setMessage("repository was created in : " + path);
+            result.setStatusMessage(201);
+
+        } catch (IOException ex) {
+            throw new DataNotFoundException(ex.getMessage());
+        } catch (JAXBException ex) {
+            throw new DataNotFoundException(ex.getMessage());
+        }
+
+        return Response
+                .status(Status.CREATED)
+                .entity(result).build();
+
     }
 
     /**
@@ -90,29 +104,24 @@ public class Services {
     @Path("/addasset")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response addAsset(Command command) throws IOException {
+    public Response addAsset(Command command) throws Exception {
 
-        Hidra hidra = new Hidra(command.getDestiny());
+        ResultMessage result = new ResultMessage();
+        String path = command.getRepositoryPath();
+        String assetName = command.getAssetName();
 
-        File destiny = new File(command.getDestiny() + separator + command.getAssetFile().getName());
-
-        File dezipado = new File(command.getDestiny() + UPLOAD_PATH_TEMP + separator + command.getAssetFile().getName());
-
-        File asset = new File(destiny.getParent() + UPLOAD_PATH_TEMP + separator + command.getAssetFile().getName() + extension);
-
-        HidraResources resources = new HidraResources();
-        Zipper zipper = new Zipper();
-
-        if (resources.assetExist(dezipado.getParentFile(), command.getAssetFile().getName())) {
-
-            zipper.extrairZip(asset, dezipado);
-            dezipado.renameTo(new File(command.getDestiny(), command.getAssetFile().getName()));
-            hidra.addAsset(command.getAssetFile().getName());
-            asset.delete();
-
-            return Response.status(200).entity("ativo adicionado com sucesso").build();
+        if (path.isEmpty() || assetName.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository Or Asset Name has not been set");
         }
-        return Response.status(500).entity("arquivo nao encontrado").build();
+
+        hidra = new Hidra(path);
+        if (hidra.addAsset(assetName)) {
+            result.setMessage("The asset: " + assetName + " has been added to the repository");
+            result.setStatusMessage(200);
+            return Response.status(500).entity(result).build();
+        }
+
+        throw new Exception("File already monitored. You might want to do \"updateAsset\"");
     }
 
     /**
@@ -299,17 +308,10 @@ public class Services {
     @Produces(MediaType.APPLICATION_XML)
     public Command getCommand() {
 
-        Command com = new Command("/var/www/hidra.com/hidra/danielli");
-        com.setAssetFile(new File("/home/pedro/Documentos/qsort.c"));
+        Command com = new Command();
         com.setAssetName("jaxb");
-        com.setPathToDownload("/home/pedro/Downloads/downHidra");
-        com.setSubmitMessage("Message to commit default");
-        com.setRemoteRepository("http://hidra.com/hidra/REPOSITORIO");
-        com.setRepositoryLocalCopy("/home/pedro/localParaClonar");
-        com.setUser("pedro");
-        com.setPassword("220891");
-        com.setAssetUpdate(new File("/home/pedro/AreaDeTestes/jaxb"));
-        com.setRepositoryPath("/var/www/hidra.com/hidra/HIDRA");
+        com.setRepositoryPath("/var/www/hidra.com/hidra/FINAL");
+
         return com;
     }
 
