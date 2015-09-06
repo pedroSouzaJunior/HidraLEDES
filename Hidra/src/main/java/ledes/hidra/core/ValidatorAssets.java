@@ -26,8 +26,8 @@ public class ValidatorAssets {
     }
 
     private boolean isValidDirectory(String path) {
-
-        return new File(path).isDirectory();
+        File dir = new File(path);
+        return  dir.isDirectory()&&dir.listFiles().length==0;
 
     }
 
@@ -66,7 +66,7 @@ public class ValidatorAssets {
                
                     
                 result = isValidDirectory(localAsset + art.getReference() + art.getName());
-
+                
                 if (!result) {
                     reasons.append(art.getName()).append(" is not folder\n");
                     System.out.println(reasons);
