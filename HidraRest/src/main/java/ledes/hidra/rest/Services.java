@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
+import ledes.hidra.asset.SolutionType;
 import ledes.hidra.exception.DataNotFoundException;
 import ledes.hidra.resources.HidraResources;
 import ledes.hidra.resources.Zipper;
@@ -285,17 +286,14 @@ public class Services {
             throw new IOException("Destination already exists");
         }
 
-        boolean resultado = hidra.startSynchronizedRepository(cloneToDirectory, remotePath, user, password);
-        System.out.println(resultado);
-        /*
-         if (hidra.startSynchronizedRepository(cloneToDirectory, remotePath, user, password)) {
-         result.setMessage("Repository successfully cloned in " + cloneToDirectory);
-         result.setStatusMessage(200);
-         return Response
-         .status(Status.OK)
-         .entity(result).build();
-         }
-         */
+        if (hidra.startSynchronizedRepository(cloneToDirectory, remotePath, user, password)) {
+            result.setMessage("Repository successfully cloned in " + cloneToDirectory);
+            result.setStatusMessage(200);
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
+        }
+
         throw new Exception("Could not clone remote repository: User or Password incorrect");
 
     }
@@ -332,6 +330,8 @@ public class Services {
         solution = hidra.getSolution(assetName);
         result.setMessage("the asset is described by: ");
         result.setStatusMessage(200);
+        
+       
 
         return Response
                 .status(Status.OK)
@@ -457,38 +457,6 @@ public class Services {
                 .entity(relatedAssets).build();
     }
 
-    @POST
-    @Path("/log")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
-    public Response getLog(Command command) {
-
-        Hidra hidra = new Hidra(command.getDestiny());
-        String log = hidra.getLog(command.getAssetFile().getName());
-
-        if (!log.isEmpty()) {
-            return Response.status(200).entity(log).build();
-        }
-
-        return Response.status(500).entity("Error in Server").build();
-    }
-
-    @POST
-    @Path("/showLogs")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
-    public Response getStatus(Command command) {
-
-        Hidra hidra = new Hidra(command.getDestiny());
-        String logs = hidra.getLog();
-
-        if (!logs.isEmpty()) {
-            return Response.status(200).entity(logs).build();
-        }
-
-        return Response.status(500).entity("Error in Server").build();
-    }
-
     @GET
     @Path("gettest")
     @Produces(MediaType.APPLICATION_XML)
@@ -503,102 +471,6 @@ public class Services {
         com.setPassword("220891");
         com.setSubmitMessage("Enviando alterações para o repositório");
         return com;
-    }
-
-    @GET
-    @Path("/query")
-    @Produces(MediaType.APPLICATION_XML)
-    public Response getUsers(
-            @DefaultValue("1000") @QueryParam("from") int from,
-            @DefaultValue("999") @QueryParam("to") int to,
-            @DefaultValue("name") @QueryParam("orderBy") List<String> orderBy) {
-
-        return Response
-                .status(200)
-                .entity("getUsers is called, from : " + from + ", to : " + to
-                        + ", orderBy" + orderBy.toString()).build();
-
-    }
-
-    /**
-     * Servico responsavel por obter os dados referentes a quais ativos de
-     * software estao armezenado no repositorio. Consome um XML padronizado
-     * (Command) contendo o caminho absoluto do repositorio que se deseja
-     * utilizar em conjunto com o nome do ativo que se busca.
-     *
-     * @param command
-     * @return
-     */
-    @POST
-    @Path("/getAssetsAvailable")
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response listAssets(Command command) {
-
-        Hidra hidra = new Hidra(command.getDestiny());
-
-        for (Map.Entry<String, String> entry : hidra.listAssets().entrySet()) {
-            System.out.println(entry.getKey() + "/" + entry.getValue());
-        }
-        return Response.status(200).entity("Assets Avaliables").build();
-    }
-
-    /**
-     * Servico responsavel por atualizar repositorio remoto com as modificacoes
-     * e informacoes do repositorio local. Consome XML padronizado (Command)
-     * contendo o caminho absoluto do repositorio local.
-     *
-     * @param command
-     * @return
-     */
-    @POST
-    @Path("/upadateRepository")
-    @Consumes(MediaType.APPLICATION_XML)
-    public Response updateRepository(Command command) {
-
-        String result;
-        Hidra hidra = new Hidra(command.getDestiny());
-
-        try {
-            result = hidra.update(command.getUser(), command.getPassword());
-
-            if (result.equals("Repository Updated ")) {
-                return Response.status(200).entity(result).build();
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return Response.status(500).entity("Erron Server internal").build();
-    }
-
-    /**
-     * Servico responsavel por atualizar o repositorio local com modificacoes
-     * que foram aplicadas ao seu respectivo repositorio remoto. Consome XML
-     * padronizado (Command) que contem o caminho absoluto do repositorio que se
-     * deseja atualizar. O repositorio deve possuir ligacao a um repositorio
-     * remoto
-     *
-     * @param command
-     * @return
-     */
-    @POST
-    @Path("/updateLocalRepository")
-    @Consumes(MediaType.APPLICATION_XML)
-    public Response updateLocalRepository(Command command) {
-
-        boolean result = false;
-        Hidra hidra = new Hidra(command.getDestiny());
-
-        try {
-            result = hidra.synchronize(command.getUser(), command.getPassword());
-            if (result) {
-                return Response.status(200).entity("Successfully synchronized repository").build();
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Services.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return Response.status(500).entity("Please add a remote repository").build();
     }
 
 }

@@ -101,12 +101,12 @@ public class GitFacade {
      */
     public boolean cloneRepository(File directory, String remotePath, String user, String password) throws GitAPIException {
 
-        boolean result = false;
+      
 
         UsernamePasswordCredentialsProvider credential = new UsernamePasswordCredentialsProvider(user, password);
         if (directory.exists() && directory.listFiles().length != 0) {
             System.out.println("Repository not empty , Canceled Operation");
-            result = false;
+            return false;
         }
 
         try {
@@ -114,11 +114,11 @@ public class GitFacade {
                     .setDirectory(directory).call();
             System.out.println("Repository successfully cloned "
                     + assistant.getRepository().getDirectory());
-
-        } finally {
-            assistant.close();
-        }
-        return result;
+            return true;
+        } catch (Exception ex) {
+          
+            return false;
+        } 
 
     }
 

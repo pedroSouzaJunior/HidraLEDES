@@ -121,14 +121,14 @@ public class Hidra {
      * @return
      */
     public boolean startSynchronizedRepository(String localPath, String remotePath, String user, String password) {
-        repository = new Repository(localPath, remotePath);
-        boolean result = repository.cloneRepository(user, password);
 
-        if (result == false) {
-            File file = new File(repository.getLocalPath());
-            file.delete();
+        repository = new Repository(localPath, remotePath);
+
+        if (!repository.cloneRepository(user, password)) {
+            repository.removeRepository();
+            return false;
         }
-        return result;
+        return true;
     }
 
     /**
@@ -158,6 +158,10 @@ public class Hidra {
     public String getSolution(String assetId) {
         return repository.getSolution(assetId);
 
+    }
+    
+    public SolutionType getSolution2(String assetName){
+        return repository.getSolution2(assetName);
     }
 
     /**
@@ -199,8 +203,9 @@ public class Hidra {
             return repository.removeAsset(assetName);
         } catch (JAXBException | FileNotFoundException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-        return false;
+
     }
 
     /**

@@ -66,7 +66,7 @@ public class Asset {
         stb.append("Artifacts:\n");
 
         for (ArtifactType artfacty : this.solution.getArtifacts().getArtifact()) {
-            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("<iD>: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
             stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
@@ -113,6 +113,10 @@ public class Asset {
         }
 
         return stb.toString();
+    }
+    
+    public SolutionType getSolution2(){
+        return this.getSolution();
     }
 
     /**
