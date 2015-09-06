@@ -12,7 +12,7 @@ import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.SolutionType;
 
 /**
- *
+ * Classe responsável por validar um ativo de acordo com as normas definidas.
  * @author danielli
  */
 public class ValidatorAssets {
@@ -27,7 +27,7 @@ public class ValidatorAssets {
 
     private boolean isValidDirectory(String path) {
         File dir = new File(path);
-        return  dir.isDirectory()&&dir.listFiles().length==0;
+        return  dir.isDirectory()&&dir.listFiles().length!=0;
 
     }
 
