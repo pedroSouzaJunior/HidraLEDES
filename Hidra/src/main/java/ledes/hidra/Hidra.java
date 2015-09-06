@@ -23,12 +23,18 @@ import ledes.hidra.asset.ArtifactType;
 /**
  * This class provides all operation of a repository, by manipulating Repository
  * and LocalRepository
- *
+ * 
+ *  Essa classe provê todas as operações de um repositorio, manipulado pelo Repositorio.
  *
  * @author Danielli Urbieta e Pedro Souza Junior
  */
 public class Hidra {
 
+    
+    /**
+     * 
+     * @param localPath 
+     */
     public Hidra(String localPath) {
         super();
         repository = new Repository(localPath);
@@ -307,7 +313,8 @@ public class Hidra {
      * @throws java.io.FileNotFoundException
      */
     public File downloadAsset(String assetId) throws FileNotFoundException {
-        return repository.downloadAsset(assetId);
+        //TO DO
+        return null;
     }
 
     /**
@@ -421,6 +428,17 @@ public class Hidra {
         return repository.findAsset(assetName);
     }
 
+    /**
+     * Cria um Tag com anotações.
+     * @param name
+     * @param message
+     * @return 
+     */
+    public boolean createTag(String name, String message){
+        return repository.createTagAnotted(name, message);
+    
+    }
+    
     public void createTemplateAsset() throws JAXBException {
 
         Asset asset = new Asset();

@@ -1,9 +1,7 @@
 package ledes.hidra.prototype;
 
 
-import ledes.hidra.prototype.client.ClientCommands;
-import ledes.hidra.prototype.repository.RepositoryCommands;
-import ledes.hidra.util.Configuration;
+
 
 /**
  * This Prototype aims to proof Hidra's applicability.
@@ -55,15 +53,15 @@ public class HidraPrototype {
      * - which credentials should be used to connect to remote repository;
      * - etc.
      */
-    private static void setUpRepository() {
-        String type = Configuration.properties.getProperty("ApplicationType");
-        
-        // TODO
-        
-        commands = new ClientCommands();
-        if(type.equals("Repository")) {
-            commands = new RepositoryCommands();
-        }
-    }
+//    private static void setUpRepository() {
+//        String type = Configuration.properties.getProperty("ApplicationType");
+//        
+//        // TODO
+//        
+//        commands = new ClientCommands();
+//        if(type.equals("Repository")) {
+//            commands = new RepositoryCommands();
+//        }
+//    }
 
 }

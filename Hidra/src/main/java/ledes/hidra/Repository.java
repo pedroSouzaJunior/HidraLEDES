@@ -58,28 +58,37 @@ public class Repository {
     private final static String separator = File.separator;
     private final static String manifest = "rasset.xml";
     /**
-     * @param String localPath - Define full path to the repository local
+     * @param String localPath - Define o caminho completo para o repositório
+     * local.
      */
     private final String localPath;
     /**
-     * @param String remotePath - Define URL or path to the repository remote
+     * @param String remotePath - Define a URL ou o caminho do repositório
+     * remoto.
      */
     private String remotePath;
 
     /**
-     * @param File - Directory where the repository
+     * @param File - Diretório do repositório
      */
     private final File directory;
 
+    /**
+     * Responsável pela operações Git
+     */
     private final GitFacade assistant;
 
+    /**
+     * Lista de Exceções
+     */
     private List<String> exceptionList;
 
     /**
-     * Builder of the repository class with one parameter. You must start the
-     * repository after the instantiation of the repository.
+     * Construtor de um repositório com um parametro. É necessário chamar a
+     * função start após a instanciação de um repositório para criar um novo
+     * repositório.
      *
-     * @param localPath - Full path to the repository local
+     * @param localPath - Caminho completo para o novo repositório
      */
     public Repository(String localPath) {
         super();
@@ -90,11 +99,13 @@ public class Repository {
     }
 
     /**
-     * Builder of the repository class with two parameters. You must start the
-     * repository after the instantiation of the repository.
      *
-     * @param localPath - Full path to the repository local
-     * @param remotePath - URL or path to the repository remote
+     * Construtor da classe com dois paramêtros. É necessário chamar a função
+     * start após a instanciação de um repositório para criar um novo
+     * repositório. Define um repositório remoto para o repositório local.
+     *
+     * @param localPath - Caminho completo do repositório local.
+     * @param remotePath - URL ou caminho do repositório remoto.
      */
     public Repository(String localPath, String remotePath) {
         super();
@@ -126,12 +137,12 @@ public class Repository {
             HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
             dao.connection();
             createSchema();
-            writerIgnoreFile();
-            try {
-                assistant.add(".gitignore");
-            } catch (GitAPIException ex) {
-                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            writerIgnoreFile();
+//            try {
+//                assistant.add(".gitignore");
+//            } catch (GitAPIException ex) {
+//                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
         return ret;
 
@@ -167,6 +178,13 @@ public class Repository {
         return false;
     }
 
+    /**
+     * Clona um repositório com autentificação.
+     *
+     * @param user
+     * @param password
+     * @return
+     */
     protected boolean cloneRepository(String user, String password) {
 
         try {
@@ -180,6 +198,11 @@ public class Repository {
 
     }
 
+    /**
+     * Verifica se o diretório é um repositório Hidra.
+     *
+     * @return
+     */
     protected boolean isRepository() {
         File hidraRepo = new File(localPath + separator + ".hidra");
         File[] matchingFilesAsset;
@@ -207,7 +230,7 @@ public class Repository {
     }
 
     /**
-     * Return path repository
+     * Returna caminho do repositório
      *
      * @return localPath
      */
@@ -216,7 +239,7 @@ public class Repository {
     }
 
     /**
-     * Return remote repository path
+     * Retorna caminho do repositório remoto.
      *
      * @return
      */
@@ -225,7 +248,7 @@ public class Repository {
     }
 
     /**
-     * Set remote repository path
+     * Define um caminho do repositório remoto
      *
      * @param remotePath
      */
@@ -233,6 +256,11 @@ public class Repository {
         this.remotePath = remotePath;
     }
 
+    /**
+     * Pedro coloca aqui o que retorna
+     *
+     * @return
+     */
     public List<String> getExceptionList() {
         return exceptionList;
     }
@@ -242,7 +270,7 @@ public class Repository {
     }
 
     /**
-     * Responsible method to delete a repository
+     * Responsável por deletar um repositório
      */
     public void removeRepository() {
 
@@ -254,19 +282,6 @@ public class Repository {
             }
         }
 
-        /*
-         if (directory.isDirectory()) {
-         File[] sun = directory.listFiles();
-         for (File toDelete : sun) {
-
-         System.out.println("Arquivos: " + toDelete.getAbsolutePath());
-
-         toDelete.delete();
-         }
-         directory.delete();
-
-         }
-         */
     }
 
     private void deleteFolder(File file) throws IOException {
@@ -299,7 +314,7 @@ public class Repository {
      * @throws JAXBException
      * @throws IOException
      */
-    boolean createSchema() throws JAXBException, IOException {
+    private boolean createSchema() throws JAXBException, IOException {
 
         final File baseDir = new File(localPath + separator + ".hidra");
 
@@ -326,7 +341,7 @@ public class Repository {
      * @throws JAXBException
      * @throws java.io.FileNotFoundException
      */
-    public Asset readAsset(String nameAsset) throws JAXBException, FileNotFoundException {
+    private Asset readAsset(String nameAsset) throws JAXBException, FileNotFoundException {
         if (isRepository()) {
             FileReader xml;
             Asset asset;
@@ -347,7 +362,7 @@ public class Repository {
      * @param path
      * @return
      */
-    public boolean manifestExist(File path) {
+    private boolean manifestExist(File path) {
 
         File[] matchingFiles = path.listFiles(new FilenameFilter() {
 
@@ -373,7 +388,7 @@ public class Repository {
      * @throws SAXException
      * @throws IOException
      */
-    public boolean validateAsset(String assetPath) throws SAXException, IOException {
+    protected boolean validateAsset(String assetPath) throws SAXException, IOException {
 
         File schemaFile = new File(localPath + separator + ".hidra" + separator + "asset.xsd");
         Source xmlFile = new StreamSource(new File(assetPath + manifest));
@@ -480,9 +495,9 @@ public class Repository {
 
     /**
      * Reponsavel por adicionar um Ativo de software ao repositorio. A operacao
-     * consiste de uma validacao do ativo, antes de efetuar a adicao do mesmo ao
-     * repositorio. Caso o ativo esteja condizente com o padrao RAS, ele podera
-     * entao ser adicionado ao repositorio.
+     * consiste de uma validação do ativo, antes de efetuar a adição do mesmo ao
+     * repositório. Caso o ativo esteja condizente com o padrao RAS, ele poderá
+     * entao ser adicionado ao repositório.
      *
      * @param nameAsset
      * @return
@@ -523,7 +538,7 @@ public class Repository {
      * Procura no banco de dados do repositorio, se o ativo já está sendo
      * monitorado.
      *
-     * @param asset
+     * @param asset - Recebe como parâmetro um objeto Asset
      * @return verdadeiro caso o ativo esteja sendo monitorado.
      */
     public boolean findAsset(Asset asset) {
@@ -533,6 +548,14 @@ public class Repository {
 
     }
 
+    
+    /**
+     * Procura no banco de dados do repositorio, se o ativo já está sendo
+     * monitorado.
+     *
+     * @param assetName - Recebe como parâmetro uma String com o nome do ativo
+     * @return verdadeiro caso o ativo esteja sendo monitorado.
+     */
     public boolean findAsset(String assetName) {
 
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
@@ -542,7 +565,7 @@ public class Repository {
     /**
      * Retorna uma lista com o estado atual do repositório.
      *
-     * @return <String, Set<String>>
+     * @return 
      */
     public Map<String, Set<String>> showStatus() {
 
@@ -592,6 +615,12 @@ public class Repository {
 
     }
 
+    /**
+     * Tirar esse metodo
+     * @param asset
+     * @param assetId
+     * @return 
+     */
     private boolean javaToxml(Asset asset, String assetId) {
         boolean result = false;
         try {
@@ -637,9 +666,7 @@ public class Repository {
         return null;
 
     }
-    
-    
-    
+
     public SolutionType getSolution2(String assetId) {
 
         File assetFile = new File(directory + separator + assetId);
@@ -655,21 +682,12 @@ public class Repository {
         return null;
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     /**
-     * Responsavel por alterar a solucao que compoe um ativo de software
+     * Responsavel por alterar a solucao que compõe um ativo de software
      *
      * @param assetId representa o id de um ativo de software.
-     * @param solution representa a solucao que compoe o ativo de software.
+     * @param solution representa a solução que compõe o ativo de software.
      * @return
      */
     public boolean setSolutionType(String assetId, SolutionType solution) {
@@ -707,7 +725,7 @@ public class Repository {
     }
 
     /**
-     * Responsavel por Dado o id de um ativo, retornar ao usuario um objeto
+     * Responsavel por Dado o id de um ativo, retornar ao usuário um objeto
      * Classification que representa a Lista de um conjunto de descritores para
      * classificação de ativos, bem como uma descrição do contexto para o qual o
      * ativo é relevante.
@@ -894,8 +912,8 @@ public class Repository {
 
     /**
      * *
-     * Retorna o log de um determinado ativo ou de um artefato.
-     *
+     * Retorna o log de um determinado ativo.
+     * Recebe como parâmetro o nome do ativo.
      * @param nameAsset
      * @return
      */
@@ -910,7 +928,7 @@ public class Repository {
     }
 
     /**
-     * Retorna uma lista com todos os nomes dos ativos do repositorio.
+     * Retorna uma lista com todos os nomes dos ativos do repositório.
      *
      * @return
      */
@@ -933,31 +951,7 @@ public class Repository {
         return stb.toString();
     }
 
-    File downloadAsset(String assetId) throws FileNotFoundException {
-        File file = new File(directory + assetId + ".zip");
-        FileOutputStream fileOut = new FileOutputStream(file);
-
-        int count = 0;
-
-        try {
-            URL url = new URL(Properties.getProperties().getProperty("Protocol"),
-                    Properties.getProperties().getProperty("RemoteURI"), assetId);
-
-            URLConnection con = url.openConnection();
-            con.connect();
-
-            do {
-                count = con.getInputStream().read();
-            } while (count != -1);
-            fileOut.close();
-            System.out.println("Arquivo baixado com sucesso");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return file;
-    }
+    
 
     /**
      * Remove um ativo do repositório.
@@ -969,31 +963,15 @@ public class Repository {
         Asset asset = readAsset(assetName);
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
         dao.delete(asset.getName(), asset.getId());
-        File assetDir = new File(localPath + separator + assetName);
         return assistant.remove(assetName);
 
-        //return deleteDir(assetDir);
+       
     }
 
-    private static boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-        return dir.delete();
-    }
-
-    boolean isRepository(String directory) {
-        return assistant.isRepositoryInitialized(directory);
-    }
+  
 
     /**
-     * Atualiza o repositório remoto com as atualizações locais. Recebe usuario
+     * Atualiza o repositório remoto com as atualizações locais. Recebe usuaŕio 
      * e senha.
      *
      * @param user
@@ -1030,12 +1008,12 @@ public class Repository {
     }
 
     /**
-     * Configura usuário do repositorio com nome e email
+     * Configura usuário do repositório com nome e email
      *
      * @param name
      * @param email
      */
-    public void setUserRepo(String name, String email) {
+    protected void setUserRepo(String name, String email) {
         try {
             assistant.setConfigurationUser(name, email);
         } catch (IOException ex) {

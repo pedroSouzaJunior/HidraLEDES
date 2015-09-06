@@ -68,8 +68,7 @@ public class Commands {
 
             return result;
         } catch (Exception ex) {
-            return "This command seems not to exist...\n"
-                    + "Error: " + ex.getMessage();
+            return  "Error: " + ex.getMessage();
         }
     }
 

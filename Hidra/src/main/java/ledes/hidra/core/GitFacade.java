@@ -38,20 +38,13 @@ import org.eclipse.jgit.archive.ArchiveFormats;
  *
  * @see http://pt.wikipedia.org/wiki/Fa%C3%A7ade
  *
- * @TODO Transferir das classes net.ledes.hidra.sources.Hidra e
- * net.ledes.hidra.sources.Command, todos os métodos de pura manipulação jGit
- * para cá.
- *
- * @TODO Documentar todos membros da classe (atributos, métodos, construtores),
- * independente do modificador de acesso (public, protected, private),
- * imediatamente assim que criá-los.
  *
  * @author Danielli Urbieta e Pedro Souza Junior
  */
 public class GitFacade {
 
     /**
-     * @param Git - Used to get the Git commands api
+     * @param Git - Usado para utilizar os comandas JGit api
      */
     private Git assistant;
 
@@ -65,8 +58,7 @@ public class GitFacade {
     }
 
     /**
-     * Method responsible for creating or starting a repository.
-     *
+     * Metódo responsável para criar ou iniciar um repositório.
      * @param directory
      * @return
      */
@@ -88,10 +80,9 @@ public class GitFacade {
     }
 
     /**
-     * Method responsible for cloning a remote repository in a local directory
-     * that requires authentication with https protocol. The destination
-     * directory should be empty.
-     *
+     * Método responsável por clonar um repositório remoto em um diretório local. Autentificação é requerida com o protocolo https.
+     * O diretório local deve estar vazio.
+     * 
      * @param directory
      * @param remotePath
      * @param user
@@ -123,8 +114,8 @@ public class GitFacade {
     }
 
     /**
-     * Method responsible for cloning a remote repository in a local directory.
-     * The destination directory should be empty.
+     * Método responsável por clonar um repositório remoto em um diretório local. 
+     * O diretório local deve estar vazio.
      *
      * @param directory
      * @param remotePath
@@ -152,7 +143,7 @@ public class GitFacade {
     }
 
     /**
-     * Pensando em utilizar apenas no GitFacade
+     * Verifica se o diretório é um repositório Git
      *
      *
      * @return returns true if repository initialized
@@ -170,6 +161,11 @@ public class GitFacade {
 
     }
 
+    /**
+     * Verifica se o diretório é um repositório Git
+     * @param directory
+     * @return 
+     */
     public boolean isRepositoryInitialized(String directory) {
 
         try {
@@ -184,8 +180,7 @@ public class GitFacade {
     }
 
     /**
-     * Receives name and email to configure User Account.
-     *
+     * Recebe nome e email para configurar o conta do usuário do repositório
      * @param name
      * @param email
      *
@@ -193,9 +188,6 @@ public class GitFacade {
     public void setConfigurationUser(String name, String email) throws IOException {
 
         if (isRepositoryInitialized()) {
-            // Config config;
-//            org.eclipse.jgit.lib.Repository repo = assistant.getRepository();
-//            repo.close();
             StoredConfig config = assistant.getRepository().getConfig();
             config.setString("user", null, "name", name);
             config.setString("user", null, "email", email);
@@ -206,9 +198,8 @@ public class GitFacade {
     }
 
     /**
-     * Returns a key list and value with data about the user
-     *
-     * @return Map<String, String>
+     * Retornar uma lista de chave valor com dados sobre o usuário.
+     * @return 
      */
     public Map<String, String> getConfigurationUser() {
 
@@ -230,7 +221,7 @@ public class GitFacade {
     }
 
     /**
-     * Remove User settings
+     * Remove a configuração do usuário
      */
     public void unSetConfigurationUser() {
 
@@ -243,7 +234,8 @@ public class GitFacade {
     }
 
     /**
-     * Receives the URL of the remote repository
+     * Define um novo repositório remoto.
+     * Recebe a URL do repositório remoto.
      *
      * @param remoteRepository
      */
@@ -253,14 +245,13 @@ public class GitFacade {
             StoredConfig config = assistant.getRepository().getConfig();
             config.setString("remote", "origin", "url", remoteRepository);
             config.save();
-//            String url = config.getString("remote", "origin", "url");
-//            System.out.println("Origin comes from " + url);
+
 
         }
     }
 
     /**
-     * Remove remote repository.
+     * Remove o repositório remoto
      *
      */
     public void unSetConfigRemote() {
@@ -272,7 +263,7 @@ public class GitFacade {
     }
 
     /**
-     * Return url of the remote repository.
+     * Retorna a URL do repositório remoto
      *
      * @return String url
      */
@@ -281,15 +272,16 @@ public class GitFacade {
         if (isRepositoryInitialized()) {
             Config config = assistant.getRepository().getConfig();
             String url = config.getString("remote", "origin", "url");
-
+            assistant.close();
             return url;
 
         }
-        return "oi";
+        
+        return null;
     }
 
     /**
-     *
+     * Retorna se há um repositório remoto configurado.
      * @return true, if there are remote repository configured
      */
     public boolean hasRemoteRepository() {
@@ -297,9 +289,10 @@ public class GitFacade {
         if (isRepositoryInitialized()) {
             Config config = assistant.getRepository().getConfig();
             String url = config.getString("remote", "origin", "url");
-
+             assistant.close();
             return url != null;
         }
+       
         return false;
     }
 
@@ -334,17 +327,23 @@ public class GitFacade {
         if (isRepositoryInitialized()) {
 
             System.out.println(assistant.getRepository().getDirectory().getAbsolutePath());
-            RevCommit commit = assistant.commit().setMessage(message)
+            assistant.commit().setMessage(message)
                     .call();
 
-//            System.out.println(commit.getId().getName());
-//            System.out.println(commit.getAuthorIdent().getName());
+            assistant.close();
             return true;
         }
 
+        
         return false;
     }
 
+    
+    /**
+     * Mostra o status do repositório.
+     * @return
+     * @throws GitAPIException 
+     */
     public Map<String, Set<String>> status() throws GitAPIException {
         if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
@@ -396,6 +395,7 @@ public class GitFacade {
                 }
 
             }
+            assistant.close();
 
         }
         return false;
@@ -421,9 +421,11 @@ public class GitFacade {
             for (RevCommit rev : log) {
                 logs = "Author: " + rev.getAuthorIdent().getName()
                         + "\nMessage: " + rev.getFullMessage();
-                return logs;
+                
             }
-
+            assistant.close();
+            return logs;
+            
         }
         return logs;
     }
@@ -450,8 +452,10 @@ public class GitFacade {
             for (RevCommit rev : log) {
                 logs = "Author: " + rev.getAuthorIdent().getName()
                         + "\nMessage: " + rev.getFullMessage();
-                return logs;
+                
             }
+            assistant.close();
+            return logs;
 
         }
         return logs;
@@ -584,14 +588,6 @@ public class GitFacade {
             return true;
         }
 
-//        if (res.getMergeStatus().equals(MergeResult.MergeStatus.CONFLICTING)) {
-//            System.out.println(res.getConflicts().toString());
-//            return false;
-//        } else if (res.getMergeStatus().equals(MergeResult.MergeStatus.FAILED)) {
-//            System.out.println(res.getFailingPaths());
-//
-//            return false;
-//        }
     }
 
     /**
@@ -801,7 +797,7 @@ public class GitFacade {
      * @throws GitAPIException
      */
     public boolean archive(String format, String branch, String fileDest) throws FileNotFoundException, IncorrectObjectTypeException, RevisionSyntaxException, IOException, GitAPIException {
-        File file = new File("/home/danielli/archive/saida.tar");
+        File file = new File(fileDest);
         OutputStream out = new FileOutputStream(file);
         ArchiveFormats.registerAll();
         if (isRepositoryInitialized()) {
