@@ -168,14 +168,15 @@ public class Repository {
     }
 
     protected boolean cloneRepository(String user, String password) {
+
+        boolean result = false;
         try {
-            assistant.cloneRepository(directory, remotePath, user, password);
-            return true;
+            result = assistant.cloneRepository(directory, remotePath, user, password);
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return false;
+        return result;
     }
 
     protected boolean isRepository() {

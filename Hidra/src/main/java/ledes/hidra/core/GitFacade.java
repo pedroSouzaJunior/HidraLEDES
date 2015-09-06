@@ -21,6 +21,7 @@ import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.RebaseResult;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Config;
@@ -30,7 +31,6 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.archive.ArchiveFormats;
-
 
 /**
  * This class is a Facade Pattern to jGit features. Its aim is to simplify
@@ -86,40 +86,42 @@ public class GitFacade {
         return true;
 
     }
-    
-    
+
     /**
-     * Method responsible for cloning a remote repository in a local directory that requires authentication with https protocol.
-     * The destination directory should be empty.
+     * Method responsible for cloning a remote repository in a local directory
+     * that requires authentication with https protocol. The destination
+     * directory should be empty.
+     *
      * @param directory
      * @param remotePath
      * @param user
      * @param password
      * @return
-     * @throws GitAPIException 
+     * @throws GitAPIException
      */
+    public boolean cloneRepository(File directory, String remotePath, String user, String password) throws GitAPIException {
 
-    public boolean cloneRepository(File directory, String remotePath,String user, String password) throws GitAPIException{
-     
-        UsernamePasswordCredentialsProvider credential = new UsernamePasswordCredentialsProvider( user, password );
+        boolean result = false;
+
+        UsernamePasswordCredentialsProvider credential = new UsernamePasswordCredentialsProvider(user, password);
         if (directory.exists() && directory.listFiles().length != 0) {
             System.out.println("Repository not empty , Canceled Operation");
-            return false;
-        } else {
+            result = false;
+        }
+
+        try {
             assistant = Git.cloneRepository().setURI(remotePath).setCredentialsProvider(credential)
                     .setDirectory(directory).call();
+            System.out.println("Repository successfully cloned "
+                    + assistant.getRepository().getDirectory());
 
-            try {
-                System.out.println("Repository successfully cloned "
-                        + assistant.getRepository().getDirectory());
-            } finally {
-                assistant.close();
-            }
-            return true;
+        } finally {
+            assistant.close();
         }
+        return result;
+
     }
-    
-    
+
     /**
      * Method responsible for cloning a remote repository in a local directory.
      * The destination directory should be empty.
@@ -191,14 +193,14 @@ public class GitFacade {
     public void setConfigurationUser(String name, String email) throws IOException {
 
         if (isRepositoryInitialized()) {
-           // Config config;
+            // Config config;
 //            org.eclipse.jgit.lib.Repository repo = assistant.getRepository();
 //            repo.close();
             StoredConfig config = assistant.getRepository().getConfig();
             config.setString("user", null, "name", name);
             config.setString("user", null, "email", email);
             config.save();
-            
+
         }
 
     }
@@ -329,10 +331,8 @@ public class GitFacade {
      */
     public boolean commit(String message) throws GitAPIException {
 
-        
-        
         if (isRepositoryInitialized()) {
-          
+
             System.out.println(assistant.getRepository().getDirectory().getAbsolutePath());
             RevCommit commit = assistant.commit().setMessage(message)
                     .call();
@@ -401,14 +401,14 @@ public class GitFacade {
         return false;
 
     }
-    
+
     /**
      * Retorna o log de todo repositório.
+     *
      * @return
-     * @throws GitAPIException 
+     * @throws GitAPIException
      */
-    public String getLogs() throws GitAPIException
-    {
+    public String getLogs() throws GitAPIException {
 
         String logs = null;
         if (!isRepositoryInitialized()) {
@@ -416,7 +416,7 @@ public class GitFacade {
         } else {
 
             Iterable<RevCommit> log;
-            
+
             log = assistant.log().call();
             for (RevCommit rev : log) {
                 logs = "Author: " + rev.getAuthorIdent().getName()
@@ -428,9 +428,6 @@ public class GitFacade {
         return logs;
     }
 
-        
-
-
     /**
      * Retorna os logs dos commits realizados em um ativo especifico.
      *
@@ -440,7 +437,7 @@ public class GitFacade {
      */
     public String getLogs(String nameAsset) throws GitAPIException {
         String logs = null;
-        
+
         if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
         } else {
@@ -503,7 +500,7 @@ public class GitFacade {
      * @throws GitAPIException
      */
     public boolean pull(String user, String password) throws GitAPIException {
-        
+
         CredentialsProvider credential = new UsernamePasswordCredentialsProvider(user, password);
 
         if (isRepositoryInitialized()) {
@@ -693,11 +690,11 @@ public class GitFacade {
 
         String tags = null;
         if (isRepositoryInitialized()) {
-            
+
             try {
                 for (org.eclipse.jgit.lib.Ref ref : assistant.tagList().call()) {
 
-                    tags = "\n "+ref.getName();
+                    tags = "\n " + ref.getName();
 
                 }
 
@@ -806,7 +803,7 @@ public class GitFacade {
     public boolean archive(String format, String branch, String fileDest) throws FileNotFoundException, IncorrectObjectTypeException, RevisionSyntaxException, IOException, GitAPIException {
         File file = new File("/home/danielli/archive/saida.tar");
         OutputStream out = new FileOutputStream(file);
-         ArchiveFormats.registerAll();
+        ArchiveFormats.registerAll();
         if (isRepositoryInitialized()) {
 
             assistant.archive().setTree(assistant.getRepository().resolve(branch))
@@ -820,7 +817,7 @@ public class GitFacade {
 
     //git archive --remote=git@github.com:foo/bar.git --prefix=path/to/ HEAD:path/to/ |  tar xvf -
     public boolean archive(String format, String branch, String fileDest, String prefix) throws FileNotFoundException, IncorrectObjectTypeException, RevisionSyntaxException, IOException, GitAPIException {
-        
+
         File file = File.createTempFile("test", fileDest);
         OutputStream out = new FileOutputStream(fileDest);
         if (isRepositoryInitialized()) {

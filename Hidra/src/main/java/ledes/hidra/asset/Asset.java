@@ -10,12 +10,12 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(name = "", propOrder = {
-            "profile",
-            "solution",
-            "classification",
-            "usage",
-            "relatedAssetsList"
+@XmlType(name = "", propOrder = {
+    "profile",
+    "solution",
+    "classification",
+    "usage",
+    "relatedAssetsList"
 })
 @XmlRootElement(name = "asset")
 public class Asset {
@@ -29,7 +29,7 @@ public class Asset {
     @XmlElement(required = true)
     protected UsageType usage;
     protected RelatedAssets relatedAssetsList;
-    
+
     @XmlAttribute(name = "name", required = true)
     protected String name;
     @XmlAttribute(name = "id", required = true)
@@ -62,8 +62,9 @@ public class Asset {
     public String describeSolution() {
         StringBuilder stb = new StringBuilder().append("\n");
 
-        stb.append("the asset is described by:\n\n");
+        
         stb.append("Artifacts:\n");
+
         for (ArtifactType artfacty : this.solution.getArtifacts().getArtifact()) {
             stb.append("ID: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
@@ -175,27 +176,27 @@ public class Asset {
 
         return stb.toString();
     }
-    
-    
-    /***
+
+    /**
+     * *
      * Método responsável pela descricao dos ativos relacionados.
-     * @return 
+     *
+     * @return
      */
-    public String describeRelatedAssets(){
-    
+    public String describeRelatedAssets() {
+
         StringBuilder stb = new StringBuilder().append("\n");
         stb.append("Related assets:\n\n");
-        
-        for(RelatedAssetType related: this.getRelatedAssetsList().getListOfRelatedAssets()){
-        
+
+        for (RelatedAssetType related : this.getRelatedAssetsList().getListOfRelatedAssets()) {
+
             stb.append("Asset ID: ").append(related.getId()).append("\t");
             stb.append("Asset Name: ").append(related.getName()).append("\t");
             stb.append("Asset Reference: ").append(related.getReference()).append("\t");
             stb.append("Asset Relationship Type: ").append(related.getRelationshipType()).append("\n\n");
-            
+
         }
-        
-        
+
         return stb.toString();
     }
 
@@ -279,14 +280,11 @@ public class Asset {
         this.usage = value;
     }
 
-    
-     /**
+    /**
      * Obtém o valor da propriedade relatedAssetsList.
-     * 
-     * @return
-     *     possible object is
-     *     {@link RelatedAssets }
-     *     
+     *
+     * @return possible object is {@link RelatedAssets }
+     *
      */
     public RelatedAssets getRelatedAssetsList() {
         return relatedAssetsList;
@@ -294,16 +292,14 @@ public class Asset {
 
     /**
      * Define o valor da propriedade relatedAssetsList.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link RelatedAssets }
-     *     
+     *
+     * @param value allowed object is {@link RelatedAssets }
+     *
      */
     public void setRelatedAssetsList(RelatedAssets value) {
         this.relatedAssetsList = value;
     }
-    
+
     /**
      * Obtém o valor da propriedade name.
      *

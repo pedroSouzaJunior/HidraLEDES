@@ -5,7 +5,6 @@
  */
 package ledes.hidra.rest.model;
 
-import java.io.File;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -15,13 +14,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Command {
 
-    private File assetFile;
-    private File assetUpdate;
-    private String destiny;
     private String repositoryPath;
     private String assetName;
     private String submitMessage;
-    private String pathToDownload;
     private String remoteRepository;
     private String repositoryLocalCopy;
     private String User;
@@ -30,32 +25,19 @@ public class Command {
     public Command() {
     }
 
-    public Command(String localPath) {
-        this.destiny = localPath;
+    public Command(String repositoryPath, String remoteRepository, String User, String password) {
+        this.repositoryPath = repositoryPath;
+        this.remoteRepository = remoteRepository;
+        this.User = User;
+        this.password = password;
     }
 
-    public String getDestiny() {
-        return destiny;
+    public String getRepositoryPath() {
+        return repositoryPath;
     }
 
-    public void setDestiny(String destiny) {
-        this.destiny = destiny;
-    }
-
-    public File getAssetFile() {
-        return assetFile;
-    }
-
-    public void setAssetFile(File assetFile) {
-        this.assetFile = assetFile;
-    }
-
-    public String getSubmitMessage() {
-        return submitMessage;
-    }
-
-    public void setSubmitMessage(String submitMessage) {
-        this.submitMessage = submitMessage;
+    public void setRepositoryPath(String repositoryPath) {
+        this.repositoryPath = repositoryPath;
     }
 
     public String getAssetName() {
@@ -66,12 +48,12 @@ public class Command {
         this.assetName = assetName;
     }
 
-    public String getPathToDownload() {
-        return pathToDownload;
+    public String getSubmitMessage() {
+        return submitMessage;
     }
 
-    public void setPathToDownload(String pathToDownload) {
-        this.pathToDownload = pathToDownload;
+    public void setSubmitMessage(String submitMessage) {
+        this.submitMessage = submitMessage;
     }
 
     public String getRemoteRepository() {
@@ -90,14 +72,6 @@ public class Command {
         this.repositoryLocalCopy = repositoryLocalCopy;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getUser() {
         return User;
     }
@@ -106,20 +80,13 @@ public class Command {
         this.User = User;
     }
 
-    public File getAssetUpdate() {
-        return assetUpdate;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAssetUpdate(File assetUpdate) {
-        this.assetUpdate = assetUpdate;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getRepositoryPath() {
-        return repositoryPath;
-    }
-
-    public void setRepositoryPath(String repositoryPath) {
-        this.repositoryPath = repositoryPath;
-    }
-
+    
 }
