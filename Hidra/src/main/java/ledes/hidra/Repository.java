@@ -169,14 +169,15 @@ public class Repository {
 
     protected boolean cloneRepository(String user, String password) {
 
-        boolean result = false;
         try {
-            result = assistant.cloneRepository(directory, remotePath, user, password);
+            return assistant.cloneRepository(directory, remotePath, user, password);
+
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+
+            return false;
         }
 
-        return result;
     }
 
     protected boolean isRepository() {
@@ -244,12 +245,49 @@ public class Repository {
      * Responsible method to delete a repository
      */
     public void removeRepository() {
-        if (directory.isDirectory()) {
-            File[] sun = directory.listFiles();
-            for (File toDelete : sun) {
-                toDelete.delete();
-            }
 
+        if (directory.exists()) {
+            try {
+                deleteFolder(directory);
+            } catch (IOException e) {
+                System.exit(0);
+            }
+        }
+
+        /*
+         if (directory.isDirectory()) {
+         File[] sun = directory.listFiles();
+         for (File toDelete : sun) {
+
+         System.out.println("Arquivos: " + toDelete.getAbsolutePath());
+
+         toDelete.delete();
+         }
+         directory.delete();
+
+         }
+         */
+    }
+
+    private void deleteFolder(File file) throws IOException {
+
+        if (file.isDirectory()) {
+            if (file.list().length == 0) {
+                file.delete();
+            } else {
+                String files[] = file.list();
+                for (String temp : files) {
+
+                    File fileDelete = new File(file, temp);
+
+                    deleteFolder(fileDelete);
+                }
+                if (file.list().length == 0) {
+                    file.delete();
+                }
+            }
+        } else {
+            file.delete();
         }
     }
 
@@ -599,6 +637,33 @@ public class Repository {
         return null;
 
     }
+    
+    
+    
+    public SolutionType getSolution2(String assetId) {
+
+        File assetFile = new File(directory + separator + assetId);
+        if (assetFile.exists()) {
+            try {
+                return readAsset(assetId).getSolution2();
+            } catch (JAXBException | FileNotFoundException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        return null;
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     /**
      * Responsavel por alterar a solucao que compoe um ativo de software
@@ -905,9 +970,9 @@ public class Repository {
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
         dao.delete(asset.getName(), asset.getId());
         File assetDir = new File(localPath + separator + assetName);
-        assistant.remove(assetName);
+        return assistant.remove(assetName);
 
-        return deleteDir(assetDir);
+        //return deleteDir(assetDir);
     }
 
     private static boolean deleteDir(File dir) {
