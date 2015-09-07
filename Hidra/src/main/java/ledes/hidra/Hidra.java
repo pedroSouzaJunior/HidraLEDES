@@ -345,7 +345,7 @@ public class Hidra {
      * @param password - String
      * @return
      */
-    public boolean synchronize(String user, String password) {
+    public boolean receiveUpdates(String user, String password) {
 
         return repository.synchronizeRepository(user, password);
 
@@ -358,7 +358,7 @@ public class Hidra {
      * @param password
      * @return String
      */
-    public String update(String user, String password) {
+    public String sendUpdates(String user, String password) {
 
         return repository.updateRepository(user, password);
     }

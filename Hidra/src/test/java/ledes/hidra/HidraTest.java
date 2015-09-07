@@ -402,7 +402,7 @@ public class HidraTest {
         String password = "";
         Hidra instance = new Hidra();
         boolean expResult = false;
-        boolean result = instance.synchronize(user, password);
+        boolean result = instance.receiveUpdates(user, password);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -419,7 +419,7 @@ public class HidraTest {
         String password = "";
         Hidra instance = new Hidra();
         String expResult = "";
-        String result = instance.update(user, password);
+        String result = instance.sendUpdates(user, password);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
