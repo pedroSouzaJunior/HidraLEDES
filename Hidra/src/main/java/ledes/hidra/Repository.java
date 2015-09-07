@@ -672,7 +672,7 @@ public class Repository {
         File assetFile = new File(directory + separator + assetId);
         if (assetFile.exists()) {
             try {
-                return readAsset(assetId).getSolution2();
+                return readAsset(assetId).getSolution();
             } catch (JAXBException | FileNotFoundException ex) {
                 Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
             }

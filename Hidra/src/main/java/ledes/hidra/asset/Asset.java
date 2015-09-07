@@ -62,7 +62,6 @@ public class Asset {
     public String describeSolution() {
         StringBuilder stb = new StringBuilder().append("\n");
 
-        
         stb.append("Artifacts:\n");
 
         for (ArtifactType artfacty : this.solution.getArtifacts().getArtifact()) {
@@ -96,13 +95,6 @@ public class Asset {
             stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
         }
 
-        stb.append("Design:\n");
-        for (ArtifactType artfacty : this.solution.getDesign().getArtifact()) {
-            stb.append("ID: ").append(artfacty.getId()).append("\t");
-            stb.append("Name: ").append(artfacty.getName()).append("\t");
-            stb.append("Type: ").append(artfacty.getType()).append("\t");
-            stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
-        }
 
         stb.append("Test:\n");
         for (ArtifactType artfacty : this.solution.getTest().getArtifact()) {
@@ -113,10 +105,6 @@ public class Asset {
         }
 
         return stb.toString();
-    }
-    
-    public SolutionType getSolution2(){
-        return this.getSolution();
     }
 
     /**
