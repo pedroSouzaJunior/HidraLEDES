@@ -59,6 +59,7 @@ public class GitFacade {
 
     /**
      * Metódo responsável para criar ou iniciar um repositório.
+     *
      * @param directory
      * @return
      */
@@ -80,9 +81,10 @@ public class GitFacade {
     }
 
     /**
-     * Método responsável por clonar um repositório remoto em um diretório local. Autentificação é requerida com o protocolo https.
-     * O diretório local deve estar vazio.
-     * 
+     * Método responsável por clonar um repositório remoto em um diretório
+     * local. Autentificação é requerida com o protocolo https. O diretório
+     * local deve estar vazio.
+     *
      * @param directory
      * @param remotePath
      * @param user
@@ -91,8 +93,6 @@ public class GitFacade {
      * @throws GitAPIException
      */
     public boolean cloneRepository(File directory, String remotePath, String user, String password) throws GitAPIException {
-
-      
 
         UsernamePasswordCredentialsProvider credential = new UsernamePasswordCredentialsProvider(user, password);
         if (directory.exists() && directory.listFiles().length != 0) {
@@ -107,15 +107,15 @@ public class GitFacade {
                     + assistant.getRepository().getDirectory());
             return true;
         } catch (Exception ex) {
-          
+
             return false;
-        } 
+        }
 
     }
 
     /**
-     * Método responsável por clonar um repositório remoto em um diretório local. 
-     * O diretório local deve estar vazio.
+     * Método responsável por clonar um repositório remoto em um diretório
+     * local. O diretório local deve estar vazio.
      *
      * @param directory
      * @param remotePath
@@ -163,8 +163,9 @@ public class GitFacade {
 
     /**
      * Verifica se o diretório é um repositório Git
+     *
      * @param directory
-     * @return 
+     * @return
      */
     public boolean isRepositoryInitialized(String directory) {
 
@@ -181,6 +182,7 @@ public class GitFacade {
 
     /**
      * Recebe nome e email para configurar o conta do usuário do repositório
+     *
      * @param name
      * @param email
      *
@@ -199,7 +201,8 @@ public class GitFacade {
 
     /**
      * Retornar uma lista de chave valor com dados sobre o usuário.
-     * @return 
+     *
+     * @return
      */
     public Map<String, String> getConfigurationUser() {
 
@@ -234,8 +237,7 @@ public class GitFacade {
     }
 
     /**
-     * Define um novo repositório remoto.
-     * Recebe a URL do repositório remoto.
+     * Define um novo repositório remoto. Recebe a URL do repositório remoto.
      *
      * @param remoteRepository
      */
@@ -245,7 +247,6 @@ public class GitFacade {
             StoredConfig config = assistant.getRepository().getConfig();
             config.setString("remote", "origin", "url", remoteRepository);
             config.save();
-
 
         }
     }
@@ -276,12 +277,13 @@ public class GitFacade {
             return url;
 
         }
-        
+
         return null;
     }
 
     /**
      * Retorna se há um repositório remoto configurado.
+     *
      * @return true, if there are remote repository configured
      */
     public boolean hasRemoteRepository() {
@@ -289,10 +291,10 @@ public class GitFacade {
         if (isRepositoryInitialized()) {
             Config config = assistant.getRepository().getConfig();
             String url = config.getString("remote", "origin", "url");
-             assistant.close();
+            assistant.close();
             return url != null;
         }
-       
+
         return false;
     }
 
@@ -334,15 +336,14 @@ public class GitFacade {
             return true;
         }
 
-        
         return false;
     }
 
-    
     /**
      * Mostra o status do repositório.
+     *
      * @return
-     * @throws GitAPIException 
+     * @throws GitAPIException
      */
     public Map<String, Set<String>> status() throws GitAPIException {
         if (!isRepositoryInitialized()) {
@@ -410,7 +411,7 @@ public class GitFacade {
      */
     public String getLogs() throws GitAPIException {
 
-        String logs = null;
+        StringBuilder logs = new StringBuilder();
         if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
         } else {
@@ -419,15 +420,14 @@ public class GitFacade {
 
             log = assistant.log().call();
             for (RevCommit rev : log) {
-                logs = "Author: " + rev.getAuthorIdent().getName()
-                        + "\nMessage: " + rev.getFullMessage();
-                
+                logs.append("Author: ").append(rev.getAuthorIdent().getName()).append("\nMessage: ").append(rev.getFullMessage());
+
             }
             assistant.close();
-            return logs;
-            
+            return logs.toString();
+
         }
-        return logs;
+        return logs.toString();
     }
 
     /**
@@ -438,7 +438,7 @@ public class GitFacade {
      * @throws GitAPIException
      */
     public String getLogs(String nameAsset) throws GitAPIException {
-        String logs = null;
+        StringBuilder logs = new StringBuilder();
 
         if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
@@ -450,15 +450,14 @@ public class GitFacade {
 
             log = assistant.log().addPath(nameAsset).call();
             for (RevCommit rev : log) {
-                logs = "Author: " + rev.getAuthorIdent().getName()
-                        + "\nMessage: " + rev.getFullMessage();
-                
+                logs.append("Author: ").append(rev.getAuthorIdent().getName()).append("\nMessage: ").append(rev.getFullMessage());
+
             }
             assistant.close();
-            return logs;
+            return logs.toString();
 
         }
-        return logs;
+        return logs.toString();
     }
 
     /**

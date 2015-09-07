@@ -39,6 +39,8 @@ public class ValidatorAssets {
         }
         else{
              path = new File(localAsset + separator + reference);
+             if(!isValidDirectory(localAsset + separator + reference))
+                 return false;
         }
         
         File[] matchingFiles = path.listFiles(new FilenameFilter() {
@@ -49,7 +51,7 @@ public class ValidatorAssets {
             }
         });
 
-
+           
         return matchingFiles.length != 0;
     }
 
@@ -79,7 +81,7 @@ public class ValidatorAssets {
               
 
                 if (!result) {
-                    reasons.append(art.getReference()).append(art.getName()).append(" is not found\n");
+                    reasons.append(art.getReference()).append(separator).append(art.getName()).append(" is not found\n");
                     System.out.println(reasons);
                     return false;
 

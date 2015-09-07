@@ -43,7 +43,7 @@ public class HidraPrototypeTest {
     @Test
     public void testMain() {
         System.out.println("main");
-        String[] args = {"add", "asset"};
+        String[] args = {"startSynchronized", ""};
         HidraPrototype.main(args);
         
     }

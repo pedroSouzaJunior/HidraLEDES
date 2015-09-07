@@ -7,7 +7,6 @@ package ledes.hidra.dao;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,12 +55,12 @@ public class HidraDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
             c.setAutoCommit(false);
-            //  System.out.println("Opened database successfully");
+           
 
             stmt = c.createStatement();
             String sql = "INSERT INTO ASSET (ID,NAME) "
                     + "VALUES (" + id + "," + "'" + name + "'" + "  );";
-            System.out.println(sql);
+           
             stmt.executeUpdate(sql);
 
             stmt.close();
@@ -82,8 +81,7 @@ public class HidraDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
-
+          
             stmt = c.createStatement();
             boolean ret;
             try (ResultSet rs = stmt.executeQuery("SELECT * FROM ASSET "
@@ -109,7 +107,7 @@ public class HidraDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
+          
 
             stmt = c.createStatement();
             boolean ret;
