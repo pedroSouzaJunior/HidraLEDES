@@ -2,15 +2,12 @@ package ledes.hidra;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import java.net.URL;
-import java.net.URLConnection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +41,6 @@ import ledes.hidra.asset.UsageType;
 import ledes.hidra.core.GitFacade;
 import ledes.hidra.core.ValidatorAssets;
 import ledes.hidra.dao.HidraDAO;
-import ledes.hidra.util.Properties;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.xml.sax.SAXException;
 
@@ -137,12 +133,13 @@ public class Repository {
             HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
             dao.connection();
             createSchema();
-//            writerIgnoreFile();
-//            try {
-//                assistant.add(".gitignore");
-//            } catch (GitAPIException ex) {
-//                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+//           writerIgnoreFile();
+            try {
+                assistant.add(".hidra");  
+                assistant.commit("Repository Created");
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+         }
         }
         return ret;
 
@@ -462,7 +459,7 @@ public class Repository {
     public boolean validateAll(String assetName, String assetPath, File path) throws SAXException, IOException, JAXBException, ValidationRuntimeException {
         boolean ret = true;
         Asset asset = readAsset(assetName);
-
+       
         if (!path.isDirectory()) {
             ret = false;
             throw new ValidationRuntimeException("It is not a directory: " + path);
@@ -486,6 +483,7 @@ public class Repository {
         }
         if (!validateAsset(asset, assetPath)) {
             ret = false;
+            System.out.println(ret);
             throw new ValidationRuntimeException("Active structure does not match the manifest file");
 
         }
@@ -513,6 +511,7 @@ public class Repository {
         Asset asset = readAsset(nameAsset);
 
         if (validateAll(nameAsset, assetPath, assetFolder)) {
+           
             if (findAsset(asset)) {
 
                 throw new ValidationRuntimeException("File already monitored. You might want to do \"updateAsset\"");
@@ -522,7 +521,12 @@ public class Repository {
             try {
                 HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
                 if (dao.insertion(asset.getName(), asset.getId()));
-                return assistant.add(nameAsset);
+                    if(assistant.add(nameAsset)){
+                       
+                        return  assistant.add(".hidra");
+                    }
+                    return false;
+                //return assistant.add(nameAsset);
             } catch (GitAPIException ex) {
                 Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
@@ -596,12 +600,12 @@ public class Repository {
         String assetPath = new File(localPath).getAbsolutePath() + File.separator + assetName + File.separator;
         File assetFolder = new File(assetPath);
 
-        Asset asset = readAsset(assetName);
+        //Asset asset = readAsset(assetName);
 
         if (findAsset(readAsset(assetName))) {
             if (validateAll(assetName, assetPath, assetFolder)) {
                 try {
-                    return assistant.add(assetName);
+                    return assistant.add(assetName)?assistant.add(".hidra"):false;
                 } catch (GitAPIException ex) {
                     Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -963,7 +967,12 @@ public class Repository {
         Asset asset = readAsset(assetName);
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
         dao.delete(asset.getName(), asset.getId());
-        return assistant.remove(assetName);
+        try {
+            return assistant.remove(assetName)?assistant.add(".hidra"):false;
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
 
        
     }

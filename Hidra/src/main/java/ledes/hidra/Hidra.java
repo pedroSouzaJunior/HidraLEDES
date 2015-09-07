@@ -7,18 +7,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
-import javax.xml.bind.JAXBContext;
 
 import javax.xml.bind.JAXBException;
 
-import javax.xml.bind.Marshaller;
-import ledes.hidra.asset.Activity;
-import ledes.hidra.asset.ArtifactType;
 
 /**
  * This class provides all operation of a repository, by manipulating Repository
@@ -137,6 +132,13 @@ public class Hidra {
         return true;
     }
 
+    public boolean validateAllAsset(String assetName) throws IOException, SAXException, JAXBException{
+        
+        return repository.validateAll(assetName, "/home/danielli/repositorioLocalTestePrototipo/Hidra", new File("/home/danielli/repositorioLocalTestePrototipo/Hidra"));
+    
+    }
+    
+    
     /**
      * RF-01 Adiciona um ativo válido com seus artefatos ao repositório. Recebe
      * nome do ativo no repositório
@@ -439,86 +441,5 @@ public class Hidra {
     
     }
     
-    public void createTemplateAsset() throws JAXBException {
-
-        Asset asset = new Asset();
-        asset.setId("1");
-        asset.setName("Asset");
-        asset.setSolution(createDefaultSolution());
-
-        // File file = new File("C:\\file.xml");
-        JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
-        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-        // output pretty printed
-        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-        //  jaxbMarshaller.marshal(asset, file);
-        jaxbMarshaller.marshal(asset, System.out);
-
-    }
-
-    public SolutionType createDefaultSolution() {
-
-        ArtifactType art = new ArtifactType();
-        SolutionType sol = new SolutionType();
-        SolutionType.Design des = new SolutionType.Design();
-        art.setId("1");
-        art.setName("design");
-        art.setReference(File.separator + "Design");
-        art.setType("Folder");
-        des.getArtifact().add(art);
-        sol.setDesign(des);
-
-        SolutionType.Artifacts arts = new SolutionType.Artifacts();
-        art = new ArtifactType();
-        art.setId("1");
-        art.setName("artifacts");
-        art.setReference(File.separator + "Artifacts");
-        art.setType("Folder");
-        arts.getArtifact().add(art);
-        sol.setArtifacts(arts);
-
-        SolutionType.Implementation impl = new SolutionType.Implementation();
-        art = new ArtifactType();
-        art.setId("1");
-        art.setName("implementation");
-        art.setReference(File.separator + "Implementation");
-        art.setType("Folder");
-        impl.getArtifact().add(art);
-        sol.setImplementation(impl);
-
-        SolutionType.Requirements req = new SolutionType.Requirements();
-        art = new ArtifactType();
-        art.setId("1");
-        art.setName("requirements");
-        art.setReference(File.separator + "Requirements");
-        art.setType("Folder");
-        req.getArtifact().add(art);
-        sol.setRequirements(req);
-
-        SolutionType.Test test = new SolutionType.Test();
-        art = new ArtifactType();
-        art.setId("1");
-        art.setName("test");
-        art.setReference(File.separator + "Test");
-        art.setType("Folder");
-        test.getArtifact().add(art);
-        sol.setTest(test);
-
-        return sol;
-    }
-
-    public UsageType createUsageDefault() {
-
-        UsageType usage = new UsageType();
-        Activity act = new Activity();
-        act.setId("1");
-        act.setReference(File.separator + "usage");
-        act.setRole("");
-        act.setTask("");
-        act.setTaskRole("");
-        return usage;
-    }
-
+    
 }

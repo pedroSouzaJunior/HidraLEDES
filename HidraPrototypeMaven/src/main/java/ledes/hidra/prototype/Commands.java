@@ -33,16 +33,18 @@ public class Commands {
         strategies = new HashMap<>();
         strategies.put("help", new HelpCommand());
         strategies.put("start", new StartRepoCommand());
+        strategies.put("startSynchronized", new startSynchronizedRepository());
+        strategies.put("startSynchronizedA", new startSynchronizedRepositoryA());
         strategies.put("add", new AddAssetCommand());
         strategies.put("remove", new RemoveAssetCommand());
         strategies.put("list", new ListAssetsCommand());
         strategies.put("logs", new ShowLogsCommand());
         strategies.put("save", new SaveChangesCommand());
         strategies.put("status", new ShowStatusCommand());
-        strategies.put("update", new UpdateAssetCommand());
+        strategies.put("update-asset", new UpdateAssetCommand());
         strategies.put("set-user", new SetUserCommand());
-        strategies.put("set-remote",new SetRemoteRepo());
-        strategies.put("log-asset",new ShowLogsParameterCommand());
+        strategies.put("set-remote", new SetRemoteRepo());
+        strategies.put("log-asset", new ShowLogsParameterCommand());
         strategies.put("get-classification", new GetClasssificationCommand());
         strategies.put("get-related", new GetRelatedAssetsCommand());
         strategies.put("get-solution", new GetSolutionCommand());
@@ -68,7 +70,7 @@ public class Commands {
 
             return result;
         } catch (Exception ex) {
-            return  "Error: " + ex.getMessage();
+            return "Error: " + ex.getMessage();
         }
     }
 
@@ -118,8 +120,6 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
-            
-            
 
             try {
                 if (!hidra.startRepository(Configuration.properties.getProperty("LocalPath"))) {
@@ -129,7 +129,6 @@ public class Commands {
             } catch (IOException | JAXBException ex) {
                 Logger.getLogger(Commands.class.getName()).log(Level.SEVERE, null, ex);
             }
-
             return "Fail ";
 
         }
@@ -144,15 +143,13 @@ public class Commands {
         @Override
         public String execute(String arg) {
 
-            System.out.println(arg+"a");
-            if (!hidra.addAsset(arg)) {
-            } else {
+            if (hidra.addAsset(arg)) {
                 return "Asset add in " + Configuration.properties.getProperty("LocalPath");
             }
 
             return "Fail ";
-        }
 
+        }
     }
 
     class RemoveAssetCommand extends Command {
@@ -173,12 +170,15 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
+            StringBuilder assets = new StringBuilder();
             Map<String, String> list = hidra.listAssets();
-            String result = null;
+            //String result = null;
             for (Map.Entry<String, String> entry : list.entrySet()) {
-                result = "\n" + entry.getKey() + " : " + entry.getValue();
+                assets.append("\n").append(entry.getKey()).append(" : ").append(entry.getValue());
             }
-            return result;
+            
+            return assets.toString();
+      
         }
 
     }
@@ -209,7 +209,7 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
-           
+
             String result = null;
             for (Map.Entry<String, Set<String>> entry : hidra.showStatus().entrySet()) {
                 result = entry.getKey() + " : " + entry.getValue();
@@ -293,11 +293,10 @@ public class Commands {
 
     class SetUserCommand extends Command {
 
-        
         @Override
         public String execute(String arg) {
-            
-            hidra.setUser(Configuration.properties.getProperty("UserName"), 
+
+            hidra.setUser(Configuration.properties.getProperty("UserName"),
                     Configuration.properties.getProperty("UserEmail"));
             return "User configuration updated: \n"
                     + hidra.getUser();
@@ -311,36 +310,57 @@ public class Commands {
         public String execute(String arg) {
             String result = null;
             for (Map.Entry<String, String> entry : hidra.getUser().entrySet()) {
-                
-                    result = entry.getKey() + " : " + entry.getValue();
-                }
 
-                return result;
-            
+                result = entry.getKey() + " : " + entry.getValue();
+            }
+
+            return result;
 
         }
     }
-    
-    class SetRemoteRepo extends Command{
+
+    class SetRemoteRepo extends Command {
 
         @Override
         public String execute(String arg) {
             hidra.setRemoteRepo(arg);
             return "Remote Path Updated";
         }
-    
-    
-    
+
     }
-    
-    
-    class GetRemoteRepo extends Command{
+
+    class GetRemoteRepo extends Command {
 
         @Override
         public String execute(String arg) {
             return hidra.getRemoteRepo();
         }
-        
+
+    }
     
+     class startSynchronizedRepository extends Command {
+
+        @Override
+        public String execute(String arg) {
+          //  if(hidra.startSynchronizedRepository(Configuration.properties.getProperty("LocalPath"), Configuration.properties.getProperty("RemoteURI")))
+                return "Started Synchronized Repository";
+          //  else return "Fail";
+        }
+
+    }
+     
+     class startSynchronizedRepositoryA extends Command {
+
+        @Override
+        public String execute(String arg) {
+                String localPath = Configuration.properties.getProperty("LocalPath");
+                String remotePath = Configuration.properties.getProperty("RemoteURI");
+                String user = Configuration.properties.getProperty("UserEmail");
+                String password = Configuration.properties.getProperty("Password");
+            if(hidra.startSynchronizedRepository(localPath, remotePath, user, password))
+                return "Started Synchronized Repository";
+            else return "Fail";
+        }
+
     }
 }
