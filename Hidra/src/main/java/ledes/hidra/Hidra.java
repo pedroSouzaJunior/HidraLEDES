@@ -13,22 +13,23 @@ import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
-
+import ledes.hidra.asset.RelatedAssetType;
+import ledes.hidra.asset.RelatedAssets;
 
 /**
  * This class provides all operation of a repository, by manipulating Repository
  * and LocalRepository
- * 
- *  Essa classe provê todas as operações de um repositorio, manipulado pelo Repositorio.
+ *
+ * Essa classe provê todas as operações de um repositorio, manipulado pelo
+ * Repositorio.
  *
  * @author Danielli Urbieta e Pedro Souza Junior
  */
 public class Hidra {
 
-    
     /**
-     * 
-     * @param localPath 
+     *
+     * @param localPath
      */
     public Hidra(String localPath) {
         super();
@@ -132,13 +133,12 @@ public class Hidra {
         return true;
     }
 
-    public boolean validateAllAsset(String assetName) throws IOException, SAXException, JAXBException{
-        
+    public boolean validateAllAsset(String assetName) throws IOException, SAXException, JAXBException {
+
         return repository.validateAll(assetName, "/home/danielli/repositorioLocalTestePrototipo/Hidra", new File("/home/danielli/repositorioLocalTestePrototipo/Hidra"));
-    
+
     }
-    
-    
+
     /**
      * RF-01 Adiciona um ativo válido com seus artefatos ao repositório. Recebe
      * nome do ativo no repositório
@@ -160,16 +160,15 @@ public class Hidra {
     /**
      * RF-02, RF-13
      *
-     * @param assetId
+     * @param assetName
      * @return
      */
-    public String getSolution(String assetId) {
-        return repository.getSolution(assetId);
-
+    public String getSolution(String assetName) {
+        return repository.getSolution(assetName);
     }
-    
-    public SolutionType getSolution2(String assetName){
-        return repository.getSolution2(assetName);
+
+    public SolutionType describeSolution(String assetName) {
+        return repository.describeSolution(assetName);
     }
 
     /**
@@ -227,6 +226,16 @@ public class Hidra {
     }
 
     /**
+     * RF-06
+     *
+     * @param assetId
+     * @return
+     */
+    public ClassificationType describeClassification(String assetId) {
+        return repository.describeClassification(assetId);
+    }
+
+    /**
      * RF-06 Define a classificação de um ativo.
      *
      * @param assetID
@@ -248,8 +257,19 @@ public class Hidra {
     }
 
     /**
+     * RF-07, RF-14 Retorna a utilização (Usage) de um ativo.
+     *
+     * @param assetId
+     * @return
+     */
+    public UsageType describleUsage(String assetId) {
+        return repository.describeUsage(assetId);
+    }
+
+    /**
      * RF-07 Define o usage de um ativo.
      *
+     * @param assetId
      * @param usage
      * @return
      */
@@ -265,6 +285,16 @@ public class Hidra {
      */
     public String getRelatedAssets(String assetId) {
         return repository.getRelatedAssets(assetId);
+    }
+
+    /**
+     * RF-08 Retorna a dependência (RelatedAssets) entre ativos.
+     *
+     * @param assetId
+     * @return
+     */
+    public RelatedAssets describeRelatedAssets(String assetId) {
+        return repository.describeRelatedAssets(assetId);
     }
 
     /**
@@ -432,14 +462,14 @@ public class Hidra {
 
     /**
      * Cria um Tag com anotações.
+     *
      * @param name
      * @param message
-     * @return 
+     * @return
      */
-    public boolean createTag(String name, String message){
+    public boolean createTag(String name, String message) {
         return repository.createTagAnotted(name, message);
-    
+
     }
-    
-    
+
 }

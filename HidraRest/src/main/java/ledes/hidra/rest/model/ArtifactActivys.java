@@ -1,0 +1,132 @@
+//
+// Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.5-2 
+// Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
+// Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
+// Gerado em: AM.09.07 às 12:18:26 AM AMT 
+//
+package ledes.hidra.rest.model;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * <p>
+ * Classe Java de ArtifactActivys complex type.
+ *
+ * <p>
+ * O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro
+ * desta classe.
+ *
+ * <pre>
+ * &lt;complexType name="ArtifactActivys">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="listOfActivities" type="{}Activities" maxOccurs="unbounded"/>
+ *       &lt;/sequence>
+ *       &lt;attribute name="artifactId" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="contextId" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ *
+ *
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "ArtifactActivys", propOrder = {
+    "listOfActivities"
+})
+public class ArtifactActivys {
+
+    @XmlElement(required = true)
+    protected List<Activities> listOfActivities;
+    @XmlAttribute(name = "artifactId")
+    protected String artifactId;
+    @XmlAttribute(name = "contextId")
+    protected String contextId;
+
+    public ArtifactActivys() {
+    }
+
+    public ArtifactActivys(String artifactId, String contextId) {
+
+        this.artifactId = artifactId;
+        this.contextId = contextId;
+    }
+
+    /**
+     * Gets the value of the listOfActivities property.
+     *
+     * <p>
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the listOfActivities property.
+     *
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getListOfActivities().add(newItem);
+     * </pre>
+     *
+     *
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Activities }
+     *
+     *
+     */
+    public List<Activities> getListOfActivities() {
+        if (listOfActivities == null) {
+            listOfActivities = new ArrayList<Activities>();
+        }
+        return this.listOfActivities;
+    }
+
+    /**
+     * Obtém o valor da propriedade artifactId.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getArtifactId() {
+        return artifactId;
+    }
+
+    /**
+     * Define o valor da propriedade artifactId.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setArtifactId(String value) {
+        this.artifactId = value;
+    }
+
+    /**
+     * Obtém o valor da propriedade contextId.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getContextId() {
+        return contextId;
+    }
+
+    /**
+     * Define o valor da propriedade contextId.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setContextId(String value) {
+        this.contextId = value;
+    }
+
+}

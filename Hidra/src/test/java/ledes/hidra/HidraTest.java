@@ -141,14 +141,14 @@ public class HidraTest {
         String assetId = "";
         Hidra instance = new Hidra();
         String expResult = "";
-        String result = instance.getSolution(assetId);
-        assertEquals(expResult, result);
+        //String result = instance.getSolution(assetId);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getSolution2 method, of class Hidra.
+     * Test of getSolution method, of class Hidra.
      */
      @Ignore
     @Test
@@ -157,8 +157,8 @@ public class HidraTest {
         String assetName = "";
         Hidra instance = new Hidra();
         SolutionType expResult = null;
-        SolutionType result = instance.getSolution2(assetName);
-        assertEquals(expResult, result);
+        //SolutionType result = instance.getSolution(assetName);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -222,8 +222,8 @@ public class HidraTest {
         String assetId = "";
         Hidra instance = new Hidra();
         String expResult = "";
-        String result = instance.getClassification(assetId);
-        assertEquals(expResult, result);
+        //String result = instance.getClassification(assetId);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -255,8 +255,8 @@ public class HidraTest {
         String assetId = "";
         Hidra instance = new Hidra();
         String expResult = "";
-        String result = instance.getUsage(assetId);
-        assertEquals(expResult, result);
+        //String result = instance.getUsage(assetId);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -288,8 +288,8 @@ public class HidraTest {
         String assetId = "";
         Hidra instance = new Hidra();
         String expResult = "";
-        String result = instance.getRelatedAssets(assetId);
-        assertEquals(expResult, result);
+        //String result = instance.getRelatedAssets(assetId);
+        //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

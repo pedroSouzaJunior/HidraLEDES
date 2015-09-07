@@ -103,8 +103,7 @@ public class GitFacade {
         try {
             assistant = Git.cloneRepository().setURI(remotePath).setCredentialsProvider(credential)
                     .setDirectory(directory).call();
-            System.out.println("Repository successfully cloned "
-                    + assistant.getRepository().getDirectory());
+            System.out.println("Repository successfully syncroni");
             return true;
         } catch (Exception ex) {
 
@@ -420,7 +419,7 @@ public class GitFacade {
 
             log = assistant.log().call();
             for (RevCommit rev : log) {
-                logs.append("Author: ").append(rev.getAuthorIdent().getName()).append("\nMessage: ").append(rev.getFullMessage());
+                logs.append("\nAuthor: ").append(rev.getAuthorIdent().getName()).append("\nMessage: ").append(rev.getFullMessage());
 
             }
             assistant.close();
@@ -450,14 +449,14 @@ public class GitFacade {
 
             log = assistant.log().addPath(nameAsset).call();
             for (RevCommit rev : log) {
-                logs.append("Author: ").append(rev.getAuthorIdent().getName()).append("\nMessage: ").append(rev.getFullMessage());
+                logs.append("\nAuthor: ").append(rev.getAuthorIdent().getName()).append("\nMessage: ").append(rev.getFullMessage());
 
             }
             assistant.close();
             return logs.toString();
 
         }
-        return logs.toString();
+        return null;
     }
 
     /**

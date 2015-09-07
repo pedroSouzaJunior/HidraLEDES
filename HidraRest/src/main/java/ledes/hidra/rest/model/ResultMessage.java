@@ -14,8 +14,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ResultMessage {
 
-    private String message;
     private int statusMessage;
+    private String message;
+
+    private String log;
+    private String commitAuthor;
 
     public ResultMessage() {
     }
@@ -23,6 +26,13 @@ public class ResultMessage {
     public ResultMessage(String message, int statusMessage) {
         this.message = message;
         this.statusMessage = statusMessage;
+    }
+
+    public ResultMessage(int statusMessage, String message, String log, String commitAuthor) {
+        this.statusMessage = statusMessage;
+        this.message = message;
+        this.log = log;
+        this.commitAuthor = commitAuthor;
     }
 
     public String getMessage() {
@@ -39,6 +49,22 @@ public class ResultMessage {
 
     public void setStatusMessage(int statusMessage) {
         this.statusMessage = statusMessage;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
+    }
+
+    public String getLogAuthor() {
+        return commitAuthor;
+    }
+
+    public void setLogAuthor(String logAuthor) {
+        this.commitAuthor = logAuthor;
     }
 
 }
