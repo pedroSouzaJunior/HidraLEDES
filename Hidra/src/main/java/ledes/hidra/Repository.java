@@ -8,7 +8,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +35,7 @@ import ledes.hidra.asset.Context;
 import ledes.hidra.asset.ContextReference;
 import ledes.hidra.asset.DescriptionGroup;
 import ledes.hidra.asset.RelatedAssetType;
+import ledes.hidra.asset.RelatedAssets;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import ledes.hidra.core.GitFacade;
@@ -45,7 +45,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.xml.sax.SAXException;
 
 /**
- * This class is responsible to manage a central repository (server).
+ * Esta classe é responsável por gerenciar um repositório central (servidor).
  *
  * @author Danielli Urbieta e Pedro Souza Junior
  */
@@ -135,11 +135,11 @@ public class Repository {
             createSchema();
 //           writerIgnoreFile();
             try {
-                assistant.add(".hidra");  
+                assistant.add(".hidra");
                 assistant.commit("Repository Created");
             } catch (GitAPIException ex) {
                 Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
-         }
+            }
         }
         return ret;
 
@@ -281,6 +281,11 @@ public class Repository {
 
     }
 
+    /**
+     *
+     * @param file
+     * @throws IOException
+     */
     private void deleteFolder(File file) throws IOException {
 
         if (file.isDirectory()) {
@@ -422,29 +427,6 @@ public class Repository {
     }
 
     /**
-     * *
-     * Exceção criada para tratar erros da validação;
-     */
-    public class ValidationRuntimeException extends RuntimeException {
-
-        public ValidationRuntimeException() {
-            super();
-        }
-
-        public ValidationRuntimeException(String message) {
-            super(message);
-        }
-
-        public ValidationRuntimeException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-        public ValidationRuntimeException(Throwable cause) {
-            super(cause);
-        }
-    }
-
-    /**
      * Válida o ativo
      *
      * @param assetName
@@ -459,7 +441,7 @@ public class Repository {
     public boolean validateAll(String assetName, String assetPath, File path) throws SAXException, IOException, JAXBException, ValidationRuntimeException {
         boolean ret = true;
         Asset asset = readAsset(assetName);
-       
+
         if (!path.isDirectory()) {
             ret = false;
             throw new ValidationRuntimeException("It is not a directory: " + path);
@@ -511,7 +493,7 @@ public class Repository {
         Asset asset = readAsset(nameAsset);
 
         if (validateAll(nameAsset, assetPath, assetFolder)) {
-           
+
             if (findAsset(asset)) {
 
                 throw new ValidationRuntimeException("File already monitored. You might want to do \"updateAsset\"");
@@ -521,11 +503,11 @@ public class Repository {
             try {
                 HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
                 if (dao.insertion(asset.getName(), asset.getId()));
-                    if(assistant.add(nameAsset)){
-                       
-                        return  assistant.add(".hidra");
-                    }
-                    return false;
+                if (assistant.add(nameAsset)) {
+
+                    return assistant.add(".hidra");
+                }
+                return false;
                 //return assistant.add(nameAsset);
             } catch (GitAPIException ex) {
                 Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
@@ -552,7 +534,6 @@ public class Repository {
 
     }
 
-    
     /**
      * Procura no banco de dados do repositorio, se o ativo já está sendo
      * monitorado.
@@ -569,7 +550,7 @@ public class Repository {
     /**
      * Retorna uma lista com o estado atual do repositório.
      *
-     * @return 
+     * @return
      */
     public Map<String, Set<String>> showStatus() {
 
@@ -601,11 +582,10 @@ public class Repository {
         File assetFolder = new File(assetPath);
 
         //Asset asset = readAsset(assetName);
-
         if (findAsset(readAsset(assetName))) {
             if (validateAll(assetName, assetPath, assetFolder)) {
                 try {
-                    return assistant.add(assetName)?assistant.add(".hidra"):false;
+                    return assistant.add(assetName) ? assistant.add(".hidra") : false;
                 } catch (GitAPIException ex) {
                     Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -620,29 +600,26 @@ public class Repository {
     }
 
     /**
-     * Tirar esse metodo
+     * Metodo utilizado para atualização do arquivo rasset.xml utilizado nos
+     * métodos Sets.
+     *
      * @param asset
      * @param assetId
-     * @return 
+     * @return
      */
-    private boolean javaToxml(Asset asset, String assetId) {
+    private boolean updateRasset(Asset asset, String assetId) {
         boolean result = false;
         try {
             File rasset = new File(directory + separator + assetId + separator + "rasset.xml");
 
             JAXBContext jaxbContext = JAXBContext.newInstance(Asset.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            //Marshal the employees list in console
-            //jaxbMarshaller.marshal(asset, System.out);
-            //Marshal the employees list in file
             jaxbMarshaller.marshal(asset, rasset);
 
             result = true;
         } catch (JAXBException e) {
-            System.err.println("Algo de Errado nao Esta Certo");
+            System.err.println("error");
         }
 
         return result;
@@ -671,7 +648,14 @@ public class Repository {
 
     }
 
-    public SolutionType getSolution2(String assetId) {
+    /**
+     * Responsavel por retornar ao usuario a forma representativa dos artefatos
+     * que fazem parte do ativo
+     *
+     * @param assetId que representa o id de um ativo de software.
+     * @return
+     */
+    public SolutionType describeSolution(String assetId) {
 
         File assetFile = new File(directory + separator + assetId);
         if (assetFile.exists()) {
@@ -720,7 +704,7 @@ public class Repository {
                 asset.getSolution().getTest().getArtifact().add(a);
             }
 
-            result = javaToxml(asset, assetId);
+            result = updateRasset(asset, assetId);
         } catch (JAXBException | FileNotFoundException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -749,7 +733,31 @@ public class Repository {
         } catch (FileNotFoundException | JAXBException exception) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
         }
-        return "Asset Do Not Exist";
+        return null;
+    }
+
+    /**
+     * Responsavel por Dado o id de um ativo, retornar ao usuário um objeto
+     * Classification que representa a Lista de um conjunto de descritores para
+     * classificação de ativos, bem como uma descrição do contexto para o qual o
+     * ativo é relevante.
+     *
+     * @param assetId representa o id de um ativo de software.
+     * @return
+     */
+    public ClassificationType describeClassification(String assetId) {
+
+        File assetFile = new File(directory + separator + assetId);
+        try {
+            if (assetFile.exists()) {
+
+                return readAsset(assetId).getClassification();
+
+            }
+        } catch (FileNotFoundException | JAXBException exception) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return null;
     }
 
     /**
@@ -794,7 +802,7 @@ public class Repository {
                 asset.getClassification().getDescriptionGroups().add(d);
             }
 
-            result = javaToxml(asset, assetId);
+            result = updateRasset(asset, assetId);
         } catch (JAXBException | FileNotFoundException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -802,6 +810,12 @@ public class Repository {
         return result;
     }
 
+    /**
+     * Metodo responsável por obter o Usage de um ativo informado.
+     *
+     * @param assetId
+     * @return
+     */
     public String getUsage(String assetId) {
 
         File assetFile = new File(directory + "/" + assetId);
@@ -812,7 +826,27 @@ public class Repository {
         } catch (FileNotFoundException | JAXBException exception) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
         }
-        return "Asset Do Not Exist";
+        return null;
+    }
+
+    /**
+     * Metodo responsável por obter o Usage de um ativo informado. O retorno do
+     * método é do tipo UsageType para que possa ser convertido em XML.
+     *
+     * @param assetId
+     * @return
+     */
+    public UsageType describeUsage(String assetId) {
+
+        File assetFile = new File(directory + "/" + assetId);
+        try {
+            if (assetFile.exists()) {
+                return readAsset(assetId).getUsage();
+            }
+        } catch (FileNotFoundException | JAXBException exception) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return null;
     }
 
     /**
@@ -839,7 +873,7 @@ public class Repository {
                 asset.getUsage().getContextReferences().add(c);
             }
 
-            result = javaToxml(asset, assetId);
+            result = updateRasset(asset, assetId);
         } catch (JAXBException | FileNotFoundException ex) {
 
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
@@ -848,6 +882,13 @@ public class Repository {
         return result;
     }
 
+    /**
+     * Metodo responsável por obter informações relacionados aos ativos
+     * relacionados a um determinado ativo informado.
+     *
+     * @param assetId
+     * @return
+     */
     public String getRelatedAssets(String assetId) {
         File assetFile = new File(directory + separator + assetId);
 
@@ -859,7 +900,29 @@ public class Repository {
         } catch (FileNotFoundException | JAXBException exception) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
         }
-        return "Asset Do Not Exist";
+        return null;
+    }
+
+    /**
+     * Metodo responsável por obter informações relacionados aos ativos
+     * relacionados a um determinado ativo informado. O retorno é do tipo
+     * RelatedAssets para que possa ser convertido em XML.
+     *
+     * @param assetId
+     * @return
+     */
+    public RelatedAssets describeRelatedAssets(String assetId) {
+        File assetFile = new File(directory + separator + assetId);
+
+        try {
+            if (assetFile.exists()) {
+                return readAsset(assetId).getRelatedAssetsList();
+            }
+
+        } catch (FileNotFoundException | JAXBException exception) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return null;
     }
 
     public List<RelatedAssetType> getXMLElement(String assetId) {
@@ -891,7 +954,7 @@ public class Repository {
             //relatedAssetType.setRelationshipType(assetId);
 
             asset.getRelatedAssetsList().getListOfRelatedAssets().add(relatedAssetType);
-            result = javaToxml(asset, assetId);
+            result = updateRasset(asset, assetId);
         } catch (JAXBException | FileNotFoundException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -916,8 +979,9 @@ public class Repository {
 
     /**
      * *
-     * Retorna o log de um determinado ativo.
-     * Recebe como parâmetro o nome do ativo.
+     * Retorna o log de um determinado ativo. Recebe como parâmetro o nome do
+     * ativo.
+     *
      * @param nameAsset
      * @return
      */
@@ -955,8 +1019,6 @@ public class Repository {
         return stb.toString();
     }
 
-    
-
     /**
      * Remove um ativo do repositório.
      *
@@ -968,19 +1030,16 @@ public class Repository {
         HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
         dao.delete(asset.getName(), asset.getId());
         try {
-            return assistant.remove(assetName)?assistant.add(".hidra"):false;
+            return assistant.remove(assetName) ? assistant.add(".hidra") : false;
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
 
-       
     }
 
-  
-
     /**
-     * Atualiza o repositório remoto com as atualizações locais. Recebe usuaŕio 
+     * Atualiza o repositório remoto com as atualizações locais. Recebe usuaŕio
      * e senha.
      *
      * @param user
@@ -1094,4 +1153,26 @@ public class Repository {
         return assistant.listTags();
     }
 
+    /**
+     * *
+     * Exceção criada para tratar erros da validação;
+     */
+    public class ValidationRuntimeException extends RuntimeException {
+
+        public ValidationRuntimeException() {
+            super();
+        }
+
+        public ValidationRuntimeException(String message) {
+            super(message);
+        }
+
+        public ValidationRuntimeException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        public ValidationRuntimeException(Throwable cause) {
+            super(cause);
+        }
+    }
 }
