@@ -3,33 +3,29 @@ package ledes.hidra.rest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
+import ledes.hidra.asset.ArtifactType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.exception.DataNotFoundException;
-import ledes.hidra.resources.HidraResources;
-import ledes.hidra.resources.Zipper;
+import ledes.hidra.rest.model.Artifact;
 import ledes.hidra.rest.model.Command;
 import ledes.hidra.rest.model.ResultMessage;
+import ledes.hidra.rest.model.Solution;
 
 /**
  * Classe Services - responsavel por transcrever as funcionalidades do projeto
  * Hidra na forma de Web Services. Consome XML padronizado (Command) capaz de
- * comportar informações necessarias para a execucao dos metodos da biblioteca
- * Hidra.
+ * comportar informações necessarias para artifact execucao dos metodos da
+ * biblioteca Hidra.
  *
  * @version 1.0
  * @author pedro e danielli
@@ -94,9 +90,9 @@ public class Services {
     }
 
     /**
-     * Servico responsavel por adicionar ativos a area de monitoramento do
-     * repositorio. Consome XML padronizado (Command) contendo o nome do ativo
-     * que se deseja monitorar.
+     * Servico responsavel por adicionar ativos artifact area de monitoramento
+     * do repositorio. Consome XML padronizado (Command) contendo o nome do
+     * ativo que se deseja monitorar.
      *
      * @param command
      * @return
@@ -255,9 +251,10 @@ public class Services {
 
     /**
      * Servico responsavel por criar uma copia local de um repositorio remoto
-     * atravez de autenticacao. Consome um XML padronizado (Command) contendo a
-     * URL do repositorio que se deseja clonar e tambem o caminho absoluto do
-     * diretorio destino e usuario e senha para acesso ao repositorio remoto.
+     * atravez de autenticacao. Consome um XML padronizado (Command) contendo
+     * artifact URL do repositorio que se deseja clonar e tambem o caminho
+     * absoluto do diretorio destino e usuario e senha para acesso ao
+     * repositorio remoto.
      *
      * @param command
      * @return
@@ -299,10 +296,10 @@ public class Services {
     }
 
     /**
-     * Servico responsavel por obter os dados referentes a um Solution de um
-     * ativo de software armezenado no repositorio. Consome um XML padronizado
-     * (Command) contendo o caminho absoluto do repositorio que se deseja
-     * utilizar em conjunto com o nome do ativo que se busca.
+     * Servico responsavel por obter os dados referentes artifact um Solution de
+     * um ativo de software armezenado no repositorio. Consome um XML
+     * padronizado (Command) contendo o caminho absoluto do repositorio que se
+     * deseja utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -314,7 +311,8 @@ public class Services {
     public Response getSolution(Command command) throws IOException {
 
         Hidra hidra;
-        String solution;
+        Solution solution = new Solution();
+
         String assetName = command.getAssetName();
         String path = command.getRepositoryPath();
         ResultMessage result = new ResultMessage();
@@ -327,11 +325,61 @@ public class Services {
         }
 
         hidra = new Hidra(path);
-        solution = hidra.getSolution(assetName);
-        result.setMessage("the asset is described by: ");
-        result.setStatusMessage(200);
-        
-       
+
+        SolutionType solutionType = hidra.getSolution2(assetName);
+
+        List<ArtifactType> artifacts = solutionType.getArtifacts().getArtifact();
+        List<ArtifactType> design = solutionType.getDesign().getArtifact();
+        List<ArtifactType> implementation = solutionType.getImplementation().getArtifact();
+        List<ArtifactType> requirements = solutionType.getRequirements().getArtifact();
+        List<ArtifactType> tests = solutionType.getTest().getArtifact();
+
+        for (ArtifactType artifact : artifacts) {
+            solution.getArtifacts()
+                    .add(new Artifact(
+                                    artifact.getName(),
+                                    artifact.getType(),
+                                    artifact.getReference(),
+                                    artifact.getId(),
+                                    artifact.getVersion()));
+        }
+        for (ArtifactType artfact : design) {
+            solution.getDesign()
+                    .add(new Artifact(
+                                    artfact.getName(),
+                                    artfact.getType(),
+                                    artfact.getReference(),
+                                    artfact.getId(),
+                                    artfact.getVersion()));
+        }
+        for (ArtifactType artifact : implementation) {
+            solution.getImplementation()
+                    .add(new Artifact(
+                                    artifact.getName(),
+                                    artifact.getType(),
+                                    artifact.getReference(),
+                                    artifact.getId(),
+                                    artifact.getVersion()));
+        }
+
+        for (ArtifactType artifact : requirements) {
+            solution.getRequirements()
+                    .add(new Artifact(
+                                    artifact.getName(),
+                                    artifact.getType(),
+                                    artifact.getReference(),
+                                    artifact.getId(),
+                                    artifact.getVersion()));
+        }
+        for (ArtifactType artifact : tests) {
+            solution.getTest()
+                    .add(new Artifact(
+                                    artifact.getName(),
+                                    artifact.getType(),
+                                    artifact.getReference(),
+                                    artifact.getId(),
+                                    artifact.getVersion()));
+        }
 
         return Response
                 .status(Status.OK)
@@ -341,10 +389,10 @@ public class Services {
     }
 
     /**
-     * Servico responsavel por obter os dados referentes a Classification de um
-     * ativo de software armezenado no repositorio. Consome um XML padronizado
-     * (Command) contendo o caminho absoluto do repositorio que se deseja
-     * utilizar em conjunto com o nome do ativo que se busca.
+     * Servico responsavel por obter os dados referentes artifact Classification
+     * de um ativo de software armezenado no repositorio. Consome um XML
+     * padronizado (Command) contendo o caminho absoluto do repositorio que se
+     * deseja utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -420,9 +468,10 @@ public class Services {
 
     /**
      * Servico responsavel por obter os dados referentes aos Ativos relacionados
-     * a um determinado ativo de software armezenado no repositorio. Consome um
-     * XML padronizado (Command) contendo o caminho absoluto do repositorio que
-     * se deseja utilizar em conjunto com o nome do ativo que se busca.
+     * artifact um determinado ativo de software armezenado no repositorio.
+     * Consome um XML padronizado (Command) contendo o caminho absoluto do
+     * repositorio que se deseja utilizar em conjunto com o nome do ativo que se
+     * busca.
      *
      * @param command
      * @return
@@ -460,7 +509,7 @@ public class Services {
     @GET
     @Path("gettest")
     @Produces(MediaType.APPLICATION_XML)
-    public Command getCommand() {
+    public Solution getCommand() {
 
         Command com = new Command();
         com.setAssetName("jaxb");
@@ -470,7 +519,49 @@ public class Services {
         com.setUser("pedro");
         com.setPassword("220891");
         com.setSubmitMessage("Enviando alterações para o repositório");
-        return com;
+
+        Artifact artifact = new Artifact();
+        artifact.setId("1");
+        artifact.setName("NAME");
+        artifact.setReference("REFERENCE");
+        artifact.setType("TYPE");
+        artifact.setVersion("VERSION");
+
+        Artifact designArtifact = new Artifact();
+        designArtifact.setId("idDesign");
+        designArtifact.setName("Design Artifact");
+        designArtifact.setReference("REFERENCE");
+        designArtifact.setType("Design");
+        designArtifact.setVersion("design_001");
+
+        Artifact implementationArtifact = new Artifact();
+        implementationArtifact.setId("idImplementation");
+        implementationArtifact.setName("Implementation Artifact");
+        implementationArtifact.setReference("REFERENCE");
+        implementationArtifact.setType("Implementation");
+        implementationArtifact.setVersion("implementation_001");
+
+        Artifact requirementArtifact = new Artifact();
+        requirementArtifact.setId("idRequirement");
+        requirementArtifact.setName("Requirement Artifact");
+        requirementArtifact.setReference("REFERENCE");
+        requirementArtifact.setType("Requirements");
+        requirementArtifact.setVersion("requirement_001");
+
+        Artifact testArtifact = new Artifact();
+        testArtifact.setId("idTest");
+        testArtifact.setName("Test Artifact");
+        testArtifact.setReference("REFERENCE");
+        testArtifact.setType("TEST");
+        testArtifact.setVersion("test_001");
+
+        Solution solution = new Solution();
+        solution.getArtifacts().add(artifact);
+        solution.getDesign().add(designArtifact);
+        solution.getRequirements().add(requirementArtifact);
+        solution.getTest().add(testArtifact);
+
+        return solution;
     }
 
 }
