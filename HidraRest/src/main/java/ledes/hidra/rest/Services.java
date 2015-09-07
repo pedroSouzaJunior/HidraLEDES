@@ -505,7 +505,7 @@ public class Services {
         hidra = new Hidra(path);
         UsageType usageType = hidra.describleUsage(assetName);
         if (usageType != null) {
-
+            
             List<ArtifactActivy> artAct = usageType.getArtifactActivities();
             List<ContextReference> contexRefe = usageType.getContextReferences();
 
@@ -530,6 +530,7 @@ public class Services {
                         activities.getListOfVariability().add(variabili);
                     }
                     artifactys.getListOfActivities().add(activities);
+                    usage.getArtifactActivitie().add(artifactys);
                 }
 
             }
@@ -553,6 +554,7 @@ public class Services {
                         activities.getListOfVariability().add(variabili);
                     }
                     cont.getListOfActivities().add(activities);
+                    usage.getContextReference().add(cont);
                 }
             }
 
