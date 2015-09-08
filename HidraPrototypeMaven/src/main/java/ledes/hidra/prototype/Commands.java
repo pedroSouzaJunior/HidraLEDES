@@ -33,8 +33,8 @@ public class Commands {
         strategies = new HashMap<>();
         strategies.put("help", new HelpCommand());
         strategies.put("start", new StartRepoCommand());
-        strategies.put("startSynchronized", new startSynchronizedRepository());
-        strategies.put("startSynchronizedA", new startSynchronizedRepositoryA());
+        strategies.put("start-synchronized", new StartSynchronizedRepository());
+        strategies.put("start-synchronized-authentification", new StartSynchronizedRepositoryA());
         strategies.put("add", new AddAssetCommand());
         strategies.put("remove", new RemoveAssetCommand());
         strategies.put("list", new ListAssetsCommand());
@@ -42,6 +42,8 @@ public class Commands {
         strategies.put("save", new SaveChangesCommand());
         strategies.put("status", new ShowStatusCommand());
         strategies.put("update-asset", new UpdateAssetCommand());
+        strategies.put("send-updates", new UpdateRemote());
+        strategies.put("receive-updates", new UpdateLocal());
         strategies.put("set-user", new SetUserCommand());
         strategies.put("set-remote", new SetRemoteRepo());
         strategies.put("log-asset", new ShowLogsParameterCommand());
@@ -176,9 +178,9 @@ public class Commands {
             for (Map.Entry<String, String> entry : list.entrySet()) {
                 assets.append("\n").append(entry.getKey()).append(" : ").append(entry.getValue());
             }
-            
+
             return assets.toString();
-      
+
         }
 
     }
@@ -337,30 +339,61 @@ public class Commands {
         }
 
     }
-    
-     class startSynchronizedRepository extends Command {
+
+    class StartSynchronizedRepository extends Command {
 
         @Override
         public String execute(String arg) {
-          //  if(hidra.startSynchronizedRepository(Configuration.properties.getProperty("LocalPath"), Configuration.properties.getProperty("RemoteURI")))
+            if (hidra.startSynchronizedRepository(Configuration.properties.getProperty("LocalPath"), Configuration.properties.getProperty("RemoteURI"))) {
                 return "Started Synchronized Repository";
-          //  else return "Fail";
+            } else {
+                return "Fail";
+            }
         }
 
     }
-     
-     class startSynchronizedRepositoryA extends Command {
+
+    class StartSynchronizedRepositoryA extends Command {
 
         @Override
         public String execute(String arg) {
-                String localPath = Configuration.properties.getProperty("LocalPath");
-                String remotePath = Configuration.properties.getProperty("RemoteURI");
-                String user = Configuration.properties.getProperty("UserEmail");
-                String password = Configuration.properties.getProperty("Password");
-            if(hidra.startSynchronizedRepository(localPath, remotePath, user, password))
+            String localPath = Configuration.properties.getProperty("LocalPath");
+            String remotePath = Configuration.properties.getProperty("RemoteURI");
+            String user = Configuration.properties.getProperty("UserEmail");
+            String password = Configuration.properties.getProperty("Password");
+            if (hidra.startSynchronizedRepository(localPath, remotePath, user, password)) {
                 return "Started Synchronized Repository";
-            else return "Fail";
+            } else {
+                return "Fail";
+            }
         }
 
+    }
+
+    class UpdateRemote extends Command {
+
+        @Override
+        public String execute(String arg) {
+            String user = Configuration.properties.getProperty("UserName");
+            String password = Configuration.properties.getProperty("Password");
+             return hidra.sendUpdates(user, password);
+            
+
+        }
+    }
+    
+    class UpdateLocal extends Command{
+    
+        @Override
+        public String execute(String arg){
+            String user = Configuration.properties.getProperty("UserName");
+            String password = Configuration.properties.getProperty("Password");
+            if(hidra.receiveUpdates(user, password))
+                return "Local Repository Updated";
+            else
+                return "Fail";
+        
+        }
     }
 }
+ 

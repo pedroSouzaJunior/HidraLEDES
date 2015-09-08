@@ -1,7 +1,12 @@
 package ledes.hidra.rest;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,6 +31,7 @@ import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import ledes.hidra.asset.VariabilityPointBinding;
 import ledes.hidra.exception.DataNotFoundException;
+import ledes.hidra.resources.Zipper;
 import ledes.hidra.rest.model.Activities;
 import ledes.hidra.rest.model.Artifact;
 import ledes.hidra.rest.model.ArtifactActivys;
@@ -123,6 +129,7 @@ public class Services {
     @Produces(MediaType.APPLICATION_XML)
     public Response addAsset(Command command) throws Exception {
 
+        Hidra hidra;
         ResultMessage result = new ResultMessage();
         String path = command.getRepositoryPath();
         String assetName = command.getAssetName();
@@ -159,10 +166,10 @@ public class Services {
      * @throws java.io.IOException
      */
     @POST
-    @Path("/submit")
+    @Path("/save")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response submit(Command command) throws IOException, Exception {
+    public Response save(Command command) throws IOException, Exception {
 
         Hidra hidra;
         ResultMessage result = new ResultMessage();
@@ -240,10 +247,10 @@ public class Services {
      * @throws java.io.IOException
      */
     @POST
-    @Path("/cloneRepository")
+    @Path("/startSynchronizedRepository")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response cloneRepository(Command command) throws IOException, Exception {
+    public Response startSynchronizedRepository(Command command) throws IOException, Exception {
 
         Hidra hidra = new Hidra();
         ResultMessage result = new ResultMessage();
@@ -280,10 +287,10 @@ public class Services {
      * @throws java.io.IOException
      */
     @POST
-    @Path("/cloneAuthorization")
+    @Path("/startSynchronizedRepositoryAuthentication")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response cloneAuthorizedRepository(Command command) throws IOException, Exception {
+    public Response startSynchronizedRepositoryAuthentication(Command command) throws IOException, Exception {
 
         Hidra hidra = new Hidra();
         String user = command.getUser();
@@ -315,6 +322,92 @@ public class Services {
     }
 
     /**
+     * Servico responsavel por atualizar repositorio remoto com as modificacoes
+     * e informacoes do repositorio local. Consome XML padronizado (Command)
+     * contendo o caminho absoluto do repositorio local.
+     *
+     * @param command
+     * @return
+     * @throws java.lang.Exception
+     */
+    @POST
+    @Path("/sendUpdates")
+    @Consumes(MediaType.APPLICATION_XML)
+    public Response sendUpdates(Command command) throws Exception {
+
+        Hidra hidra;
+        String update;
+        String user = command.getUser();
+        String password = command.getPassword();
+        String path = command.getRepositoryPath();
+        ResultMessage result = new ResultMessage();
+
+        if (path.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository has not been set");
+        }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
+        }
+        if (user.isEmpty() || password.isEmpty()) {
+            throw new DataNotFoundException("User or Password has not been set");
+        }
+
+        hidra = new Hidra(path);
+        update = hidra.sendUpdates(user, password);
+
+        if (update.equals("Repository Updated")) {
+            result.setMessage("Repository Updated");
+            result.setStatusMessage(200);
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
+        }
+
+        throw new Exception("Could not update changes to the repository");
+    }
+
+    /**
+     * Servico responsavel por atualizar o repositorio local com modificacoes
+     * que foram aplicadas ao seu respectivo repositorio remoto. Consome XML
+     * padronizado (Command) que contem o caminho absoluto do repositorio que se
+     * deseja atualizar. O repositorio deve possuir ligacao a um repositorio
+     * remoto
+     *
+     * @param command
+     * @return
+     */
+    @POST
+    @Path("/receiveUpdates")
+    @Consumes(MediaType.APPLICATION_XML)
+    public Response receiveUpdates(Command command) throws Exception {
+
+        Hidra hidra;
+        String user = command.getUser();
+        String password = command.getPassword();
+        String path = command.getRepositoryPath();
+        ResultMessage result = new ResultMessage();
+
+        if (path.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository has not been set");
+        }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
+        }
+
+        hidra = new Hidra(path);
+
+        if (hidra.receiveUpdates(user, password)) {
+            result.setMessage("Repository Updated");
+            result.setStatusMessage(200);
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
+        }
+
+        throw new Exception("Could not update");
+    }
+
+    /**
      * Servico responsavel por obter os dados referentes artifact um Solution de
      * um ativo de software armezenado no repositorio. Consome um XML
      * padronizado (Command) contendo o caminho absoluto do repositorio que se
@@ -324,7 +417,7 @@ public class Services {
      * @return
      */
     @POST
-    @Path("/solution")
+    @Path("/getSolution")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response getSolution(Command command) throws IOException {
@@ -418,7 +511,7 @@ public class Services {
      * @return
      */
     @POST
-    @Path("/classification")
+    @Path("/getClassification")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response getClassification(Command command) throws IOException {
@@ -485,7 +578,7 @@ public class Services {
      * @return
      */
     @POST
-    @Path("/usage")
+    @Path("/getUsage")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response getUsage(Command command) throws IOException {
@@ -505,7 +598,7 @@ public class Services {
         hidra = new Hidra(path);
         UsageType usageType = hidra.describleUsage(assetName);
         if (usageType != null) {
-            
+
             List<ArtifactActivy> artAct = usageType.getArtifactActivities();
             List<ContextReference> contexRefe = usageType.getContextReferences();
 
@@ -578,7 +671,7 @@ public class Services {
      * @throws java.io.IOException
      */
     @POST
-    @Path("/relatedAssets")
+    @Path("/getRelatedAssets")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response getRelatedAssets(Command command) throws IOException {
@@ -625,7 +718,7 @@ public class Services {
      * @throws IOException
      */
     @POST
-    @Path("/log")
+    @Path("/getLog")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response getLog(Command command) throws IOException {
@@ -651,17 +744,28 @@ public class Services {
             result.setMessage("Log referring to the active: " + assetName);
             result.setStatusMessage(200);
 
-            return Response.status(500).entity(result).build();
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
         }
 
         throw new DataNotFoundException("Could not return the Asset Log ");
     }
 
+    /**
+     * Serviço responsável pela obtenção do status do repositório informado.
+     * Consome XML padronizado (Command) contendo o caminho absoluto do
+     * repositorio que se deseja utilizar.
+     *
+     * @param command
+     * @return
+     * @throws IOException
+     */
     @POST
-    @Path("/showLogs")
+    @Path("/getLogRepository")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getStatus(Command command) throws IOException {
+    public Response getLogRepository(Command command) throws IOException {
 
         Hidra hidra;
         String Log;
@@ -683,16 +787,87 @@ public class Services {
             result.setMessage("Log referring to the repository: " + path);
             result.setStatusMessage(200);
 
-            return Response.status(500).entity(result).build();
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
         }
 
         throw new DataNotFoundException("Could not return the repository Log ");
     }
 
-    @GET
-    @Path("gettest")
+    @POST
+    @Path("/downloadAsset")
+    @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Solution getCommand() {
+    public Response downloadAsset(Command command) throws IOException {
+
+        Hidra hidra;
+        Zipper zipper = new Zipper();
+        String path = command.getRepositoryPath();
+        String assetName = command.getAssetName();
+        ResultMessage result = new ResultMessage();
+
+        if (path.isEmpty() || assetName.isEmpty()) {
+            throw new DataNotFoundException("The absolute path of the repository Or Asset Name has not been set");
+        }
+        if (!new File(path).exists()) {
+            throw new IOException("Could not find the informed repository");
+        }
+        if (!new File(path + separator + assetName).exists()) {
+            throw new IOException("Asset informed was not found");
+        }
+
+        hidra = new Hidra(path);
+        File assetFile = new File(path + separator + assetName);
+        File destiny = new File(path + DOWNLOAD_PATH_TEMP + separator + assetName + extension);
+
+        if (hidra.findAsset(assetName)) {
+            zipper.criarZip(assetFile, assetFile.listFiles());
+            zipper.getArquivoZipAtual().renameTo(new File(destiny, assetName));
+
+            String downloadedFileLocation = System.getProperty("user.home") + separator + assetName + extension;
+
+            InputStream in;
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            try {
+                OutputStream out = new FileOutputStream(new File(downloadedFileLocation));
+                in = new FileInputStream(zipper.getArquivoZipAtual());
+                try {
+                    while ((read = in.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                    out.flush();
+                    out.close();
+                    zipper.getArquivoZipAtual().delete();
+                    result.setMessage("File download successfully");
+                    result.setStatusMessage(200);
+                } catch (IOException ex) {
+                    throw new DataNotFoundException(ex.getMessage());
+                }
+            } catch (FileNotFoundException ex) {
+                throw new DataNotFoundException(ex.getMessage());
+            }
+
+            return Response
+                    .status(Status.OK)
+                    .entity(result).build();
+        }
+        throw new DataNotFoundException("Canot find the informed Asset");
+    }
+
+    /**
+     * Exemplo de serviço que utiliza das propriedades do Jersey / Jaxb a fim de
+     * converter objetos JAVA em XML. O objeto Command possui anotações que
+     * permitem a corversão de sua instancia em xml.
+     *
+     * @return
+     */
+    @GET
+    @Path("/gettest")
+    @Produces(MediaType.APPLICATION_XML)
+    public Command gettest() {
 
         Command com = new Command();
         com.setAssetName("jaxb");
@@ -703,48 +878,7 @@ public class Services {
         com.setPassword("220891");
         com.setSubmitMessage("Enviando alterações para o repositório");
 
-        Artifact artifact = new Artifact();
-        artifact.setId("1");
-        artifact.setName("NAME");
-        artifact.setReference("REFERENCE");
-        artifact.setType("TYPE");
-        artifact.setVersion("VERSION");
-
-        Artifact designArtifact = new Artifact();
-        designArtifact.setId("idDesign");
-        designArtifact.setName("Design Artifact");
-        designArtifact.setReference("REFERENCE");
-        designArtifact.setType("Design");
-        designArtifact.setVersion("design_001");
-
-        Artifact implementationArtifact = new Artifact();
-        implementationArtifact.setId("idImplementation");
-        implementationArtifact.setName("Implementation Artifact");
-        implementationArtifact.setReference("REFERENCE");
-        implementationArtifact.setType("Implementation");
-        implementationArtifact.setVersion("implementation_001");
-
-        Artifact requirementArtifact = new Artifact();
-        requirementArtifact.setId("idRequirement");
-        requirementArtifact.setName("Requirement Artifact");
-        requirementArtifact.setReference("REFERENCE");
-        requirementArtifact.setType("Requirements");
-        requirementArtifact.setVersion("requirement_001");
-
-        Artifact testArtifact = new Artifact();
-        testArtifact.setId("idTest");
-        testArtifact.setName("Test Artifact");
-        testArtifact.setReference("REFERENCE");
-        testArtifact.setType("TEST");
-        testArtifact.setVersion("test_001");
-
-        Solution solution = new Solution();
-        solution.getArtifacts().add(artifact);
-        solution.getDesign().add(designArtifact);
-        solution.getRequirements().add(requirementArtifact);
-        solution.getTest().add(testArtifact);
-
-        return solution;
+        return com;
     }
 
 }

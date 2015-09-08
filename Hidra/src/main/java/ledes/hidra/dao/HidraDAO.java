@@ -5,11 +5,16 @@
  */
 package ledes.hidra.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Classe referente ao controle das operações do banco de dados HidraDAO.
  *
  * @author danielli
  */
@@ -23,6 +28,13 @@ public class HidraDAO {
 
     }
 
+    /**
+     * Método responsável por efetuar a conexão com o banco de dados. Caso a
+     * tabela que representa um ativo ainda não exista ela será criada. Um ativo
+     * é representado por um nome e um id.
+     *
+     * @return true caso a operação ocorra com sucesso, false caso contrário.
+     */
     public boolean connection() {
 
         Connection c = null;
@@ -47,6 +59,15 @@ public class HidraDAO {
         return false;
     }
 
+    /**
+     * Método responsável pela inserção de um novo ativo no banco de dados.
+     * Recebe informações referentes ao nome e ao id de um ativo e o armazena no
+     * banco de dados.
+     *
+     * @param name - informação referente ao nome do ativo.
+     * @param id - informação referente ao id do ativo.
+     * @return
+     */
     public boolean insertion(String name, String id) {
 
         Connection c = null;
@@ -55,12 +76,11 @@ public class HidraDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
             c.setAutoCommit(false);
-           
 
             stmt = c.createStatement();
             String sql = "INSERT INTO ASSET (ID,NAME) "
                     + "VALUES (" + id + "," + "'" + name + "'" + "  );";
-           
+
             stmt.executeUpdate(sql);
 
             stmt.close();
@@ -74,6 +94,15 @@ public class HidraDAO {
         return false;
     }
 
+    /**
+     * Método responsável por efetuar buscas no banco de dados. Recebe
+     * informações referentes ao nome e ao id de um ativo.
+     *
+     * @param name - nome do ativo
+     * @param id - id do ativo
+     * @return true caso o ativo esteja presente no banco de dados do
+     * repsitório, false caso contrário.
+     */
     public boolean find(String name, String id) {
         Connection c = null;
         Statement stmt = null;
@@ -81,7 +110,7 @@ public class HidraDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
             c.setAutoCommit(false);
-          
+
             stmt = c.createStatement();
             boolean ret;
             try (ResultSet rs = stmt.executeQuery("SELECT * FROM ASSET "
@@ -99,7 +128,15 @@ public class HidraDAO {
 
         return false;
     }
-    
+
+    /**
+     * Método responsável por efetuar buscas no banco de dados. Recebe
+     * informações referentes ao nome de um ativo.
+     *
+     * @param name - nome do ativo
+     * @return true caso o ativo esteja presente no banco de dados do
+     * repsitório, false caso contrário.
+     */
     public boolean find(String name) {
         Connection c = null;
         Statement stmt = null;
@@ -107,7 +144,6 @@ public class HidraDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
             c.setAutoCommit(false);
-          
 
             stmt = c.createStatement();
             boolean ret;
@@ -127,6 +163,16 @@ public class HidraDAO {
         return false;
     }
 
+    /**
+     * Método responsável por excluir as informações de um ativo armazenado no
+     * banco de dados.
+     *
+     * Recebe informações referentes ao nome e ao id de um ativo.
+     *
+     * @param name - nome do ativo.
+     * @param id - id do ativo.
+     * @return true caso operação ocorra com sucesso, false caso contrário.
+     */
     public boolean delete(String name, String id) {
         Connection c = null;
         Statement stmt = null;
@@ -151,6 +197,12 @@ public class HidraDAO {
         return false;
     }
 
+    /**
+     * Método responsável por listar todos os ativos representados no banco de
+     * dados.
+     *
+     * @return Conjunto de ativos.
+     */
     public Map<String, String> selectAll() {
 
         Map<String, String> assetList = new HashMap<>();
@@ -160,7 +212,6 @@ public class HidraDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:" + localPath + "hidra.db");
             c.setAutoCommit(false);
-           
 
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM ASSET;");

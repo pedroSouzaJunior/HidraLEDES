@@ -1050,7 +1050,7 @@ public class Repository {
 
         try {
             assistant.push(user, password);
-            return "Repository Updated ";
+            return "Repository Updated";
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
             return ex.getMessage();
