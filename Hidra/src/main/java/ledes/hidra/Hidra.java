@@ -13,7 +13,6 @@ import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
-import ledes.hidra.asset.RelatedAssetType;
 import ledes.hidra.asset.RelatedAssets;
 
 /**
