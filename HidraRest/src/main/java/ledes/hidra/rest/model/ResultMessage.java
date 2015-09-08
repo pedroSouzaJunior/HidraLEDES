@@ -5,6 +5,7 @@
  */
 package ledes.hidra.rest.model;
 
+import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ResultMessage {
 
-    private int statusMessage;
+    private Status statusMessage;
     private String message;
 
     private String log;
@@ -22,15 +23,18 @@ public class ResultMessage {
     public ResultMessage() {
     }
 
-    public ResultMessage(String message, int statusMessage) {
-        this.message = message;
-        this.statusMessage = statusMessage;
-    }
-
-    public ResultMessage(int statusMessage, String message, String log) {
+    public ResultMessage(Status statusMessage, String message, String log) {
         this.statusMessage = statusMessage;
         this.message = message;
         this.log = log;
+    }
+
+    public Status getStatusMessage() {
+        return statusMessage;
+    }
+
+    public void setStatusMessage(Status statusMessage) {
+        this.statusMessage = statusMessage;
     }
 
     public String getMessage() {
@@ -41,14 +45,6 @@ public class ResultMessage {
         this.message = message;
     }
 
-    public int getStatusMessage() {
-        return statusMessage;
-    }
-
-    public void setStatusMessage(int statusMessage) {
-        this.statusMessage = statusMessage;
-    }
-
     public String getLog() {
         return log;
     }
@@ -56,5 +52,7 @@ public class ResultMessage {
     public void setLog(String log) {
         this.log = log;
     }
+
+    
 
 }

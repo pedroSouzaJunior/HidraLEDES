@@ -1024,6 +1024,8 @@ public class Repository {
      *
      * @param assetName - Recebe o nome do ativo a ser removido
      * @return retorna verdadeiro caso a operação seja bem sucedida.
+     * @throws javax.xml.bind.JAXBException
+     * @throws java.io.FileNotFoundException
      */
     public boolean removeAsset(String assetName) throws JAXBException, FileNotFoundException {
         Asset asset = readAsset(assetName);

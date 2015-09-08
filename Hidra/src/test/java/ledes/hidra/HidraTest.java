@@ -62,6 +62,7 @@ public class HidraTest {
 
     /**
      * Test of startRepository method, of class Hidra.
+     * @throws java.lang.Exception
      */
      @Ignore
     @Test
@@ -361,6 +362,7 @@ public class HidraTest {
 
     /**
      * Test of downloadAsset method, of class Hidra.
+     * @throws java.lang.Exception
      */
      @Ignore
     @Test

@@ -80,10 +80,10 @@ public class Services {
      * @throws java.io.IOException
      */
     @POST
-    @Path("/construct")
+    @Path("/startRepository")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response construct(Command command) throws IOException {
+    public Response startRepository(Command command) throws IOException {
 
         hidra = new Hidra();
         ResultMessage result = new ResultMessage();
@@ -100,7 +100,7 @@ public class Services {
 
             hidra.startRepository(path);
             result.setMessage("repository was created in : " + path);
-            result.setStatusMessage(201);
+            result.setStatusMessage(Status.CREATED);
 
         } catch (IOException ex) {
             throw new DataNotFoundException(ex.getMessage());
@@ -147,7 +147,7 @@ public class Services {
         hidra = new Hidra(path);
         if (hidra.addAsset(assetName)) {
             result.setMessage("The asset: " + assetName + " has been added to the repository");
-            result.setStatusMessage(200);
+            result.setStatusMessage(Status.OK);
             return Response
                     .status(Status.OK)
                     .entity(result).build();
@@ -186,7 +186,7 @@ public class Services {
         hidra = new Hidra(path);
         if (hidra.save(command.getSubmitMessage())) {
             result.setMessage(message);
-            result.setStatusMessage(200);
+            result.setStatusMessage(Status.OK);
             return Response
                     .status(Status.OK)
                     .entity(result).build();
@@ -228,7 +228,7 @@ public class Services {
         hidra = new Hidra(path);
         if (hidra.removeAsset(assetName)) {
             result.setMessage("Asset removed Success");
-            result.setStatusMessage(200);
+            result.setStatusMessage(Status.OK);
             return Response
                     .status(Status.OK)
                     .entity(result).build();
@@ -266,7 +266,7 @@ public class Services {
 
         if (hidra.startSynchronizedRepository(cloneToDirectory, remotePath)) {
             result.setMessage("Repository successfully cloned in " + cloneToDirectory);
-            result.setStatusMessage(200);
+            result.setStatusMessage(Status.OK);
             return Response
                     .status(Status.OK)
                     .entity(result).build();
@@ -311,7 +311,7 @@ public class Services {
 
         if (hidra.startSynchronizedRepository(cloneToDirectory, remotePath, user, password)) {
             result.setMessage("Repository successfully cloned in " + cloneToDirectory);
-            result.setStatusMessage(200);
+            result.setStatusMessage(Status.OK);
             return Response
                     .status(Status.OK)
                     .entity(result).build();
@@ -357,7 +357,7 @@ public class Services {
 
         if (update.equals("Repository Updated")) {
             result.setMessage("Repository Updated");
-            result.setStatusMessage(200);
+            result.setStatusMessage(Status.OK);
             return Response
                     .status(Status.OK)
                     .entity(result).build();
@@ -398,7 +398,7 @@ public class Services {
 
         if (hidra.receiveUpdates(user, password)) {
             result.setMessage("Repository Updated");
-            result.setStatusMessage(200);
+            result.setStatusMessage(Status.OK);
             return Response
                     .status(Status.OK)
                     .entity(result).build();
@@ -742,7 +742,7 @@ public class Services {
         if (!Log.isEmpty()) {
             result.setLog(Log);
             result.setMessage("Log referring to the active: " + assetName);
-            result.setStatusMessage(200);
+            result.setStatusMessage(Status.OK);
 
             return Response
                     .status(Status.OK)
@@ -785,7 +785,7 @@ public class Services {
         if (!Log.isEmpty()) {
             result.setLog(Log);
             result.setMessage("Log referring to the repository: " + path);
-            result.setStatusMessage(200);
+            result.setStatusMessage(Status.OK);
 
             return Response
                     .status(Status.OK)
@@ -842,7 +842,7 @@ public class Services {
                     out.close();
                     zipper.getArquivoZipAtual().delete();
                     result.setMessage("File download successfully");
-                    result.setStatusMessage(200);
+                    result.setStatusMessage(Status.OK);
                 } catch (IOException ex) {
                     throw new DataNotFoundException(ex.getMessage());
                 }
@@ -871,6 +871,7 @@ public class Services {
 
         Command com = new Command();
         com.setAssetName("jaxb");
+
         com.setRepositoryPath("/var/www/hidra.com/hidra/FINAL");
         com.setRemoteRepository("/var/www/hidra.com/hidra/HIDRA");
         com.setRepositoryLocalCopy("/home/pedro/CloneOfHidra");

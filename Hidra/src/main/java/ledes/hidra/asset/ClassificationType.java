@@ -72,6 +72,7 @@ public class ClassificationType {
      * {@link DescriptionGroup }
      * 
      * 
+     * @return 
      */
     public List<DescriptionGroup> getDescriptionGroups() {
         if (descriptionGroups == null) {

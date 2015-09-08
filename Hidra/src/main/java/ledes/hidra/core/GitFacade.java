@@ -182,6 +182,7 @@ public class GitFacade {
      *
      * @param name
      * @param email
+     * @throws java.io.IOException
      *
      */
     public void setConfigurationUser(String name, String email) throws IOException {
@@ -237,6 +238,7 @@ public class GitFacade {
      * Define um novo repositório remoto. Recebe a URL do repositório remoto.
      *
      * @param remoteRepository
+     * @throws java.io.IOException
      */
     public void setConfigRemote(String remoteRepository) throws IOException {
 

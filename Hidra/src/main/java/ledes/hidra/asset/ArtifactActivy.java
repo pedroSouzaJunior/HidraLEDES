@@ -44,6 +44,7 @@ public class ArtifactActivy {
      * {@link Activity }
      * 
      * 
+     * @return 
      */
     public List<Activity> getActivities() {
         if (activities == null) {

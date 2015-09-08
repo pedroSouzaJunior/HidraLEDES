@@ -49,6 +49,7 @@ public class Activity {
      * {@link VariabilityPointBinding }
      * 
      * 
+     * @return 
      */
     public List<VariabilityPointBinding> getVariability() {
         if (variability == null) {
