@@ -58,10 +58,11 @@ public class GitFacade {
     }
 
     /**
-     * Metódo responsável para criar ou iniciar um repositório.
+     * Metódo responsável por criar ou iniciar um repositório. Recebe como
+     * parâmetro o diretório no o repositório se encontra.
      *
-     * @param directory
-     * @return
+     * @param directory - diretorio do repositório.
+     * @return - true caso operação ocorra com sucesso, false caso contrário.
      */
     public final boolean start(File directory) {
 
@@ -85,11 +86,11 @@ public class GitFacade {
      * local. Autentificação é requerida com o protocolo https. O diretório
      * local deve estar vazio.
      *
-     * @param directory
-     * @param remotePath
-     * @param user
-     * @param password
-     * @return
+     * @param directory - diretório aonde se deseja clonar o repositório.
+     * @param remotePath - caminho do repositório remoto.
+     * @param user - usuário para autenticação no repositório remoto.
+     * @param password - senha para autenticação no repositório remoto.
+     * @return - true caso operação ocorra com sucesso, false caso contrário.
      * @throws GitAPIException
      */
     public boolean cloneRepository(File directory, String remotePath, String user, String password) throws GitAPIException {
@@ -116,9 +117,9 @@ public class GitFacade {
      * Método responsável por clonar um repositório remoto em um diretório
      * local. O diretório local deve estar vazio.
      *
-     * @param directory
-     * @param remotePath
-     * @return boolean. False if not empty directory.
+     * @param directory - diretório aonde se deseja fazer o clone.
+     * @param remotePath - caminho do repositório remoto.
+     * @return true caso a operação ocorra com sucesso, false caso contrário.
      * @throws GitAPIException
      */
     public boolean cloneRepository(File directory, String remotePath) throws GitAPIException {
@@ -142,10 +143,9 @@ public class GitFacade {
     }
 
     /**
-     * Verifica se o diretório é um repositório Git
+     * Verifica se o diretório é um repositório inicializado
      *
-     *
-     * @return returns true if repository initialized
+     * @return true se repositório ja é inicializado, false caso contrário.
      */
     public boolean isRepositoryInitialized() {
 
@@ -156,15 +156,15 @@ public class GitFacade {
             // Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        // return false;
 
     }
 
     /**
-     * Verifica se o diretório é um repositório Git
+     * Verifica se o diretório é um repositório inicializado Recebe como
+     * parâmetro o caminho absoluto do repositório.
      *
      * @param directory
-     * @return
+     * @return true se repositório ja é inicializado, false caso contrário.
      */
     public boolean isRepositoryInitialized(String directory) {
 
@@ -175,8 +175,6 @@ public class GitFacade {
             // Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        // return false;
-
     }
 
     /**
@@ -283,7 +281,7 @@ public class GitFacade {
     /**
      * Retorna se há um repositório remoto configurado.
      *
-     * @return true, if there are remote repository configured
+     * @return true, se existe um repositório remoto, false caso contrário.
      */
     public boolean hasRemoteRepository() {
 
@@ -302,7 +300,7 @@ public class GitFacade {
      * repositório.
      *
      * @param fileName - recebe como parâmetro uma String com o nome do arquivo.
-     * @return
+     * @return true caso operação ocorra com sucesso, false caso contrário.
      * @throws GitAPIException - exceção padrão da API Git
      */
     public boolean add(String fileName) throws GitAPIException {
@@ -319,8 +317,9 @@ public class GitFacade {
     /**
      * Método responsável pelo commit das mudanças do repositório.
      *
-     * @param message - String com a mensagem a ser adicionada ao commit.
-     * @return
+     * @param message - mensagem informando as alteração a serem gravadas no
+     * repositório.
+     * @return true caso operação ocorra com sucesso, false caso contrário.
      * @throws org.eclipse.jgit.api.errors.GitAPIException
      */
     public boolean commit(String message) throws GitAPIException {
@@ -339,7 +338,8 @@ public class GitFacade {
     }
 
     /**
-     * Mostra o status do repositório.
+     * Método responsável por obter informações referentes ao status do
+     * repositório.
      *
      * @return
      * @throws GitAPIException
@@ -371,7 +371,7 @@ public class GitFacade {
      * diretório de trabalho e do repositório.
      *
      * @param filename - recebe uma string com o nome do arquivo a ser removido
-     * @return - retorna true se a operação for bem sucedida
+     * @return - true caso operação ocorra com sucesso, false caso contrário.
      */
     public boolean remove(String filename) {
         File file;
@@ -405,7 +405,7 @@ public class GitFacade {
     /**
      * Retorna o log de todo repositório.
      *
-     * @return
+     * @return informações de Log do repositório.
      * @throws GitAPIException
      */
     public String getLogs() throws GitAPIException {
@@ -432,8 +432,8 @@ public class GitFacade {
     /**
      * Retorna os logs dos commits realizados em um ativo especifico.
      *
-     * @param nameAsset
-     * @return
+     * @param nameAsset - nome do ativo.
+     * @return informações relativas ao log de um ativo.
      * @throws GitAPIException
      */
     public String getLogs(String nameAsset) throws GitAPIException {
@@ -442,14 +442,15 @@ public class GitFacade {
         if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
         } else {
-
-            // Repository repository1 = git1.getRepository();
-            //ObjectId head = repository1.resolve("HEAD");
             Iterable<RevCommit> log;
 
             log = assistant.log().addPath(nameAsset).call();
             for (RevCommit rev : log) {
-                logs.append("\nAuthor: ").append(rev.getAuthorIdent().getName()).append("\nMessage: ").append(rev.getFullMessage());
+                logs.append("\nAuthor: ")
+                        .append(rev.getAuthorIdent()
+                                .getName())
+                        .append("\nMessage: ")
+                        .append(rev.getFullMessage());
 
             }
             assistant.close();
@@ -461,12 +462,12 @@ public class GitFacade {
 
     /**
      * Atualiza o repositorio remoto com as alterações do repositorio local.
-     * Recebe como parâmetro o usuário e senha cadastrados no repositorio
+     * Recebe como parâmetro o usuário e senha para autenticação no repositório.
      * remoto.
      *
-     * @param user
-     * @param password
-     * @return
+     * @param user - usuário.
+     * @param password - senha.
+     * @return - true caso operação ocorra com sucesso, false caso contrário.
      * @throws org.eclipse.jgit.api.errors.GitAPIException
      */
     public boolean push(String user, String password) throws GitAPIException {
@@ -480,25 +481,23 @@ public class GitFacade {
 
                 System.err.println("Please add a remote repository");
                 return false;
-
             }
-
             it = pc.call().iterator();
             if (it.hasNext()) {
                 System.out.println(it.next().toString());
                 return true;
             }
-
         }
         return false;
     }
 
     /**
-     * Atualiza o repositorio local.
+     * Atualiza o repositorio local com alterações ocorridas no repositório
+     * remoto. Utiliza de usuário e senha para autenticação no repositório.
      *
-     * @param user
-     * @param password
-     * @return
+     * @param user - usuário
+     * @param password - senha
+     * @return true caso operação ocorra com sucesso, false caso contrário.
      * @throws GitAPIException
      */
     public boolean pull(String user, String password) throws GitAPIException {
@@ -521,18 +520,16 @@ public class GitFacade {
                 if (rebaseResult != null) {
                     //TODO
                 }
-
                 return true;
             } else {
                 System.err.println("Please add a remote repository");
             }
-
         }
         return false;
     }
 
     /**
-     * Trata os conflitos gerados pelo merge de dois repositorios ou branches.
+     * Informa conflitos gerados pelo merge de dois repositorios ou branches.
      *
      * @param conflict
      */
@@ -568,7 +565,7 @@ public class GitFacade {
      * Realiza a junção de dois repositórios ou dois branches.
      *
      * @param branch
-     * @return
+     * @return - true caso operação ocorra com sucesso, false caso contrário.
      * @throws IOException
      * @throws GitAPIException
      */
@@ -589,10 +586,10 @@ public class GitFacade {
     }
 
     /**
-     * Troca de branch.
+     * Troca do branch atual para um novo branch.
      *
      * @param branch
-     * @return
+     * @return - true caso operação ocorra com sucesso, false caso contrário.
      */
     public boolean checkout(String branch) {
 
@@ -603,11 +600,8 @@ public class GitFacade {
                 return true;
             } catch (GitAPIException ex) {
                 Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
-
                 return false;
-
             }
-
         }
         return false;
     }
@@ -617,7 +611,7 @@ public class GitFacade {
      * a ser criado.
      *
      * @param branch
-     * @return
+     * @return - true caso operação ocorra com sucesso, false caso contrário.
      */
     public boolean checkoutCreateBranch(String branch) {
 
@@ -627,10 +621,8 @@ public class GitFacade {
                 return true;
             } catch (GitAPIException ex) {
                 Logger.getLogger(GitFacade.class.getName()).log(Level.SEVERE, null, ex);
-
             }
         }
-
         return false;
     }
 
@@ -713,7 +705,7 @@ public class GitFacade {
     }
 
     /**
-     * Concluir
+     * Trabalho futuro.
      *
      * @param nameTag
      * @return
@@ -794,10 +786,17 @@ public class GitFacade {
      * @throws IOException
      * @throws GitAPIException
      */
-    public boolean archive(String format, String branch, String fileDest) throws FileNotFoundException, IncorrectObjectTypeException, RevisionSyntaxException, IOException, GitAPIException {
+    public boolean archive(String format, String branch, String fileDest) throws
+            FileNotFoundException,
+            IncorrectObjectTypeException,
+            RevisionSyntaxException,
+            IOException,
+            GitAPIException {
+
         File file = new File(fileDest);
         OutputStream out = new FileOutputStream(file);
         ArchiveFormats.registerAll();
+
         if (isRepositoryInitialized()) {
 
             assistant.archive().setTree(assistant.getRepository().resolve(branch))
@@ -809,11 +808,16 @@ public class GitFacade {
         return false;
     }
 
-    //git archive --remote=git@github.com:foo/bar.git --prefix=path/to/ HEAD:path/to/ |  tar xvf -
-    public boolean archive(String format, String branch, String fileDest, String prefix) throws FileNotFoundException, IncorrectObjectTypeException, RevisionSyntaxException, IOException, GitAPIException {
+    public boolean archive(String format, String branch, String fileDest, String prefix) throws
+            FileNotFoundException,
+            IncorrectObjectTypeException,
+            RevisionSyntaxException,
+            IOException,
+            GitAPIException {
 
         File file = File.createTempFile("test", fileDest);
         OutputStream out = new FileOutputStream(fileDest);
+
         if (isRepositoryInitialized()) {
 
             assistant.archive().setTree(assistant.getRepository().resolve(branch))

@@ -18,7 +18,6 @@ public class ResultMessage {
     private String message;
 
     private String log;
-    private String commitAuthor;
 
     public ResultMessage() {
     }
@@ -28,11 +27,10 @@ public class ResultMessage {
         this.statusMessage = statusMessage;
     }
 
-    public ResultMessage(int statusMessage, String message, String log, String commitAuthor) {
+    public ResultMessage(int statusMessage, String message, String log) {
         this.statusMessage = statusMessage;
         this.message = message;
         this.log = log;
-        this.commitAuthor = commitAuthor;
     }
 
     public String getMessage() {
@@ -57,14 +55,6 @@ public class ResultMessage {
 
     public void setLog(String log) {
         this.log = log;
-    }
-
-    public String getLogAuthor() {
-        return commitAuthor;
-    }
-
-    public void setLogAuthor(String logAuthor) {
-        this.commitAuthor = logAuthor;
     }
 
 }
