@@ -212,15 +212,19 @@ public class Commands {
         @Override
         public String execute(String arg) {
 
-            String result = null;
+            StringBuilder result = new StringBuilder();
             for (Map.Entry<String, Set<String>> entry : hidra.showStatus().entrySet()) {
-                result = entry.getKey() + " : " + entry.getValue();
+                if (entry.getValue().size() > 0) {
+                    result.append("\n").append(entry.getKey()).append(" : ");
+                    for (String s : entry.getValue()) {
+                        result.append("\n\t").append(s);
+                    }
+                }
             }
 
-            return result;
+            return result.toString();
 
         }
-
     }
 
     class GetSolutionCommand extends Command {
@@ -376,24 +380,23 @@ public class Commands {
         public String execute(String arg) {
             String user = Configuration.properties.getProperty("UserName");
             String password = Configuration.properties.getProperty("Password");
-             return hidra.sendUpdates(user, password);
-            
+            return hidra.sendUpdates(user, password);
 
         }
     }
-    
-    class UpdateLocal extends Command{
-    
+
+    class UpdateLocal extends Command {
+
         @Override
-        public String execute(String arg){
+        public String execute(String arg) {
             String user = Configuration.properties.getProperty("UserName");
             String password = Configuration.properties.getProperty("Password");
-            if(hidra.receiveUpdates(user, password))
+            if (hidra.receiveUpdates(user, password)) {
                 return "Local Repository Updated";
-            else
+            } else {
                 return "Fail";
-        
+            }
+
         }
     }
 }
- 
