@@ -53,6 +53,8 @@ public class Repository {
 
     private final static String separator = File.separator;
     private final static String manifest = "rasset.xml";
+    private List<String> validsAssets;
+    private List<String> inValidsAssets;
     /**
      * @param String localPath - Define o caminho completo para o repositório
      * local.
@@ -423,7 +425,16 @@ public class Repository {
      */
     public boolean validateAsset(Asset asset, String assetPath) {
         ValidatorAssets validator = new ValidatorAssets(assetPath);
-        return validator.isValidAsset(asset);
+        validator.isValidAsset(asset);
+        validsAssets = validator.getValidAssets();
+        inValidsAssets = validator.getInvalidAssets();
+        System.out.println("-------------------------Validos-----------------------------");
+        for (String s : validator.getValidAssets()) {
+            System.out.println(s);
+        }
+
+        return validator.getInvalidAssets().isEmpty();
+        // return validator.isValidAsset(asset);
     }
 
     /**
@@ -458,15 +469,19 @@ public class Repository {
 
         }
 
-        if (!validateAsset(assetPath)) {
+        if (!validateAsset(assetPath + File.separator)) {
             ret = false;
             throw new ValidationRuntimeException("Manifest not is valid");
 
         }
         if (!validateAsset(asset, assetPath)) {
             ret = false;
-            System.out.println(ret);
-            throw new ValidationRuntimeException("Active structure does not match the manifest file");
+            StringBuilder errors = new StringBuilder();
+            errors.append("Active structure does not match the manifest file, verify: \n");
+            for (String s : inValidsAssets) {
+                errors.append("\n").append(s);
+            }
+            throw new ValidationRuntimeException(errors.toString());
 
         }
 
@@ -486,9 +501,9 @@ public class Repository {
      * @throws javax.xml.bind.JAXBException
      *
      */
-    public boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException {
+    public boolean addAsset(String nameAsset) throws SAXException, IOException, JAXBException, ValidationRuntimeException {
 
-        String assetPath = new File(localPath).getAbsolutePath() + File.separator + nameAsset + File.separator;
+        String assetPath = new File(localPath).getAbsolutePath() + File.separator + nameAsset;
         File assetFolder = new File(assetPath);
         Asset asset = readAsset(nameAsset);
 

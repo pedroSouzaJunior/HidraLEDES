@@ -7,12 +7,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBException;
 import ledes.hidra.asset.ClassificationType;
-import ledes.hidra.asset.RelatedAssets;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
+import javax.xml.bind.JAXBException;
+import ledes.hidra.asset.RelatedAssets;
+
 
 /**
  *
