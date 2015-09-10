@@ -306,7 +306,7 @@ public class GitFacade {
      * @throws GitAPIException - exceção padrão da API Git
      */
     public boolean add(String fileName) throws GitAPIException {
-
+       
         if (isRepositoryInitialized()) {
             assistant.add().addFilepattern(fileName).call();
             assistant.close();
@@ -315,6 +315,18 @@ public class GitFacade {
         }
         return false;
     }
+    
+   public boolean addFileFull(String fileName) throws GitAPIException{
+       if (isRepositoryInitialized()) {
+            assistant.add().addFilepattern(fileName).call();
+            assistant.close();
+            return true;
+
+        }
+       
+       return false;
+   
+   }
 
     /**
      * Método responsável pelo commit das mudanças do repositório.

@@ -428,10 +428,10 @@ public class Repository {
         validator.isValidAsset(asset);
         validsAssets = validator.getValidAssets();
         inValidsAssets = validator.getInvalidAssets();
-        System.out.println("-------------------------Validos-----------------------------");
-        for (String s : validator.getValidAssets()) {
-            System.out.println(s);
-        }
+//        System.out.println("-------------------------Validos-----------------------------");
+//        for (String s : validator.getValidAssets()) {
+//            System.out.println(s);
+//        }
 
         return validator.getInvalidAssets().isEmpty();
         // return validator.isValidAsset(asset);
@@ -507,23 +507,28 @@ public class Repository {
         File assetFolder = new File(assetPath);
         Asset asset = readAsset(nameAsset);
 
+        if (findAsset(asset)) {
+
+            throw new ValidationRuntimeException("File already monitored. You might want to do \"updateAsset\"");
+
+        }
+
         if (validateAll(nameAsset, assetPath, assetFolder)) {
-
-            if (findAsset(asset)) {
-
-                throw new ValidationRuntimeException("File already monitored. You might want to do \"updateAsset\"");
-
-            }
-
+          boolean result;
             try {
                 HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
-                if (dao.insertion(asset.getName(), asset.getId()));
-                if (assistant.add(nameAsset)) {
+                assistant.add(nameAsset+separator+manifest);
+                for (String s : validsAssets) {
+                        if(!assistant.add(nameAsset + s)){
+                            System.out.println("Erro aqui em " + nameAsset + s);
+                        return false;}
+                            
+                       System.out.println("Add: "+ nameAsset+s);
 
-                    return assistant.add(".hidra");
-                }
-                return false;
-                //return assistant.add(nameAsset);
+                    }
+                result = dao.insertion(asset.getName(), asset.getId());
+               
+                return assistant.add(".hidra")&&result;
             } catch (GitAPIException ex) {
                 Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
