@@ -8,6 +8,7 @@ package ledes.hidra.rest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import javax.ws.rs.core.Response;
@@ -76,205 +77,117 @@ public class ServicesTest {
 
     }
 
+    //@Ignore
     @Test
     public void ADICIONAR_ATIVO_VALIDO() throws Exception {
         System.out.println("executando...ADICIONAR_ATIVO_VALIDO");
 
-        File ativo = new File("/home/pedro/AreaDeTestes/jaxb");
-        File destino = new File("/home/pedro/repo2");
+        Services instance = new Services();
 
-        File novoDestino = new File(destino + File.separator + ativo.getName());
+        Response result = instance.addAsset(com);
+        assertEquals(200, result.getStatus());
+
+    }
+
+    //@Ignore
+    @Test
+    public void SUBMIT_ALTERACOES() throws Exception {
+        System.out.println("executando...SUBMIT_ALTERACOES");
+
+        Services instance = new Services();
+        Response result = instance.save(com);
+
+        assertEquals(200, result.getStatus());
+
+    }
+
+    //@Ignore
+    @Test
+    public void OBTER_SOLUTION_DE_ATIVO() throws Exception {
+        System.out.println("executando...OBTER_SOLUTION_DE_ATIVO");
+
+        Services instance = new Services();
+
+        Response result = instance.getSolution(com);
+        assertEquals(200, result.getStatus());
+    }
+
+    //@Ignore
+    @Test
+    public void OBETER_CLASSIFICATION_DE_ATIVO() throws Exception {
+        System.out.println("executando...OBETER_CLASSIFICATION_DE_ATIVO");
+
+        Services instance = new Services();
+        Response result = instance.getClassification(com);
+        assertEquals(200, result.getStatus());
+
+    }
+
+    //@Ignore
+    @Test
+    public void OBTER_USAGE_DE_ATIVO() throws Exception {
+        System.out.println("executando...OBTER_USAGE_DE_ATIVO");
+
+        Services instance = new Services();
+        Response result = instance.getUsage(com);
+        assertEquals(200, result.getStatus());
+    }
+
+    //@Ignore
+    @Test
+    public void OBTER_ATIVOS_RELACIONADOS() throws Exception {
+        System.out.println("executando...OBTER_ATIVOS_RELACIONADOS");
+
+        Services instance = new Services();
+        Response result = instance.getRelatedAssets(com);
+        assertEquals(200, result.getStatus());
+
+    }
+
+    //@Ignore
+    @Test
+    public void CLONAR_REPOSITORIO_SEM_AUTENTICACAO() throws Exception {
+        System.out.println("executando...CLONAR_REPOSITORIO_SEM_AUTENTICACAO");
+
+        Services instance = new Services();
+        Response result = instance.startSynchronizedRepository(com);
+        assertEquals(200, result.getStatus());
+
+    }
+
+    @Test
+    public void OBTER_LOG_DE_ATIVO() throws IOException {
+
+        System.out.println("executando...OBTER_LOG_DE_ATIVO");
+
+        Services instance = new Services();
+        Response result = instance.getLog(com);
+
+        assertEquals(200, result.getStatus());
+
+    }
+
+    @Test
+    public void OBTER_LOG_DO_REPOSITORIO() throws IOException{
+
+        System.out.println("executando...OBTER_LOG_DO_REPOSITORIO");
+
+        Services instance = new Services();
+        Response result = instance.getLogRepository(com);
+
+        assertEquals(200, result.getStatus());
+
+    }
+    
+    @Test
+    public void DOWNLOAD_DE_ATIVO() throws IOException{
+        System.out.println("executando...DOWNLOAD_DE_ATIVO");
         
-
         Services instance = new Services();
-
-        //Response result = instance.addAsset(com);
-        assertEquals(true, true);
-
-    }
-
-    @Ignore
-    @Test
-    public void testSave() throws Exception {
-        System.out.println("save");
-        Command command = new Command();
-        command.setRepositoryPath("/var/www/hidra.com/hidra/testStart");
-        command.setSubmitMessage("Mensagem sava para repositório");
-
-        Services instance = new Services();
-
-        Response result = instance.save(command);
+        
+        Response result = instance.downloadAsset(com);
+        
         assertEquals(200, result.getStatus());
-
+        
     }
-
-    @Ignore
-    @Test
-    public void testRemove() throws Exception {
-        System.out.println("remove");
-        Command command = new Command();
-        command.setRepositoryPath("/var/www/hidra.com/hidra/testStart");
-        command.setAssetName("jaxb");
-        Services instance = new Services();
-
-        Response result = instance.remove(command);
-        assertEquals(200, result.getStatus());
-    }
-
-    @Ignore
-    @Test
-    public void testStartSynchronizedRepository() throws Exception {
-        System.out.println("startSynchronizedRepository");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.startSynchronizedRepository(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testStartSynchronizedRepositoryAuthentication() throws Exception {
-        System.out.println("startSynchronizedRepositoryAuthentication");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.startSynchronizedRepositoryAuthentication(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testSendUpdates() throws Exception {
-        System.out.println("sendUpdates");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.sendUpdates(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testReceiveUpdates() throws Exception {
-        System.out.println("receiveUpdates");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.receiveUpdates(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testGetSolution() throws Exception {
-        System.out.println("getSolution");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.getSolution(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testGetClassification() throws Exception {
-        System.out.println("getClassification");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.getClassification(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testGetUsage() throws Exception {
-        System.out.println("getUsage");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.getUsage(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testGetRelatedAssets() throws Exception {
-        System.out.println("getRelatedAssets");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.getRelatedAssets(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testGetLog() throws Exception {
-        System.out.println("getLog");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.getLog(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testGetLogRepository() throws Exception {
-        System.out.println("getLogRepository");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.getLogRepository(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testDownloadAsset() throws Exception {
-        System.out.println("downloadAsset");
-        Command command = null;
-        Services instance = new Services();
-        Response expResult = null;
-        Response result = instance.downloadAsset(command);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Ignore
-    @Test
-    public void testGettest() {
-        System.out.println("gettest");
-        Services instance = new Services();
-
-        Command expResult = new Command();
-
-        expResult.setAssetName("jaxb");
-
-        expResult.setRepositoryPath("/var/www/hidra.com/hidra/FINAL");
-        expResult.setRemoteRepository("/var/www/hidra.com/hidra/HIDRA");
-        expResult.setRepositoryLocalCopy("/home/pedro/CloneOfHidra");
-        expResult.setUser("pedro");
-        expResult.setPassword("220891");
-        expResult.setSubmitMessage("Enviando alterações para o repositório");
-
-        Command result = instance.gettest();
-
-        System.out.println(result);
-        System.out.println(expResult);
-        assertEquals(expResult, result);
-    }
-
 }
