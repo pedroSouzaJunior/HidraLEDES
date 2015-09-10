@@ -6,12 +6,18 @@
 package ledes.hidra.core;
 
 import java.io.File;
-import java.io.FilenameFilter;
+
 import java.util.ArrayList;
 import java.util.List;
+import javax.ws.rs.core.Response;
+import ledes.hidra.asset.Activity;
+import ledes.hidra.asset.ArtifactActivy;
 import ledes.hidra.asset.ArtifactType;
 import ledes.hidra.asset.Asset;
+import ledes.hidra.asset.ContextReference;
 import ledes.hidra.asset.SolutionType;
+import ledes.hidra.asset.UsageType;
+import ledes.hidra.asset.VariabilityPointBinding;
 
 /**
  * Classe responsável por validar um ativo de acordo com as normas definidas.
@@ -70,16 +76,6 @@ public class ValidatorAssets {
                 return false;
             }
         }
-
-//        File[] matchingFiles = path.listFiles(new FilenameFilter() {
-//            @Override
-//            public boolean accept(File dir, String name) {
-//
-//                return name.equals(fileName);
-//            }
-//        });
-
-      //  return matchingFiles.length != 0;
         File f = new File(pathAux);
         return f.exists()&& !f.isDirectory();
     }
@@ -101,7 +97,7 @@ public class ValidatorAssets {
                     invalidAssets.add(aux + " is not folder or folder is empty.\n");
                 } else {
 
-                    validAssets.add(aux);
+                    validAssets.add(aux.substring(localAsset.length()));
                 }
 
             } else if ("File".equalsIgnoreCase(art.getType())) {
@@ -113,7 +109,7 @@ public class ValidatorAssets {
                     invalidAssets.add(pathAux + " is not found\n");
                 } else {
 
-                    validAssets.add(pathAux);
+                    validAssets.add(pathAux.substring(localAsset.length()));
                 }
 
             }
@@ -130,7 +126,7 @@ public class ValidatorAssets {
                     invalidAssets.add(localAsset + req.getReference().replace("/", separator) + separator + req.getName() + " is not folder or folder is empty.\n");
                 } else {
 
-                    validAssets.add(localAsset + req.getReference().replace("/", separator) + separator + req.getName());
+                    validAssets.add( req.getReference().replace("/", separator) + separator + req.getName());
                 }
             } else if ("File".equalsIgnoreCase(req.getType())) {
 
@@ -141,7 +137,7 @@ public class ValidatorAssets {
                 } else {
                        
                     
-                    validAssets.add(pathAux);
+                    validAssets.add(pathAux.substring(localAsset.length()));
                 }
 
             }
@@ -157,7 +153,7 @@ public class ValidatorAssets {
                     invalidAssets.add(localAsset + des.getReference().replace("/", separator) + separator + des.getName() + " is not folder or folder is empty.\n");
                 } else {
 
-                    validAssets.add(localAsset + des.getReference().replace("/", separator) + separator + des.getName());
+                    validAssets.add( des.getReference().replace("/", separator) + separator + des.getName());
                 }
             } else if ("File".equalsIgnoreCase(des.getType())) {
 
@@ -167,7 +163,7 @@ public class ValidatorAssets {
                     invalidAssets.add(pathAux + " is not found\n");
                 } else {
 
-                    validAssets.add(pathAux);
+                    validAssets.add(pathAux.substring(localAsset.length()));
                 }
             }
 
@@ -182,7 +178,7 @@ public class ValidatorAssets {
                     invalidAssets.add(localAsset + imp.getReference().replace("/", separator) + separator + imp.getName() + " is not folder or folder is empty.\n");
                 } else {
 
-                    validAssets.add(localAsset + imp.getReference().replace("/", separator) + separator + imp.getName());
+                    validAssets.add( imp.getReference().replace("/", separator) + separator + imp.getName());
                 }
             } else if ("File".equalsIgnoreCase(imp.getType())) {
 
@@ -192,12 +188,15 @@ public class ValidatorAssets {
                     invalidAssets.add(pathAux + " is not found\n");
                 } else {
 
-                    validAssets.add(pathAux);
+                    validAssets.add(pathAux.substring(localAsset.length()));
                 }
 
             }
 
         }
+        
+        
+       
 
       
     }
