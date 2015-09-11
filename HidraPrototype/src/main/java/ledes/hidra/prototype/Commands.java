@@ -41,10 +41,10 @@ public class Commands {
         strategies.put("logs", new ShowLogsCommand());
         strategies.put("save", new SaveChangesCommand());
         strategies.put("status", new ShowStatusCommand());
-        strategies.put("update-asset", new UpdateAssetCommand());
         strategies.put("send-updates", new UpdateRemote());
         strategies.put("receive-updates", new UpdateLocal());
         strategies.put("set-user", new SetUserCommand());
+        strategies.put("get-user", new GetUserCommand());
         strategies.put("set-remote", new SetRemoteRepo());
         strategies.put("log-asset", new ShowLogsParameterCommand());
         strategies.put("get-classification", new GetClasssificationCommand());
@@ -86,6 +86,8 @@ public class Commands {
         return "Usage: java -jar " + jarFile + " command [arguments]\n"
                 + "For a list of commands type:\n:> java -jar " + jarFile + " help";
     }
+
+    
 
     /**
      * Abstract super class for all possible commands
@@ -160,7 +162,7 @@ public class Commands {
         public String execute(String arg) {
             if (!hidra.removeAsset(arg)) {
             } else {
-                return "Asset remove in " + Configuration.properties.getProperty("LocalPath");
+                return "Asset removed in " + Configuration.properties.getProperty("LocalPath");
             }
 
             return "Fail ";
@@ -284,19 +286,7 @@ public class Commands {
 
     }
 
-    class UpdateAssetCommand extends Command {
-
-        @Override
-        public String execute(String arg) {
-
-            if (hidra.updateAsset(arg)) {
-                return "Asset Updated";
-            }
-            return "Failure to update the asset";
-        }
-
-    }
-
+    
     class SetUserCommand extends Command {
 
         @Override
@@ -339,7 +329,8 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
-            return hidra.getRemoteRepo();
+            String remote = hidra.getRemoteRepo();
+            return remote!=null?remote:"Remote repository not set";
         }
 
     }
@@ -397,6 +388,16 @@ public class Commands {
                 return "Fail";
             }
 
+        }
+    }
+    
+     class GetUserCommand extends Command {
+
+        @Override
+        public String execute(String arg) {
+
+             return "User configuration: \n"
+                    + hidra.getUser();
         }
     }
 }

@@ -503,21 +503,7 @@ public class Hidra {
 
     }
 
-    /**
-     * Método responsável pela atualização um ativo.
-     *
-     * @param assetName - nome do ativo.
-     * @return
-     */
-    public boolean updateAsset(String assetName) {
-        try {
-            return repository.updateAsset(assetName);
-        } catch (JAXBException | Repository.ValidationRuntimeException | SAXException | IOException ex) {
-            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-
+   
     /**
      * Define o usuário do repositório.
      *

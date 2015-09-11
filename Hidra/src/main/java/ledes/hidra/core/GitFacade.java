@@ -189,8 +189,9 @@ public class GitFacade {
 
         if (isRepositoryInitialized()) {
             StoredConfig config = assistant.getRepository().getConfig();
+            
+            config.setString("email", null, "email", email);
             config.setString("user", null, "name", name);
-            config.setString("user", null, "email", email);
             config.save();
 
         }

@@ -86,6 +86,7 @@ public class HidraDAO {
             stmt.close();
             c.commit();
             c.close();
+            return true;
         } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
