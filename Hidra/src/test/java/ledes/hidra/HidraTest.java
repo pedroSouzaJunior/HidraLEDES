@@ -13,10 +13,7 @@ import javax.xml.bind.JAXBException;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
@@ -442,21 +439,6 @@ public class HidraTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of updateAsset method, of class Hidra.
-     */
-     @Ignore
-    @Test
-    public void testUpdateAsset() {
-        System.out.println("updateAsset");
-        String assetName = "";
-        Hidra instance = new Hidra();
-        boolean expResult = false;
-        boolean result = instance.updateAsset(assetName);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
     /**
      * Test of setUser method, of class Hidra.

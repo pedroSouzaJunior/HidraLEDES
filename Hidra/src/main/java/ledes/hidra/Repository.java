@@ -367,19 +367,20 @@ public class Repository {
      * @return
      */
     private boolean manifestExist(File path) {
+        File manifest = new File(path+separator+"rasset.xml");
+//        File[] matchingFiles = path.listFiles(new FilenameFilter() {
+//            
+//            @Override
+//            public boolean accept(File dir, String name) {
+//
+//                return (name.startsWith("rasset") && name.endsWith("xml"));
+//            }
+//        });
+//        // System.out.println("Manifest: " + Configuration.properties.getProperty("ManifestName") + Configuration.properties.getProperty("ManifestExtension"));
 
-        File[] matchingFiles = path.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(File dir, String name) {
-
-                return (name.startsWith("rasset") && name.endsWith("xml"));
-            }
-        });
-        // System.out.println("Manifest: " + Configuration.properties.getProperty("ManifestName") + Configuration.properties.getProperty("ManifestExtension"));
-
-        return matchingFiles != null;
-
+     //   return matchingFiles != null;
+        //System.out.println(path);
+        return manifest.exists()&&!manifest.isDirectory();
     }
 
     /**
@@ -402,7 +403,6 @@ public class Repository {
         Validator validator = schema.newValidator();
         try {
             validator.validate(xmlFile);
-            System.out.println(xmlFile.getSystemId() + " is valid");
             return true;
         } catch (SAXException e) {
             System.out.println(xmlFile.getSystemId() + " is NOT valid");
@@ -428,10 +428,6 @@ public class Repository {
         validator.isValidAsset(asset);
         validsAssets = validator.getValidAssets();
         inValidsAssets = validator.getInvalidAssets();
-//        System.out.println("-------------------------Validos-----------------------------");
-//        for (String s : validator.getValidAssets()) {
-//            System.out.println(s);
-//        }
 
         return validator.getInvalidAssets().isEmpty();
         // return validator.isValidAsset(asset);
@@ -506,29 +502,31 @@ public class Repository {
         String assetPath = new File(localPath).getAbsolutePath() + File.separator + nameAsset;
         File assetFolder = new File(assetPath);
         Asset asset = readAsset(nameAsset);
-
-        if (findAsset(asset)) {
-
-            throw new ValidationRuntimeException("File already monitored. You might want to do \"updateAsset\"");
-
-        }
+        boolean result = true;
 
         if (validateAll(nameAsset, assetPath, assetFolder)) {
-          boolean result;
-            try {
-                HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
-                assistant.add(nameAsset+separator+manifest);
-                for (String s : validsAssets) {
-                        if(!assistant.add(nameAsset + s)){
-                            System.out.println("Erro aqui em " + nameAsset + s);
-                        return false;}
-                            
-                       System.out.println("Add: "+ nameAsset+s);
 
-                    }
+            if (!findAsset(asset)) {
+
+                HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
                 result = dao.insertion(asset.getName(), asset.getId());
-               
-                return assistant.add(".hidra")&&result;
+
+            }
+
+            try {
+
+                assistant.add(nameAsset + separator + manifest);
+                for (String s : validsAssets) {
+                    if (!assistant.add(nameAsset + s)) {
+
+                        return false;
+                    }
+
+                    System.out.println("Add: " + nameAsset + s);
+
+                }
+
+                return assistant.add(".hidra") && result;
             } catch (GitAPIException ex) {
                 Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
@@ -583,43 +581,7 @@ public class Repository {
         return null;
     }
 
-    /**
-     * Atualiza um ativo já monitorado a aréa de seleção. Caso o ativo ainda não
-     * esteja sendo monitorado retorna falso. Caso as modificações não estejam
-     * de acordo com o padrão adotado, impede a atualização e retorna falso.
-     *
-     * @param assetName - Recebe uma String com o nome do ativo a ser
-     * atualizado.
-     * @return
-     * @throws JAXBException
-     * @throws FileNotFoundException
-     * @throws ledes.hidra.Repository.ValidationRuntimeException
-     * @throws SAXException
-     * @throws IOException
-     */
-    public boolean updateAsset(String assetName) throws JAXBException, FileNotFoundException, ValidationRuntimeException, SAXException, IOException {
-        String assetPath = new File(localPath).getAbsolutePath() + File.separator + assetName + File.separator;
-        File assetFolder = new File(assetPath);
-
-        //Asset asset = readAsset(assetName);
-        if (findAsset(readAsset(assetName))) {
-            if (validateAll(assetName, assetPath, assetFolder)) {
-                try {
-                    return assistant.add(assetName) ? assistant.add(".hidra") : false;
-                } catch (GitAPIException ex) {
-                    Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-        } else {
-            throw new ValidationRuntimeException("Asset unmonitored, please add the asset to area selection with 'addAsset'");
-
-        }
-        return false;
-
-    }
-
-    /**
+        /**
      * Metodo utilizado para atualização do arquivo rasset.xml utilizado nos
      * métodos Sets.
      *
