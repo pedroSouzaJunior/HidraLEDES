@@ -558,4 +558,51 @@ public class Hidra {
 
     }
 
+    /**
+     * Cria um novo ramo(branch) no repositório 
+     * @param branchName - recebe o nome do novo branch
+     * @return 
+     */
+    public String createBranch(String branchName){
+        return repository.createBranch(branchName);
+    
+    }
+    
+    /**
+     * Realiza a troca de branch  
+     * @param branchName - Recebe o nome do branch que se deseja alternar.
+     * @return 
+     */
+    public boolean checkoutBranch(String branchName){
+    
+        return repository.checkoutBranch(branchName);
+    }
+    /**
+     * Mostra todos os branches disponíveis no repositório e o branch atual de trabalho.
+     * @return 
+     */
+    public boolean showBranches(){
+        return repository.showBranches();
+    }
+    /**
+     * Recebe um vetor de Strings contendo os nomes dos branches que se deseja remover do repositório.
+     * @param branchName
+     * @return 
+     */
+    public boolean deleteBranch(String[] branchName){
+    
+        return repository.deleteBranch(branchName);
+    }
+    
+    /**
+     * Realiza a mesclagem dos branches.
+     * @param branchName - Recebe como parâmetro o nome do branch que se deseja para fazer a mesclagem.
+     * @return 
+     */
+    public boolean mergeBranch(String branchName){
+        
+        return repository.merge(branchName);
+    }
 }
+
+

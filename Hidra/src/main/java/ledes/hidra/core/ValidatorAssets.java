@@ -9,15 +9,9 @@ import java.io.File;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.ws.rs.core.Response;
-import ledes.hidra.asset.Activity;
-import ledes.hidra.asset.ArtifactActivy;
 import ledes.hidra.asset.ArtifactType;
 import ledes.hidra.asset.Asset;
-import ledes.hidra.asset.ContextReference;
 import ledes.hidra.asset.SolutionType;
-import ledes.hidra.asset.UsageType;
-import ledes.hidra.asset.VariabilityPointBinding;
 
 /**
  * Classe responsável por validar um ativo de acordo com as normas definidas.

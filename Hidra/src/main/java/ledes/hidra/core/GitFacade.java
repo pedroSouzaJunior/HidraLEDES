@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -14,14 +15,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ledes.hidra.Repository;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.PushCommand;
-import org.eclipse.jgit.api.RebaseResult;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Config;
@@ -31,6 +29,10 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.archive.ArchiveFormats;
+import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.transport.RemoteConfig;
+import org.eclipse.jgit.transport.RemoteRefUpdate;
+import org.eclipse.jgit.transport.URIish;
 
 /**
  * This class is a Facade Pattern to jGit features. Its aim is to simplify
@@ -189,7 +191,7 @@ public class GitFacade {
 
         if (isRepositoryInitialized()) {
             StoredConfig config = assistant.getRepository().getConfig();
-            
+
             config.setString("email", null, "email", email);
             config.setString("user", null, "name", name);
             config.save();
@@ -240,12 +242,23 @@ public class GitFacade {
      *
      * @param remoteRepository
      * @throws java.io.IOException
+     * @throws java.net.URISyntaxException
      */
-    public void setConfigRemote(String remoteRepository) throws IOException {
+    public void setConfigRemote(String remoteRepository) throws IOException, URISyntaxException {
 
+//        StoredConfig config = db.getConfig();
+//		RemoteConfig remoteConfig = new RemoteConfig(config, "test");
+//		URIish uri = new URIish(db2.getDirectory().toURI().toURL());
+//		remoteConfig.addURI(uri);
+//		remoteConfig.update(config);
+//		config.save();
         if (isRepositoryInitialized()) {
             StoredConfig config = assistant.getRepository().getConfig();
-            config.setString("remote", "origin", "url", remoteRepository);
+            //  config.setString("remote", "origin", "url", remoteRepository);
+            RemoteConfig remoteConfig = new RemoteConfig(config, "test");
+            URIish uri = new URIish(remoteRepository);
+            remoteConfig.addURI(uri);
+            remoteConfig.update(config);
             config.save();
 
         }
@@ -307,7 +320,7 @@ public class GitFacade {
      * @throws GitAPIException - exceção padrão da API Git
      */
     public boolean add(String fileName) throws GitAPIException {
-       
+
         if (isRepositoryInitialized()) {
             assistant.add().addFilepattern(fileName).call();
             assistant.close();
@@ -316,18 +329,6 @@ public class GitFacade {
         }
         return false;
     }
-    
-   public boolean addFileFull(String fileName) throws GitAPIException{
-       if (isRepositoryInitialized()) {
-            assistant.add().addFilepattern(fileName).call();
-            assistant.close();
-            return true;
-
-        }
-       
-       return false;
-   
-   }
 
     /**
      * Método responsável pelo commit das mudanças do repositório.
@@ -485,11 +486,11 @@ public class GitFacade {
      * @return - true caso operação ocorra com sucesso, false caso contrário.
      * @throws org.eclipse.jgit.api.errors.GitAPIException
      */
-    public boolean push(String user, String password) throws GitAPIException {
+    public boolean push(String user, String password) throws GitAPIException, IOException {
         if (isRepositoryInitialized()) {
             CredentialsProvider cp = new UsernamePasswordCredentialsProvider(user, password);
             PushCommand pc = assistant.push();
-            pc.setCredentialsProvider(cp).setForce(true).setPushAll();
+            pc.setCredentialsProvider(cp).setPushAll();
             Iterator<PushResult> it;
 
             if (!hasRemoteRepository()) {
@@ -497,13 +498,80 @@ public class GitFacade {
                 System.err.println("Please add a remote repository");
                 return false;
             }
-            it = pc.call().iterator();
-            if (it.hasNext()) {
-                System.out.println(it.next().toString());
-                return true;
+            Iterable<PushResult> results = pc.call();
+            for (PushResult result : results) {
+                ObjectReader reader = assistant.getRepository().newObjectReader();
+                try {
+                    printPushResult(reader, result.getURI(), result);
+                } finally {
+                    reader.release();
+                }
             }
+
         }
         return false;
+    }
+
+    private void printPushResult(final ObjectReader reader, final URIish uri,
+            final PushResult result) throws IOException {
+
+
+        for (final RemoteRefUpdate rru : result.getRemoteUpdates()) {
+           
+            if (rru.getStatus() == org.eclipse.jgit.transport.RemoteRefUpdate.Status.OK) {
+                printRefUpdateResult(reader, uri, result, rru);
+            }
+        }
+
+        for (final RemoteRefUpdate rru : result.getRemoteUpdates()) {
+           
+            if (rru.getStatus() != org.eclipse.jgit.transport.RemoteRefUpdate.Status.OK
+                    && rru.getStatus() != org.eclipse.jgit.transport.RemoteRefUpdate.Status.UP_TO_DATE) {
+                printRefUpdateResult(reader, uri, result, rru);
+            }
+        }
+
+ 
+    }
+
+    private void printRefUpdateResult(final ObjectReader reader,
+            final URIish uri, final PushResult result, final RemoteRefUpdate rru)
+            throws IOException {
+            
+        switch (rru.getStatus()) {
+            case OK:
+                System.out.println("Remote was successfully updated");
+                break;
+
+            case NON_EXISTING:
+                System.out.println("Remote ref didn't exist. Can occur on delete request of a non existing branch.");
+                break;
+
+            case REJECTED_NODELETE:
+                System.out.println("REJECTED_NODELETE");
+                break;
+
+            case REJECTED_NONFASTFORWARD:
+                System.out.println(" Non-fast forward updates were rejected, try receive-updates and after send-receives");
+                break;
+
+            case REJECTED_REMOTE_CHANGED:
+                System.out.println("REJECTED_REMOTE_CHANGED: " + rru.getMessage());
+                break;
+
+            case REJECTED_OTHER_REASON:
+                System.out.println("REJECTED_OTHER_REASON: " + rru.getMessage());
+                break;
+
+            case UP_TO_DATE:
+                System.out.println("Already up-to-date");
+                break;
+
+            case NOT_ATTEMPTED:
+            case AWAITING_REPORT:
+                System.out.println("AWAITING_REPORT: " + rru.getMessage());
+                break;
+        }
     }
 
     /**
@@ -525,16 +593,15 @@ public class GitFacade {
 
                 pullResult = assistant.pull().setCredentialsProvider(credential).call();
 
-                System.out.println(pullResult);
-
                 MergeResult mergeResult = pullResult.getMergeResult();
                 if (mergeResult != null) {
                     resolveConflictsMerge(mergeResult);
+                    return false;
                 }
-                RebaseResult rebaseResult = pullResult.getRebaseResult();
-                if (rebaseResult != null) {
-                    //TODO
-                }
+//                RebaseResult rebaseResult = pullResult.getRebaseResult();
+//                if (rebaseResult != null) {
+//                    //TODO
+//                }
                 return true;
             } else {
                 System.err.println("Please add a remote repository");
@@ -543,6 +610,7 @@ public class GitFacade {
         return false;
     }
 
+    // m = MergeStrategy.RESOLVE.newMerger(repo, true);
     /**
      * Informa conflitos gerados pelo merge de dois repositorios ou branches.
      *
@@ -553,8 +621,9 @@ public class GitFacade {
         switch (conflict.getMergeStatus()) {
             case CONFLICTING:
                 System.out.println("CONFLICT (content): Merge conflict in: adicionar arquivo que tem conflito"
-                        + "Automatic merge failed; fix conflicts and then commit the result.");
-                System.out.println(conflict.getConflicts());
+                        + "\nAutomatic merge failed; fix conflicts and then commit the result.");
+
+                // System.out.println(conflict.getConflicts());
                 break;
             case FAILED:
                 System.out.println("FAILED: " + conflict.getFailingPaths());
@@ -563,7 +632,7 @@ public class GitFacade {
                 System.out.println("ABORTED: ");
                 break;
             case ALREADY_UP_TO_DATE:
-                System.out.println("ALREADY UP TO DATE: ");
+                System.out.println("ALREADY UP TO DATE ");
                 break;
             case CHECKOUT_CONFLICT:
                 System.out.println("CHECKOUT_CONFLICT: meaning that nothing could be merged, "
@@ -585,19 +654,19 @@ public class GitFacade {
      * @throws GitAPIException
      */
     public boolean merge(String branch) throws IOException, GitAPIException {
-        MergeCommand mgCmd = assistant.merge();
 
-        mgCmd.include(assistant.getRepository().getRef(branch));
-        MergeResult res = mgCmd.call();
-        System.out.println(res.getMergeStatus());
-
-        if (!res.getMergeStatus().isSuccessful()) {
-            resolveConflictsMerge(res);
-            return false;
+        if (!isRepositoryInitialized()) {
+            System.err.println("Repository Uninitialized");
         } else {
-            return true;
+            MergeResult res = assistant.merge().include(assistant.getRepository().getRef(branch)).call();
+            if (!res.getMergeStatus().isSuccessful()) {
+                resolveConflictsMerge(res);
+                return false;
+            } else {
+                return true;
+            }
         }
-
+        return false;
     }
 
     /**
@@ -736,6 +805,12 @@ public class GitFacade {
 
     }
 
+    /**
+     * Mostra o branch atual de trabalho e todos os branches criados no
+     * repositório.
+     *
+     * @return
+     */
     public boolean showBranches() {
         if (!isRepositoryInitialized()) {
             System.err.println("Repository uninitialized");
@@ -756,10 +831,34 @@ public class GitFacade {
         return false;
     }
 
+    /**
+     * Apaga branches
+     *
+     * @param branchNames
+     * @return
+     * @throws GitAPIException
+     */
+    public boolean deleteBranch(String[] branchNames) throws GitAPIException {
+
+        if (isRepositoryInitialized()) {
+            System.err.println("Repository Uninitialized");
+            return false;
+        } else {
+            assistant.branchDelete().setBranchNames(branchNames).call();
+            return true;
+        }
+    }
+
+    /**
+     * Cria um novo branch.
+     *
+     * @param nameBranch
+     * @return
+     */
     public String createBranch(String nameBranch) {
         String branch = null;
         if (!isRepositoryInitialized()) {
-            System.err.println("Repositorio nao inicializado");
+            System.err.println("Repository Uninitialized");
         } else {
 
             try {
