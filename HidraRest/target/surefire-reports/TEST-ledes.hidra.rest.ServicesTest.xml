@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.088" errors="1" skipped="10" tests="11" name="ledes.hidra.rest.ServicesTest">
+<testsuite failures="0" time="0.079" errors="0" skipped="11" tests="11" name="ledes.hidra.rest.ServicesTest">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64"/>
@@ -13,10 +13,10 @@
     <property name="user.country" value="BR"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value="unknown"/>
-    <property name="test" value="ledes.hidra.rest.ServicesTest"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="user.dir" value="/home/pedro/Desenvolvimento/LEDES/AuxiliarHidra/Hidra2/HidraRest"/>
     <property name="java.runtime.version" value="1.7.0_79-b14"/>
+    <property name="netbeans.deploy" value="true"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/endorsed"/>
     <property name="os.arch" value="amd64"/>
@@ -25,7 +25,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Linux"/>
-    <property name="maven.ext.class.path" value="/home/pedro/Desenvolvimento/netbeans-8.0.2/java/maven-nblib/netbeans-eventspy.jar:/home/pedro/Desenvolvimento/netbeans-8.0.2/java/maven-nblib/netbeans-cos.jar"/>
+    <property name="maven.ext.class.path" value="/home/pedro/Desenvolvimento/netbeans-8.0.2/java/maven-nblib/netbeans-eventspy.jar"/>
     <property name="classworlds.conf" value="/home/pedro/Desenvolvimento/netbeans-8.0.2/java/maven/bin/m2.conf"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/i386::/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
@@ -43,7 +43,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/usr/lib/jvm/java-7-openjdk-amd64/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dtest=ledes.hidra.rest.ServicesTest -Dmaven.ext.class.path=/home/pedro/Desenvolvimento/netbeans-8.0.2/java/maven-nblib/netbeans-eventspy.jar:/home/pedro/Desenvolvimento/netbeans-8.0.2/java/maven-nblib/netbeans-cos.jar surefire:test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dnetbeans.deploy=true -Dmaven.ext.class.path=/home/pedro/Desenvolvimento/netbeans-8.0.2/java/maven-nblib/netbeans-eventspy.jar package"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="pt"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -60,75 +60,37 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.011" classname="ledes.hidra.rest.ServicesTest" name="CRIAR_REPOSITORIO_HIDRA">
-    <error message="Repository with this name already exists" type="java.io.IOException">java.io.IOException: Repository with this name already exists
-	at ledes.hidra.rest.Services.startRepository(Services.java:96)
-	at ledes.hidra.rest.ServicesTest.CRIAR_REPOSITORIO_HIDRA(ServicesTest.java:74)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:45)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:42)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:30)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:263)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:30)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:300)
-	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:53)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:123)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:104)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:164)
-	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:110)
-	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175)
-	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68)
-</error>
-    <system-out>executando...CRIAR_REPOSITORIO_HIDRA
-</system-out>
-  </testcase>
-  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="ADICIONAR_ATIVO_VALIDO">
+  <testcase time="0" classname="ledes.hidra.rest.ServicesTest" name="CRIAR_REPOSITORIO_HIDRA">
     <skipped/>
   </testcase>
-  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="SUBMIT_ALTERACOES">
+  <testcase time="0.002" classname="ledes.hidra.rest.ServicesTest" name="ADICIONAR_ATIVO_VALIDO">
     <skipped/>
   </testcase>
-  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBTER_SOLUTION_DE_ATIVO">
+  <testcase time="0.002" classname="ledes.hidra.rest.ServicesTest" name="SUBMIT_ALTERACOES">
     <skipped/>
   </testcase>
-  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBETER_CLASSIFICATION_DE_ATIVO">
+  <testcase time="0.002" classname="ledes.hidra.rest.ServicesTest" name="OBTER_SOLUTION_DE_ATIVO">
     <skipped/>
   </testcase>
-  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBTER_USAGE_DE_ATIVO">
+  <testcase time="0.002" classname="ledes.hidra.rest.ServicesTest" name="OBETER_CLASSIFICATION_DE_ATIVO">
     <skipped/>
   </testcase>
-  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBTER_ATIVOS_RELACIONADOS">
+  <testcase time="0.002" classname="ledes.hidra.rest.ServicesTest" name="OBTER_USAGE_DE_ATIVO">
     <skipped/>
   </testcase>
-  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="CLONAR_REPOSITORIO_SEM_AUTENTICACAO">
+  <testcase time="0.002" classname="ledes.hidra.rest.ServicesTest" name="OBTER_ATIVOS_RELACIONADOS">
     <skipped/>
   </testcase>
-  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBTER_LOG_DE_ATIVO">
+  <testcase time="0.002" classname="ledes.hidra.rest.ServicesTest" name="CLONAR_REPOSITORIO_SEM_AUTENTICACAO">
     <skipped/>
   </testcase>
-  <testcase time="0.014" classname="ledes.hidra.rest.ServicesTest" name="OBTER_LOG_DO_REPOSITORIO">
+  <testcase time="0.002" classname="ledes.hidra.rest.ServicesTest" name="OBTER_LOG_DE_ATIVO">
     <skipped/>
   </testcase>
-  <testcase time="0.014" classname="ledes.hidra.rest.ServicesTest" name="DOWNLOAD_DE_ATIVO">
+  <testcase time="0.002" classname="ledes.hidra.rest.ServicesTest" name="OBTER_LOG_DO_REPOSITORIO">
+    <skipped/>
+  </testcase>
+  <testcase time="0.003" classname="ledes.hidra.rest.ServicesTest" name="DOWNLOAD_DE_ATIVO">
     <skipped/>
   </testcase>
 </testsuite>

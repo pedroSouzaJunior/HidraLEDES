@@ -872,7 +872,7 @@ public class Services {
         Command com = new Command();
         com.setAssetName("jaxb");
 
-        com.setRepositoryPath("/var/www/hidra.com/hidra/FINAL");
+        com.setRepositoryPath("/hidra/FINAL");
         com.setRemoteRepository("/var/www/hidra.com/hidra/HIDRA");
         com.setRepositoryLocalCopy("/home/pedro/CloneOfHidra");
         com.setUser("pedro");

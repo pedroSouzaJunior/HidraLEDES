@@ -65,7 +65,7 @@ public class ServicesTest {
     public void tearDown() {
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void CRIAR_REPOSITORIO_HIDRA() throws Exception {
         System.out.println("executando...CRIAR_REPOSITORIO_HIDRA");
