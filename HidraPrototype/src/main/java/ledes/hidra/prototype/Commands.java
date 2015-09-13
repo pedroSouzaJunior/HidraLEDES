@@ -52,8 +52,11 @@ public class Commands {
         strategies.put("get-solution", new GetSolutionCommand());
         strategies.put("get-remote", new GetRemoteRepo());
         strategies.put("get-usage", new GetUsageCommand());
-        strategies.put("validate", new ValidateAssetCommand());
-
+      
+        strategies.put("create-branch", new CreateBranch());
+        strategies.put("checkout", new CheckoutBranch());
+        strategies.put("show-branches", new ShowBranch());
+        strategies.put("merge", new MergeBranch());
         // put generic commands here
     }
 
@@ -86,8 +89,6 @@ public class Commands {
         return "Usage: java -jar " + jarFile + " command [arguments]\n"
                 + "For a list of commands type:\n:> java -jar " + jarFile + " help";
     }
-
-    
 
     /**
      * Abstract super class for all possible commands
@@ -238,17 +239,7 @@ public class Commands {
 
     }
 
-    class ValidateAssetCommand extends Command {
-
-        @Override
-        public String execute(String arg) {
-            if (hidra.validateAsset(arg)) {
-                return "Valid Asset";
-            }
-            return "Invalid Asset";
-        }
-
-    }
+ 
 
     class GetClasssificationCommand extends Command {
 
@@ -286,7 +277,6 @@ public class Commands {
 
     }
 
-    
     class SetUserCommand extends Command {
 
         @Override
@@ -319,7 +309,7 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
-            hidra.setRemoteRepo(arg);
+            hidra.setRemoteRepo(Configuration.properties.getProperty("RemoteURI"));
             return "Remote Path Updated";
         }
 
@@ -330,7 +320,7 @@ public class Commands {
         @Override
         public String execute(String arg) {
             String remote = hidra.getRemoteRepo();
-            return remote!=null?remote:"Remote repository not set";
+            return remote != null ? remote : "Remote repository not set";
         }
 
     }
@@ -390,14 +380,66 @@ public class Commands {
 
         }
     }
-    
-     class GetUserCommand extends Command {
+
+    class GetUserCommand extends Command {
 
         @Override
         public String execute(String arg) {
 
-             return "User configuration: \n"
+            return "User configuration: \n"
                     + hidra.getUser();
         }
     }
+
+    class CreateBranch extends Command {
+
+        @Override
+        public String execute(String arg) {
+            return hidra.createBranch(arg);
+
+        }
+
+    }
+
+    class CheckoutBranch extends Command {
+
+        @Override
+        public String execute(String arg) {
+
+            if (hidra.checkoutBranch(arg)) {
+                return "Branch trocado";
+            } else {
+                return "Fail";
+            }
+        }
+
+    }
+
+    class ShowBranch extends Command {
+
+        @Override
+        public String execute(String arg) {
+            if (hidra.showBranches()) {
+                return "Succesfully";
+            } else {
+                return "Fail";
+            }
+        }
+
+    }
+
+    class MergeBranch extends Command {
+
+        @Override
+        public String execute(String arg) {
+            if (hidra.mergeBranch(arg)) {
+                return "Successfully Merge";
+            } else {
+                return "Erro!";
+                
+            }
+        }
+
+    }
+
 }

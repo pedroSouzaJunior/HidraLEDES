@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1029,16 +1030,18 @@ public class Repository {
      * @param user
      * @param password
      * @return
+    
      */
-    public String updateRepository(String user, String password) {
+    public String updateRepository(String user, String password)  {
 
         try {
             assistant.push(user, password);
             return "Repository Updated";
-        } catch (GitAPIException ex) {
+        } catch (GitAPIException | IOException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
             return ex.getMessage();
         }
+       
 
     }
 
@@ -1091,7 +1094,7 @@ public class Repository {
         setRemotePath(url);
         try {
             assistant.setConfigRemote(remotePath);
-        } catch (IOException ex) {
+        } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -1135,6 +1138,64 @@ public class Repository {
      */
     public String listTags() {
         return assistant.listTags();
+    }
+    
+    /**
+     * Cria um novo branch no repositório.
+     * @param branchName
+     * @return 
+     */
+    public String createBranch(String branchName){
+        return assistant.createBranch(branchName);
+    }
+    
+    /**
+     * Mostra todos os branches criados pelo repositório e o branch atual de trabalho.
+     * @return 
+     */
+    public boolean showBranches(){
+    
+        return assistant.showBranches();
+    }
+    /**
+     * Troca do branch atual para outro branch
+     * @param branchName - Recebe o nome do branch que se deseja ir.
+     * @return 
+     */
+    public boolean checkoutBranch(String branchName){
+    
+        return assistant.checkout(branchName);
+    }
+    
+    /**
+     * Recebe um vetor de Strings com o nome dos branches que se deseja apagar
+     * @param branchName
+     * @return 
+     */
+    public boolean deleteBranch(String[] branchName){
+    
+        try {
+            return assistant.deleteBranch(branchName);
+        } catch (GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
+    /**
+     * Realiza a junção  do branch atual de trabalho com outro branch.
+     * @param branchName - Recebe o nome do branch com o qual realizará a mesclagem.
+     * @return 
+     */
+    public boolean merge(String branchName){
+    
+        try {
+           
+            return assistant.merge(branchName);
+        } catch (IOException | GitAPIException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     /**
