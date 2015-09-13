@@ -52,7 +52,7 @@ public class Commands {
         strategies.put("get-solution", new GetSolutionCommand());
         strategies.put("get-remote", new GetRemoteRepo());
         strategies.put("get-usage", new GetUsageCommand());
-        strategies.put("validate", new ValidateAssetCommand());
+      
         strategies.put("create-branch", new CreateBranch());
         strategies.put("checkout", new CheckoutBranch());
         strategies.put("show-branches", new ShowBranch());
@@ -239,17 +239,7 @@ public class Commands {
 
     }
 
-    class ValidateAssetCommand extends Command {
-
-        @Override
-        public String execute(String arg) {
-            if (hidra.validateAsset(arg)) {
-                return "Valid Asset";
-            }
-            return "Invalid Asset";
-        }
-
-    }
+ 
 
     class GetClasssificationCommand extends Command {
 
@@ -319,7 +309,7 @@ public class Commands {
 
         @Override
         public String execute(String arg) {
-            hidra.setRemoteRepo(arg);
+            hidra.setRemoteRepo(Configuration.properties.getProperty("RemoteURI"));
             return "Remote Path Updated";
         }
 

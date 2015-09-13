@@ -246,16 +246,9 @@ public class GitFacade {
      */
     public void setConfigRemote(String remoteRepository) throws IOException, URISyntaxException {
 
-//        StoredConfig config = db.getConfig();
-//		RemoteConfig remoteConfig = new RemoteConfig(config, "test");
-//		URIish uri = new URIish(db2.getDirectory().toURI().toURL());
-//		remoteConfig.addURI(uri);
-//		remoteConfig.update(config);
-//		config.save();
         if (isRepositoryInitialized()) {
             StoredConfig config = assistant.getRepository().getConfig();
-            //  config.setString("remote", "origin", "url", remoteRepository);
-            RemoteConfig remoteConfig = new RemoteConfig(config, "test");
+            RemoteConfig remoteConfig = new RemoteConfig(config, "origin");
             URIish uri = new URIish(remoteRepository);
             remoteConfig.addURI(uri);
             remoteConfig.update(config);
@@ -285,9 +278,19 @@ public class GitFacade {
 
         if (isRepositoryInitialized()) {
             Config config = assistant.getRepository().getConfig();
-            String url = config.getString("remote", "origin", "url");
+
+            StringBuilder url = new StringBuilder();
+                    //config.getString("remote", "origin", "url");
+
+            Set<String> remotes = config.getSubsections("remote");
+
+            for (String remoteName : remotes) {
+                url.append("Remote: ").append(remoteName).append(" ").append(config.getString("remote", remoteName, "url")).append("\n");
+              //  System.out.println(remoteName + " " + url);
+            }
+
             assistant.close();
-            return url;
+            return url.toString();
 
         }
 
@@ -515,29 +518,27 @@ public class GitFacade {
     private void printPushResult(final ObjectReader reader, final URIish uri,
             final PushResult result) throws IOException {
 
-
         for (final RemoteRefUpdate rru : result.getRemoteUpdates()) {
-           
+
             if (rru.getStatus() == org.eclipse.jgit.transport.RemoteRefUpdate.Status.OK) {
                 printRefUpdateResult(reader, uri, result, rru);
             }
         }
 
         for (final RemoteRefUpdate rru : result.getRemoteUpdates()) {
-           
+
             if (rru.getStatus() != org.eclipse.jgit.transport.RemoteRefUpdate.Status.OK
                     && rru.getStatus() != org.eclipse.jgit.transport.RemoteRefUpdate.Status.UP_TO_DATE) {
                 printRefUpdateResult(reader, uri, result, rru);
             }
         }
 
- 
     }
 
     private void printRefUpdateResult(final ObjectReader reader,
             final URIish uri, final PushResult result, final RemoteRefUpdate rru)
             throws IOException {
-            
+
         switch (rru.getStatus()) {
             case OK:
                 System.out.println("Remote was successfully updated");
