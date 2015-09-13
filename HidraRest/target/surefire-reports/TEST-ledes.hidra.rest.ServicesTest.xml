@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="1.828" errors="0" skipped="9" tests="16" name="ledes.hidra.rest.ServicesTest">
+<testsuite failures="0" time="0.088" errors="1" skipped="10" tests="11" name="ledes.hidra.rest.ServicesTest">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64"/>
@@ -60,38 +60,75 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0" classname="ledes.hidra.rest.ServicesTest" name="CRIAR_REPOSITORIO_HIDRA">
+  <testcase time="0.011" classname="ledes.hidra.rest.ServicesTest" name="CRIAR_REPOSITORIO_HIDRA">
+    <error message="Repository with this name already exists" type="java.io.IOException">java.io.IOException: Repository with this name already exists
+	at ledes.hidra.rest.Services.startRepository(Services.java:96)
+	at ledes.hidra.rest.ServicesTest.CRIAR_REPOSITORIO_HIDRA(ServicesTest.java:74)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:45)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:42)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:30)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:263)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:30)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:300)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:53)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:123)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:104)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:164)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:110)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68)
+</error>
+    <system-out>executando...CRIAR_REPOSITORIO_HIDRA
+</system-out>
+  </testcase>
+  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="ADICIONAR_ATIVO_VALIDO">
     <skipped/>
   </testcase>
-  <testcase time="1.164" classname="ledes.hidra.rest.ServicesTest" name="ADICIONAR_ATIVO_VALIDO"/>
-  <testcase time="0.066" classname="ledes.hidra.rest.ServicesTest" name="SUBMIT_ALTERACOES"/>
-  <testcase time="0.036" classname="ledes.hidra.rest.ServicesTest" name="OBTER_SOLUTION_DE_ATIVO"/>
-  <testcase time="0.038" classname="ledes.hidra.rest.ServicesTest" name="OBETER_CLASSIFICATION_DE_ATIVO"/>
-  <testcase time="0.025" classname="ledes.hidra.rest.ServicesTest" name="OBTER_USAGE_DE_ATIVO"/>
-  <testcase time="0.043" classname="ledes.hidra.rest.ServicesTest" name="OBTER_ATIVOS_RELACIONADOS"/>
-  <testcase time="0.361" classname="ledes.hidra.rest.ServicesTest" name="CLONAR_REPOSITORIO_SEM_AUTENTICACAO"/>
-  <testcase time="0.362" classname="ledes.hidra.rest.ServicesTest" name="testGetSolution">
+  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="SUBMIT_ALTERACOES">
     <skipped/>
   </testcase>
-  <testcase time="0.362" classname="ledes.hidra.rest.ServicesTest" name="testGetClassification">
+  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBTER_SOLUTION_DE_ATIVO">
     <skipped/>
   </testcase>
-  <testcase time="0.362" classname="ledes.hidra.rest.ServicesTest" name="testGetUsage">
+  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBETER_CLASSIFICATION_DE_ATIVO">
     <skipped/>
   </testcase>
-  <testcase time="0.362" classname="ledes.hidra.rest.ServicesTest" name="testGetRelatedAssets">
+  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBTER_USAGE_DE_ATIVO">
     <skipped/>
   </testcase>
-  <testcase time="0.363" classname="ledes.hidra.rest.ServicesTest" name="testGetLog">
+  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBTER_ATIVOS_RELACIONADOS">
     <skipped/>
   </testcase>
-  <testcase time="0.363" classname="ledes.hidra.rest.ServicesTest" name="testGetLogRepository">
+  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="CLONAR_REPOSITORIO_SEM_AUTENTICACAO">
     <skipped/>
   </testcase>
-  <testcase time="0.363" classname="ledes.hidra.rest.ServicesTest" name="testDownloadAsset">
+  <testcase time="0.013" classname="ledes.hidra.rest.ServicesTest" name="OBTER_LOG_DE_ATIVO">
     <skipped/>
   </testcase>
-  <testcase time="0.363" classname="ledes.hidra.rest.ServicesTest" name="testGettest">
+  <testcase time="0.014" classname="ledes.hidra.rest.ServicesTest" name="OBTER_LOG_DO_REPOSITORIO">
+    <skipped/>
+  </testcase>
+  <testcase time="0.014" classname="ledes.hidra.rest.ServicesTest" name="DOWNLOAD_DE_ATIVO">
     <skipped/>
   </testcase>
 </testsuite>

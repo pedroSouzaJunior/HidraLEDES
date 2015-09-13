@@ -65,7 +65,7 @@ public class ServicesTest {
     public void tearDown() {
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void CRIAR_REPOSITORIO_HIDRA() throws Exception {
         System.out.println("executando...CRIAR_REPOSITORIO_HIDRA");
@@ -77,7 +77,7 @@ public class ServicesTest {
 
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void ADICIONAR_ATIVO_VALIDO() throws Exception {
         System.out.println("executando...ADICIONAR_ATIVO_VALIDO");
@@ -89,7 +89,7 @@ public class ServicesTest {
 
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void SUBMIT_ALTERACOES() throws Exception {
         System.out.println("executando...SUBMIT_ALTERACOES");
@@ -101,7 +101,7 @@ public class ServicesTest {
 
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void OBTER_SOLUTION_DE_ATIVO() throws Exception {
         System.out.println("executando...OBTER_SOLUTION_DE_ATIVO");
@@ -112,7 +112,7 @@ public class ServicesTest {
         assertEquals(200, result.getStatus());
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void OBETER_CLASSIFICATION_DE_ATIVO() throws Exception {
         System.out.println("executando...OBETER_CLASSIFICATION_DE_ATIVO");
@@ -123,7 +123,7 @@ public class ServicesTest {
 
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void OBTER_USAGE_DE_ATIVO() throws Exception {
         System.out.println("executando...OBTER_USAGE_DE_ATIVO");
@@ -133,7 +133,7 @@ public class ServicesTest {
         assertEquals(200, result.getStatus());
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void OBTER_ATIVOS_RELACIONADOS() throws Exception {
         System.out.println("executando...OBTER_ATIVOS_RELACIONADOS");
@@ -144,7 +144,7 @@ public class ServicesTest {
 
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void CLONAR_REPOSITORIO_SEM_AUTENTICACAO() throws Exception {
         System.out.println("executando...CLONAR_REPOSITORIO_SEM_AUTENTICACAO");
@@ -154,7 +154,8 @@ public class ServicesTest {
         assertEquals(200, result.getStatus());
 
     }
-
+    
+    @Ignore
     @Test
     public void OBTER_LOG_DE_ATIVO() throws IOException {
 
@@ -166,7 +167,8 @@ public class ServicesTest {
         assertEquals(200, result.getStatus());
 
     }
-
+    
+    @Ignore
     @Test
     public void OBTER_LOG_DO_REPOSITORIO() throws IOException{
 
@@ -179,6 +181,7 @@ public class ServicesTest {
 
     }
     
+    @Ignore
     @Test
     public void DOWNLOAD_DE_ATIVO() throws IOException{
         System.out.println("executando...DOWNLOAD_DE_ATIVO");
