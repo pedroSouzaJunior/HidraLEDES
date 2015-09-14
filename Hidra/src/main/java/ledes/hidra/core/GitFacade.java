@@ -82,6 +82,31 @@ public class GitFacade {
         return true;
 
     }
+    
+    
+      /**
+     * Metódo responsável por criar ou iniciar um repositório "bare". Recebe como
+     * parâmetro o diretório no o repositório se encontra.
+     *
+     * @param directory - diretorio do repositório.
+     * @return - true caso operação ocorra com sucesso, false caso contrário.
+     */
+    public final boolean startBare(File directory) {
+
+        if (!isRepositoryInitialized()) {
+            try {
+                assistant = Git.init().setDirectory(directory).setBare(true).call();
+                return true;
+
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+
+        }
+        return true;
+
+    }
 
     /**
      * Método responsável por clonar um repositório remoto em um diretório
@@ -252,6 +277,7 @@ public class GitFacade {
             URIish uri = new URIish(remoteRepository);
             remoteConfig.addURI(uri);
             remoteConfig.update(config);
+            config.setString("remote", "origin", "url", remoteRepository);
             config.save();
 
         }
@@ -587,7 +613,7 @@ public class GitFacade {
     public boolean pull(String user, String password) throws GitAPIException {
 
         CredentialsProvider credential = new UsernamePasswordCredentialsProvider(user, password);
-
+        
         if (isRepositoryInitialized()) {
             if (hasRemoteRepository()) {
                 PullResult pullResult;

@@ -85,8 +85,7 @@ public class ValidatorAssets {
             if ("Folder".equalsIgnoreCase(art.getType())) {
 
                 aux = localAsset + art.getReference() + art.getName();
-            //    result = );
-
+            
                 if (!isValidDirectory(aux.replace("/", separator))) {
                     invalidAssets.add(aux + " is not folder or folder is empty.\n");
                 } else {
@@ -96,7 +95,6 @@ public class ValidatorAssets {
 
             } else if ("File".equalsIgnoreCase(art.getType())) {
 
-               // result = ;
 
                 if (!isValidFile(art.getName(), art.getReference())) {
 
@@ -176,8 +174,7 @@ public class ValidatorAssets {
                 }
             } else if ("File".equalsIgnoreCase(imp.getType())) {
 
-             //   result = ;
-
+         
                 if (!isValidFile(imp.getName(), imp.getReference())) {
                     invalidAssets.add(pathAux + " is not found\n");
                 } else {

@@ -88,6 +88,35 @@ public class Hidra {
         return false;
 
     }
+    
+    
+    /**
+     * Inicializa um repositório bare para ser utilizado no servidor sem um repositório master associado. Se
+     * não existir diretório ele será criado, se já existir um repositório no
+     * diretório indicado nada será alterado
+     *
+     * @param localPath - String com o caminho que o repositório será criado
+     * @return - true se não houve problemas
+     * @throws java.io.IOException
+     * @throws javax.xml.bind.JAXBException
+     *
+     */
+    public boolean startRepositoryBare(String localPath) throws IOException, JAXBException {
+        boolean initialized = false;
+
+        repository = new Repository(localPath);
+
+        if (repository.isRepository()) {
+            initialized = true;
+        }
+        try {
+            return repository.initBare(initialized);
+        } catch (IOException | JAXBException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+
+    }
 
     /**
      * Cria, em um diretório vazio, uma cópia de um repositório indicado. Se o
