@@ -188,7 +188,7 @@ public class Repository {
     protected boolean cloneRepository(String user, String password) {
 
         try {
-            return assistant.cloneRepository(directory, remotePath, user, password);
+            return  assistant.cloneRepository(directory, remotePath, user, password);
 
         } catch (GitAPIException ex) {
             Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);

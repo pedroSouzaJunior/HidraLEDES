@@ -5,19 +5,12 @@
  */
 package ledes.hidra.rest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import javax.ws.rs.core.Response;
-import ledes.hidra.Hidra;
-import ledes.hidra.rest.model.Command;
+import ledes.hidra.rest.model.Attribute;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -29,7 +22,7 @@ import org.junit.Test;
  */
 public class ServicesTest {
 
-    public Command com;
+    public Attribute com;
 
     public ServicesTest() {
     }
@@ -44,7 +37,7 @@ public class ServicesTest {
 
     @Before
     public void setUp() {
-        com = new Command();
+        com = new Attribute();
 
         com.setAssetName("jaxb");
 

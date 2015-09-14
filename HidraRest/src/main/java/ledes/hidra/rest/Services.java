@@ -36,7 +36,7 @@ import ledes.hidra.rest.model.Activities;
 import ledes.hidra.rest.model.Artifact;
 import ledes.hidra.rest.model.ArtifactActivys;
 import ledes.hidra.rest.model.Classification;
-import ledes.hidra.rest.model.Command;
+import ledes.hidra.rest.model.Attribute;
 import ledes.hidra.rest.model.ContextReferences;
 import ledes.hidra.rest.model.Contexts;
 import ledes.hidra.rest.model.DescriptionGroups;
@@ -48,9 +48,9 @@ import ledes.hidra.rest.model.Variability;
 
 /**
  * Classe Services - responsavel por transcrever as funcionalidades do projeto
- * Hidra na forma de Web Services. Consome XML padronizado (Command) capaz de
- * comportar informações necessarias para artifact execucao dos metodos da
- * biblioteca Hidra.
+ * Hidra na forma de Web Services. Consome XML padronizado (Attribute) capaz de
+ comportar informações necessarias para artifact execucao dos metodos da
+ biblioteca Hidra.
  *
  * @version 1.0
  * @author pedro e danielli
@@ -60,7 +60,7 @@ public class Services {
 
     private static final String separator = File.separator;
     private static final String extension = ".zip";
-    private static final String UPLOAD_PATH_TEMP = separator + ".hidra" + separator + ".temp" + separator + ".uploads";
+    private static final String repositoryRemoteBase = "/var/www/hidra.com/hidra/";
     private static final String DOWNLOAD_PATH_TEMP = separator + ".hidra" + separator + ".temp" + separator + ".downloads";
     private static final String DEFAULT_MESSAGE_SUBMIT = "Sending changes to repository";
 
@@ -72,8 +72,8 @@ public class Services {
 
     /**
      * Servico responsavel pela inicializacao de um repositorio Hidra. Consome
-     * XML padronizado (Command) contendo o caminho absoluto de onde deve ser
-     * criado e inicializado o repositorio hidra.
+ XML padronizado (Attribute) contendo o caminho absoluto de onde deve ser
+ criado e inicializado o repositorio hidra.
      *
      * @param command
      * @return Response Object
@@ -83,7 +83,7 @@ public class Services {
     @Path("/startRepository")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response startRepository(Command command) throws IOException {
+    public Response startRepository(Attribute command) throws IOException {
 
         hidra = new Hidra();
         ResultMessage result = new ResultMessage();
@@ -116,8 +116,8 @@ public class Services {
 
     /**
      * Servico responsavel por adicionar ativos artifact area de monitoramento
-     * do repositorio. Consome XML padronizado (Command) contendo o nome do
-     * ativo que se deseja monitorar.
+     * do repositorio. Consome XML padronizado (Attribute) contendo o nome do
+ ativo que se deseja monitorar.
      *
      * @param command
      * @return
@@ -127,7 +127,7 @@ public class Services {
     @Path("/addasset")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response addAsset(Command command) throws Exception {
+    public Response addAsset(Attribute command) throws Exception {
 
         Hidra hidra;
         ResultMessage result = new ResultMessage();
@@ -158,8 +158,8 @@ public class Services {
 
     /**
      * Servico responsavel por gravar as alteracoes no repositorio. Consome XML
-     * padronizado (Command) contendo o caminho absoluto do repositorio que se
-     * deseja utilizar.
+ padronizado (Attribute) contendo o caminho absoluto do repositorio que se
+ deseja utilizar.
      *
      * @param command
      * @return
@@ -169,7 +169,7 @@ public class Services {
     @Path("/save")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response save(Command command) throws IOException, Exception {
+    public Response save(Attribute command) throws IOException, Exception {
 
         Hidra hidra;
         ResultMessage result = new ResultMessage();
@@ -197,9 +197,9 @@ public class Services {
 
     /**
      * Servico responsavel por remover um ativo de software armezenado no
-     * repositorio. Consome um XML padronizado (Command) contendo o caminho
-     * absoluto do repositorio que se deseja utilizar em conjunto com o nome do
-     * ativo que se deseja remover.
+     * repositorio. Consome um XML padronizado (Attribute) contendo o caminho
+ absoluto do repositorio que se deseja utilizar em conjunto com o nome do
+ ativo que se deseja remover.
      *
      * @param command
      * @return
@@ -209,7 +209,7 @@ public class Services {
     @Path("/removeAsset")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response remove(Command command) throws IOException, Exception {
+    public Response remove(Attribute command) throws IOException, Exception {
 
         ResultMessage result = new ResultMessage();
         String path = command.getRepositoryPath();
@@ -239,8 +239,8 @@ public class Services {
 
     /**
      * Servico responsavel por criar uma copia local de um repositorio. Consome
-     * um XML padronizado (Command) contendo o caminho absoluto do repositorio
-     * que se deseja clonar e tambem o caminho absoluto do diretorio destino.
+ um XML padronizado (Attribute) contendo o caminho absoluto do repositorio
+ que se deseja clonar e tambem o caminho absoluto do diretorio destino.
      *
      * @param command
      * @return
@@ -250,7 +250,7 @@ public class Services {
     @Path("/startSynchronizedRepository")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response startSynchronizedRepository(Command command) throws IOException, Exception {
+    public Response startSynchronizedRepository(Attribute command) throws IOException, Exception {
 
         Hidra hidra = new Hidra();
         ResultMessage result = new ResultMessage();
@@ -277,10 +277,10 @@ public class Services {
 
     /**
      * Servico responsavel por criar uma copia local de um repositorio remoto
-     * atravez de autenticacao. Consome um XML padronizado (Command) contendo
-     * artifact URL do repositorio que se deseja clonar e tambem o caminho
-     * absoluto do diretorio destino e usuario e senha para acesso ao
-     * repositorio remoto.
+     * atravez de autenticacao. Consome um XML padronizado (Attribute) contendo
+ artifact URL do repositorio que se deseja clonar e tambem o caminho
+ absoluto do diretorio destino e usuario e senha para acesso ao
+ repositorio remoto.
      *
      * @param command
      * @return
@@ -290,7 +290,7 @@ public class Services {
     @Path("/startSynchronizedRepositoryAuthentication")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response startSynchronizedRepositoryAuthentication(Command command) throws IOException, Exception {
+    public Response startSynchronizedRepositoryAuthentication(Attribute command) throws IOException, Exception {
 
         Hidra hidra = new Hidra();
         String user = command.getUser();
@@ -323,8 +323,8 @@ public class Services {
 
     /**
      * Servico responsavel por atualizar repositorio remoto com as modificacoes
-     * e informacoes do repositorio local. Consome XML padronizado (Command)
-     * contendo o caminho absoluto do repositorio local.
+     * e informacoes do repositorio local. Consome XML padronizado (Attribute)
+ contendo o caminho absoluto do repositorio local.
      *
      * @param command
      * @return
@@ -333,7 +333,7 @@ public class Services {
     @POST
     @Path("/sendUpdates")
     @Consumes(MediaType.APPLICATION_XML)
-    public Response sendUpdates(Command command) throws Exception {
+    public Response sendUpdates(Attribute command) throws Exception {
 
         Hidra hidra;
         String update;
@@ -369,9 +369,9 @@ public class Services {
     /**
      * Servico responsavel por atualizar o repositorio local com modificacoes
      * que foram aplicadas ao seu respectivo repositorio remoto. Consome XML
-     * padronizado (Command) que contem o caminho absoluto do repositorio que se
-     * deseja atualizar. O repositorio deve possuir ligacao a um repositorio
-     * remoto
+ padronizado (Attribute) que contem o caminho absoluto do repositorio que se
+ deseja atualizar. O repositorio deve possuir ligacao a um repositorio
+ remoto
      *
      * @param command
      * @return
@@ -379,7 +379,7 @@ public class Services {
     @POST
     @Path("/receiveUpdates")
     @Consumes(MediaType.APPLICATION_XML)
-    public Response receiveUpdates(Command command) throws Exception {
+    public Response receiveUpdates(Attribute command) throws Exception {
 
         Hidra hidra;
         String user = command.getUser();
@@ -410,8 +410,8 @@ public class Services {
     /**
      * Servico responsavel por obter os dados referentes artifact um Solution de
      * um ativo de software armezenado no repositorio. Consome um XML
-     * padronizado (Command) contendo o caminho absoluto do repositorio que se
-     * deseja utilizar em conjunto com o nome do ativo que se busca.
+ padronizado (Attribute) contendo o caminho absoluto do repositorio que se
+ deseja utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -420,7 +420,7 @@ public class Services {
     @Path("/getSolution")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getSolution(Command command) throws IOException {
+    public Response getSolution(Attribute command) throws IOException {
 
         Hidra hidra;
         Solution solution = new Solution();
@@ -504,8 +504,8 @@ public class Services {
     /**
      * Servico responsavel por obter os dados referentes artifact Classification
      * de um ativo de software armezenado no repositorio. Consome um XML
-     * padronizado (Command) contendo o caminho absoluto do repositorio que se
-     * deseja utilizar em conjunto com o nome do ativo que se busca.
+ padronizado (Attribute) contendo o caminho absoluto do repositorio que se
+ deseja utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -514,7 +514,7 @@ public class Services {
     @Path("/getClassification")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getClassification(Command command) throws IOException {
+    public Response getClassification(Attribute command) throws IOException {
 
         Hidra hidra;
         Classification classification = new Classification();
@@ -570,9 +570,9 @@ public class Services {
 
     /**
      * Servico responsavel por obter os dados referentes ao Usage de um ativo de
-     * software armezenado no repositorio. Consome um XML padronizado (Command)
-     * contendo o caminho absoluto do repositorio que se deseja utilizar em
-     * conjunto com o nome do ativo que se busca.
+     * software armezenado no repositorio. Consome um XML padronizado (Attribute)
+ contendo o caminho absoluto do repositorio que se deseja utilizar em
+ conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -581,7 +581,7 @@ public class Services {
     @Path("/getUsage")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getUsage(Command command) throws IOException {
+    public Response getUsage(Attribute command) throws IOException {
 
         Hidra hidra;
         Usage usage = new Usage();
@@ -662,9 +662,9 @@ public class Services {
     /**
      * Servico responsavel por obter os dados referentes aos Ativos relacionados
      * artifact um determinado ativo de software armezenado no repositorio.
-     * Consome um XML padronizado (Command) contendo o caminho absoluto do
-     * repositorio que se deseja utilizar em conjunto com o nome do ativo que se
-     * busca.
+     * Consome um XML padronizado (Attribute) contendo o caminho absoluto do
+ repositorio que se deseja utilizar em conjunto com o nome do ativo que se
+ busca.
      *
      * @param command
      * @return
@@ -674,7 +674,7 @@ public class Services {
     @Path("/getRelatedAssets")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getRelatedAssets(Command command) throws IOException {
+    public Response getRelatedAssets(Attribute command) throws IOException {
 
         Hidra hidra;
         RelatedAssets relatedAssets = new RelatedAssets();
@@ -721,7 +721,7 @@ public class Services {
     @Path("/getLog")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getLog(Command command) throws IOException {
+    public Response getLog(Attribute command) throws IOException {
 
         Hidra hidra;
         String Log;
@@ -754,8 +754,8 @@ public class Services {
 
     /**
      * Serviço responsável pela obtenção do status do repositório informado.
-     * Consome XML padronizado (Command) contendo o caminho absoluto do
-     * repositorio que se deseja utilizar.
+     * Consome XML padronizado (Attribute) contendo o caminho absoluto do
+ repositorio que se deseja utilizar.
      *
      * @param command
      * @return
@@ -765,7 +765,7 @@ public class Services {
     @Path("/getLogRepository")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response getLogRepository(Command command) throws IOException {
+    public Response getLogRepository(Attribute command) throws IOException {
 
         Hidra hidra;
         String Log;
@@ -799,7 +799,7 @@ public class Services {
     @Path("/downloadAsset")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response downloadAsset(Command command) throws IOException {
+    public Response downloadAsset(Attribute command) throws IOException {
 
         Hidra hidra;
         Zipper zipper = new Zipper();
@@ -859,21 +859,21 @@ public class Services {
 
     /**
      * Exemplo de serviço que utiliza das propriedades do Jersey / Jaxb a fim de
-     * converter objetos JAVA em XML. O objeto Command possui anotações que
-     * permitem a corversão de sua instancia em xml.
+     * converter objetos JAVA em XML. O objeto Attribute possui anotações que
+ permitem a corversão de sua instancia em xml.
      *
      * @return
      */
     @GET
     @Path("/gettest")
     @Produces(MediaType.APPLICATION_XML)
-    public Command gettest() {
+    public Attribute gettest() {
 
-        Command com = new Command();
+        Attribute com = new Attribute();
         com.setAssetName("jaxb");
 
         com.setRepositoryPath("/hidra/FINAL");
-        com.setRemoteRepository("/var/www/hidra.com/hidra/HIDRA");
+        com.setRemoteRepository("HIDRA");
         com.setRepositoryLocalCopy("/home/pedro/CloneOfHidra");
         com.setUser("pedro");
         com.setPassword("220891");

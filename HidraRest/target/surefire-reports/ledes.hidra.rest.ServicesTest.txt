@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ledes.hidra.rest.ServicesTest
 -------------------------------------------------------------------------------
-Tests run: 11, Failures: 0, Errors: 0, Skipped: 11, Time elapsed: 0.08 sec
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 11, Time elapsed: 0.129 sec

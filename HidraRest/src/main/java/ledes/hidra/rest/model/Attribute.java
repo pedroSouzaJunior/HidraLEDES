@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author pedro
  */
 @XmlRootElement
-public class Command {
+public class Attribute {
 
     private String repositoryPath;
     private String assetName;
@@ -22,10 +22,10 @@ public class Command {
     private String User;
     private String password;
 
-    public Command() {
+    public Attribute() {
     }
 
-    public Command(String repositoryPath, String remoteRepository, String User, String password) {
+    public Attribute(String repositoryPath, String remoteRepository, String User, String password) {
         this.repositoryPath = repositoryPath;
         this.remoteRepository = remoteRepository;
         this.User = User;

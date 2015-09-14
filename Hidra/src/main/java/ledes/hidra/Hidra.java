@@ -102,7 +102,16 @@ public class Hidra {
      */
     public boolean startSynchronizedRepository(String localPath, String remotePath) {
         repository = new Repository(localPath, remotePath);
-        return repository.cloneRepository();
+        
+        boolean clone = repository.cloneRepository();
+        boolean startHidra = false;
+        try {
+            startHidra = repository.init(repository.isRepository());
+        } catch (IOException | JAXBException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return clone&&startHidra;
+            
     }
 
     /**
