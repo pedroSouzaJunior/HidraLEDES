@@ -131,7 +131,13 @@ public class Hidra {
      */
     public boolean startSynchronizedRepository(String localPath, String remotePath) {
         repository = new Repository(localPath, remotePath);
-        return repository.cloneRepository();
+        boolean ret = repository.cloneRepository();
+        if(ret)try {
+            startRepository(localPath);
+        } catch (IOException | JAXBException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
 
     /**
@@ -152,10 +158,15 @@ public class Hidra {
     public boolean startSynchronizedRepository(String localPath, String remotePath, String user, String password) {
 
         repository = new Repository(localPath, remotePath);
-
-        if (!repository.cloneRepository(user, password)) {
+        boolean ret = repository.cloneRepository(user, password);
+        if (!ret) {
             repository.removeRepository();
             return false;
+        }
+        try {
+            startRepository(localPath);
+        } catch (IOException | JAXBException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
         }
         return true;
     }

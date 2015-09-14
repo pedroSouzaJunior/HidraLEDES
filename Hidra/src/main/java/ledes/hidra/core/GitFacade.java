@@ -637,7 +637,7 @@ public class GitFacade {
         return false;
     }
 
-    // m = MergeStrategy.RESOLVE.newMerger(repo, true);
+    
     /**
      * Informa conflitos gerados pelo merge de dois repositorios ou branches.
      *
