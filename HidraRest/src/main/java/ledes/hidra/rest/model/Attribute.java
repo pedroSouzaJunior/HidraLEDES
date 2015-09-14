@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Attribute {
 
+    
     private String repositoryPath;
     private String assetName;
     private String submitMessage;

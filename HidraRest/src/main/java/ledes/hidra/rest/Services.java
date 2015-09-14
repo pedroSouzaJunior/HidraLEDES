@@ -49,8 +49,8 @@ import ledes.hidra.rest.model.Variability;
 /**
  * Classe Services - responsavel por transcrever as funcionalidades do projeto
  * Hidra na forma de Web Services. Consome XML padronizado (Attribute) capaz de
- comportar informações necessarias para artifact execucao dos metodos da
- biblioteca Hidra.
+ * comportar informações necessarias para artifact execucao dos metodos da
+ * biblioteca Hidra.
  *
  * @version 1.0
  * @author pedro e danielli
@@ -72,8 +72,8 @@ public class Services {
 
     /**
      * Servico responsavel pela inicializacao de um repositorio Hidra. Consome
- XML padronizado (Attribute) contendo o caminho absoluto de onde deve ser
- criado e inicializado o repositorio hidra.
+     * XML padronizado (Attribute) contendo o caminho absoluto de onde deve ser
+     * criado e inicializado o repositorio hidra.
      *
      * @param command
      * @return Response Object
@@ -117,7 +117,7 @@ public class Services {
     /**
      * Servico responsavel por adicionar ativos artifact area de monitoramento
      * do repositorio. Consome XML padronizado (Attribute) contendo o nome do
- ativo que se deseja monitorar.
+     * ativo que se deseja monitorar.
      *
      * @param command
      * @return
@@ -158,8 +158,8 @@ public class Services {
 
     /**
      * Servico responsavel por gravar as alteracoes no repositorio. Consome XML
- padronizado (Attribute) contendo o caminho absoluto do repositorio que se
- deseja utilizar.
+     * padronizado (Attribute) contendo o caminho absoluto do repositorio que se
+     * deseja utilizar.
      *
      * @param command
      * @return
@@ -198,8 +198,8 @@ public class Services {
     /**
      * Servico responsavel por remover um ativo de software armezenado no
      * repositorio. Consome um XML padronizado (Attribute) contendo o caminho
- absoluto do repositorio que se deseja utilizar em conjunto com o nome do
- ativo que se deseja remover.
+     * absoluto do repositorio que se deseja utilizar em conjunto com o nome do
+     * ativo que se deseja remover.
      *
      * @param command
      * @return
@@ -239,8 +239,8 @@ public class Services {
 
     /**
      * Servico responsavel por criar uma copia local de um repositorio. Consome
- um XML padronizado (Attribute) contendo o caminho absoluto do repositorio
- que se deseja clonar e tambem o caminho absoluto do diretorio destino.
+     * um XML padronizado (Attribute) contendo o caminho absoluto do repositorio
+     * que se deseja clonar e tambem o caminho absoluto do diretorio destino.
      *
      * @param command
      * @return
@@ -278,9 +278,9 @@ public class Services {
     /**
      * Servico responsavel por criar uma copia local de um repositorio remoto
      * atravez de autenticacao. Consome um XML padronizado (Attribute) contendo
- artifact URL do repositorio que se deseja clonar e tambem o caminho
- absoluto do diretorio destino e usuario e senha para acesso ao
- repositorio remoto.
+     * artifact URL do repositorio que se deseja clonar e tambem o caminho
+     * absoluto do diretorio destino e usuario e senha para acesso ao
+     * repositorio remoto.
      *
      * @param command
      * @return
@@ -324,7 +324,7 @@ public class Services {
     /**
      * Servico responsavel por atualizar repositorio remoto com as modificacoes
      * e informacoes do repositorio local. Consome XML padronizado (Attribute)
- contendo o caminho absoluto do repositorio local.
+     * contendo o caminho absoluto do repositorio local.
      *
      * @param command
      * @return
@@ -369,9 +369,9 @@ public class Services {
     /**
      * Servico responsavel por atualizar o repositorio local com modificacoes
      * que foram aplicadas ao seu respectivo repositorio remoto. Consome XML
- padronizado (Attribute) que contem o caminho absoluto do repositorio que se
- deseja atualizar. O repositorio deve possuir ligacao a um repositorio
- remoto
+     * padronizado (Attribute) que contem o caminho absoluto do repositorio que
+     * se deseja atualizar. O repositorio deve possuir ligacao a um repositorio
+     * remoto
      *
      * @param command
      * @return
@@ -410,8 +410,8 @@ public class Services {
     /**
      * Servico responsavel por obter os dados referentes artifact um Solution de
      * um ativo de software armezenado no repositorio. Consome um XML
- padronizado (Attribute) contendo o caminho absoluto do repositorio que se
- deseja utilizar em conjunto com o nome do ativo que se busca.
+     * padronizado (Attribute) contendo o caminho absoluto do repositorio que se
+     * deseja utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -504,8 +504,8 @@ public class Services {
     /**
      * Servico responsavel por obter os dados referentes artifact Classification
      * de um ativo de software armezenado no repositorio. Consome um XML
- padronizado (Attribute) contendo o caminho absoluto do repositorio que se
- deseja utilizar em conjunto com o nome do ativo que se busca.
+     * padronizado (Attribute) contendo o caminho absoluto do repositorio que se
+     * deseja utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -570,9 +570,9 @@ public class Services {
 
     /**
      * Servico responsavel por obter os dados referentes ao Usage de um ativo de
-     * software armezenado no repositorio. Consome um XML padronizado (Attribute)
- contendo o caminho absoluto do repositorio que se deseja utilizar em
- conjunto com o nome do ativo que se busca.
+     * software armezenado no repositorio. Consome um XML padronizado
+     * (Attribute) contendo o caminho absoluto do repositorio que se deseja
+     * utilizar em conjunto com o nome do ativo que se busca.
      *
      * @param command
      * @return
@@ -663,8 +663,8 @@ public class Services {
      * Servico responsavel por obter os dados referentes aos Ativos relacionados
      * artifact um determinado ativo de software armezenado no repositorio.
      * Consome um XML padronizado (Attribute) contendo o caminho absoluto do
- repositorio que se deseja utilizar em conjunto com o nome do ativo que se
- busca.
+     * repositorio que se deseja utilizar em conjunto com o nome do ativo que se
+     * busca.
      *
      * @param command
      * @return
@@ -755,7 +755,7 @@ public class Services {
     /**
      * Serviço responsável pela obtenção do status do repositório informado.
      * Consome XML padronizado (Attribute) contendo o caminho absoluto do
- repositorio que se deseja utilizar.
+     * repositorio que se deseja utilizar.
      *
      * @param command
      * @return
@@ -860,7 +860,7 @@ public class Services {
     /**
      * Exemplo de serviço que utiliza das propriedades do Jersey / Jaxb a fim de
      * converter objetos JAVA em XML. O objeto Attribute possui anotações que
- permitem a corversão de sua instancia em xml.
+     * permitem a corversão de sua instancia em xml.
      *
      * @return
      */

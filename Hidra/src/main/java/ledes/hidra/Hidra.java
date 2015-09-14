@@ -88,6 +88,35 @@ public class Hidra {
         return false;
 
     }
+    
+    
+    /**
+     * Inicializa um repositório bare para ser utilizado no servidor sem um repositório master associado. Se
+     * não existir diretório ele será criado, se já existir um repositório no
+     * diretório indicado nada será alterado
+     *
+     * @param localPath - String com o caminho que o repositório será criado
+     * @return - true se não houve problemas
+     * @throws java.io.IOException
+     * @throws javax.xml.bind.JAXBException
+     *
+     */
+    public boolean startRepositoryBare(String localPath) throws IOException, JAXBException {
+        boolean initialized = false;
+
+        repository = new Repository(localPath);
+
+        if (repository.isRepository()) {
+            initialized = true;
+        }
+        try {
+            return repository.initBare(initialized);
+        } catch (IOException | JAXBException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+
+    }
 
     /**
      * Cria, em um diretório vazio, uma cópia de um repositório indicado. Se o
@@ -102,16 +131,13 @@ public class Hidra {
      */
     public boolean startSynchronizedRepository(String localPath, String remotePath) {
         repository = new Repository(localPath, remotePath);
-        
-        boolean clone = repository.cloneRepository();
-        boolean startHidra = false;
-        try {
-            startHidra = repository.init(repository.isRepository());
+        boolean ret = repository.cloneRepository();
+        if(ret)try {
+            startRepository(localPath);
         } catch (IOException | JAXBException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return clone&&startHidra;
-            
+        return ret;
     }
 
     /**
@@ -132,10 +158,15 @@ public class Hidra {
     public boolean startSynchronizedRepository(String localPath, String remotePath, String user, String password) {
 
         repository = new Repository(localPath, remotePath);
-
-        if (!repository.cloneRepository(user, password)) {
+        boolean ret = repository.cloneRepository(user, password);
+        if (!ret) {
             repository.removeRepository();
             return false;
+        }
+        try {
+            startRepository(localPath);
+        } catch (IOException | JAXBException ex) {
+            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
         }
         return true;
     }
@@ -613,5 +644,3 @@ public class Hidra {
         return repository.merge(branchName);
     }
 }
-
-
