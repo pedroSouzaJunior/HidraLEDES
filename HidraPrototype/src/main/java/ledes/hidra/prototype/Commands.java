@@ -52,7 +52,7 @@ public class Commands {
         strategies.put("get-solution", new GetSolutionCommand());
         strategies.put("get-remote", new GetRemoteRepo());
         strategies.put("get-usage", new GetUsageCommand());
-      
+        strategies.put("start-bare", new StartBareCommand());
         strategies.put("create-branch", new CreateBranch());
         strategies.put("checkout", new CheckoutBranch());
         strategies.put("show-branches", new ShowBranch());
@@ -344,7 +344,7 @@ public class Commands {
         public String execute(String arg) {
             String localPath = Configuration.properties.getProperty("LocalPath");
             String remotePath = Configuration.properties.getProperty("RemoteURI");
-            String user = Configuration.properties.getProperty("UserEmail");
+            String user = Configuration.properties.getProperty("UserName");
             String password = Configuration.properties.getProperty("Password");
             if (hidra.startSynchronizedRepository(localPath, remotePath, user, password)) {
                 return "Started Synchronized Repository";
@@ -440,6 +440,25 @@ public class Commands {
             }
         }
 
+    }
+    
+    class StartBareCommand extends Command{
+
+        @Override
+        public String execute(String arg) {
+            try {
+                if (!hidra.startRepositoryBare(Configuration.properties.getProperty("LocalPath"))) {
+                } else {
+                    return "Repository Inizialized in " + Configuration.properties.getProperty("LocalPath");
+                }
+            } catch (IOException | JAXBException ex) {
+                Logger.getLogger(Commands.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return "Fail ";
+        }
+    
+    
+    
     }
 
 }

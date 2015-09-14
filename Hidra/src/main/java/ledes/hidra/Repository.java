@@ -56,6 +56,7 @@ public class Repository {
     private final static String manifest = "rasset.xml";
     private List<String> validsAssets;
     private List<String> inValidsAssets;
+   
     /**
      * @param String localPath - Define o caminho completo para o repositório
      * local.
@@ -126,6 +127,40 @@ public class Repository {
     protected boolean init(boolean initialized) throws IOException, JAXBException {
 
         boolean ret = assistant.start(directory);
+
+        if (!initialized) {
+
+            new File(localPath + separator + ".hidra").mkdir();
+            new File(localPath + separator + ".hidra" + separator + ".temp").mkdir();
+            new File(localPath + separator + ".hidra" + separator + ".temp" + separator + ".uploads").mkdir();
+            new File(localPath + separator + ".hidra" + separator + ".temp" + separator + ".downloads").mkdir();
+            HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
+            dao.connection();
+            createSchema();
+//           writerIgnoreFile();
+            try {
+                assistant.add(".hidra");
+                assistant.commit("Repository Created");
+            } catch (GitAPIException ex) {
+                Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return ret;
+
+    }
+    
+    
+    /**
+     * Inizializa um repositorio "bare" para ser utilizado no servidor com arquivos de configuração Git e Hidra
+     *
+     * @param initialized
+     * @return
+     * @throws IOException
+     * @throws JAXBException
+     */
+    protected boolean initBare(boolean initialized) throws IOException, JAXBException {
+
+        boolean ret = assistant.startBare(directory);
 
         if (!initialized) {
 
