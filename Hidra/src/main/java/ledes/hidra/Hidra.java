@@ -17,8 +17,7 @@ import ledes.hidra.asset.RelatedAssets;
 
 /**
  *
- * Classe que provê todas as operações de um repositorio, manipulado pela classe
- * Repository.
+ *<h1> Classe que provê todas as funcionalidades referentes a biblioteca Hidra.</h1>
  *
  * @author Danielli Urbieta e Pedro Souza Junior
  */
@@ -479,15 +478,16 @@ public class Hidra {
      *
      * Realiza o download do ativo em formato compactado.
      *
-     * @param assetId - Nome do ativo
+     * @param format - formato do arquivo
+     * @param path - destino do download
+     * @param assetName - nome do ativo
      * @return
      * @throws java.io.FileNotFoundException
      */
-    public File downloadAsset(String assetId) throws FileNotFoundException {
-        //TO DO
-        return null;
+    public boolean downloadAsset(String format, String path, String assetName ) throws FileNotFoundException {
+        return repository.retrieveAsset(format, path, assetName);
+        
     }
-
     /**
      * Salva todas as alterações realizadas no repositório. É obrigatório o
      * envio de uma mensagem informando as alterações realizadas.
@@ -582,6 +582,11 @@ public class Hidra {
         return repository.getRemoteRepo();
     }
 
+    /**
+     * Verifica se dado o nome do ativo o mesmo se encontra versionado no repositório.
+     * @param assetName
+     * @return 
+     */
     public boolean findAsset(String assetName) {
         return repository.findAsset(assetName);
     }

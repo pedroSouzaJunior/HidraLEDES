@@ -43,6 +43,8 @@ import ledes.hidra.core.GitFacade;
 import ledes.hidra.core.ValidatorAssets;
 import ledes.hidra.dao.HidraDAO;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.xml.sax.SAXException;
 
 /**
@@ -354,7 +356,7 @@ public class Repository {
      * @throws JAXBException
      * @throws IOException
      */
-    private boolean createSchema() throws JAXBException, IOException {
+    private void createSchema() throws JAXBException, IOException {
 
         final File baseDir = new File(localPath + separator + ".hidra");
 
@@ -369,7 +371,7 @@ public class Repository {
         JAXBContext context = JAXBContext.newInstance(Asset.class);
         context.generateSchema(new MySchemaOutputResolver());
 
-        return false;
+        
     }
 
     /**
@@ -404,18 +406,6 @@ public class Repository {
      */
     private boolean manifestExist(File path) {
         File manifest = new File(path+separator+"rasset.xml");
-//        File[] matchingFiles = path.listFiles(new FilenameFilter() {
-//            
-//            @Override
-//            public boolean accept(File dir, String name) {
-//
-//                return (name.startsWith("rasset") && name.endsWith("xml"));
-//            }
-//        });
-//        // System.out.println("Manifest: " + Configuration.properties.getProperty("ManifestName") + Configuration.properties.getProperty("ManifestExtension"));
-
-     //   return matchingFiles != null;
-        //System.out.println(path);
         return manifest.exists()&&!manifest.isDirectory();
     }
 
@@ -483,7 +473,7 @@ public class Repository {
      */
     public boolean validateAll(String assetName, String assetPath, File path) throws SAXException, IOException, JAXBException, ValidationRuntimeException {
         boolean ret = true;
-        Asset asset = readAsset(assetName);
+        Asset asset;
 
         if (!path.isDirectory()) {
             ret = false;
@@ -495,6 +485,7 @@ public class Repository {
             throw new ValidationRuntimeException("File not found manisfest in: " + path);
 
         }
+        asset = readAsset(assetName);
         if (!asset.getName().equalsIgnoreCase(assetName)) {
             ret = false;
             throw new ValidationRuntimeException("The asset name does not match the name described in the manifest.");
@@ -1096,7 +1087,31 @@ public class Repository {
         }
         return false;
     }
+    
+    
+    
+    /**
+     * Realiza o download de um ativo.
+     *
+     * @param format - Formato do arquivo : zip, rar.
+     * @param fileDest - Destino do download 
+     * @param asset - nome do ativo.
+     * @return 
+     */
 
+    public boolean retrieveAsset(String format, String fileDest, String asset){
+        
+        try {
+          return  assistant.archive(format, "master", fileDest, asset);
+        } catch (IncorrectObjectTypeException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RevisionSyntaxException | GitAPIException | IOException ex) {
+            Logger.getLogger(Repository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    
     /**
      * Configura usuário do repositório com nome e email
      *
