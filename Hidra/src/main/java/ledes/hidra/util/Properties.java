@@ -33,6 +33,11 @@ public class Properties {
      * methods for the first time
      */
     private static Properties properties;
+    
+    /**
+     * Original properties file.
+     */
+    private java.util.Properties props;
 
     /**
      * Returns the properties object. If it is not created yet, than creates it.
@@ -81,28 +86,28 @@ public class Properties {
         }
     }
 
-    /**
-     * Original properties file.
-     */
-    private java.util.Properties props;
+    
 
     /**
      * Returns a properties object with the default properties.
      *
      * @return a properties object with the default properties
+     *
      */
     private java.util.Properties getDefaultProps() {
         java.util.Properties defaults = new java.util.Properties();
+        
         defaults.setProperty("ApplicationType", "Client");
-        defaults.setProperty("LocalDirectory", System.getProperty("user.home" + File.separator + "repository"));
+        defaults.setProperty("LocalDirectory", "");
         defaults.setProperty("Protocol", "http");
-        defaults.setProperty("RemoteURI", "moacirrf.com.br");
+        defaults.setProperty("RemoteURI", "");
         defaults.setProperty("UserName", "default");
         defaults.setProperty("UserEmail", "default@domain.com");
         defaults.setProperty("Password", "");
         defaults.setProperty("ManifestName", "rasset");
         defaults.setProperty("ManifestExtension", "xml");
         
+       //@task: criar propriedade para conexao com SGBD
         return defaults;
     }
 

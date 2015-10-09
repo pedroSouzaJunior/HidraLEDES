@@ -1,8 +1,5 @@
 package ledes.hidra.prototype;
 
-
-
-
 /**
  * This Prototype aims to proof Hidra's applicability.
  * It is a simple main class which accepts commands from the command line and
