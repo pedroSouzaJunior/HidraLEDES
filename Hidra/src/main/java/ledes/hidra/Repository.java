@@ -139,7 +139,7 @@ public class Repository {
             HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
             dao.connection();
             createSchema();
-//           writerIgnoreFile();
+            //writerIgnoreFile();
             try {
                 assistant.add(".hidra");
                 assistant.commit("Repository Created");
@@ -173,7 +173,7 @@ public class Repository {
             HidraDAO dao = new HidraDAO(localPath + separator + ".hidra" + separator);
             dao.connection();
             createSchema();
-//           writerIgnoreFile();
+            //writerIgnoreFile();
             try {
                 assistant.add(".hidra");
                 assistant.commit("Repository Created");

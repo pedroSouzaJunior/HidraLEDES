@@ -7,17 +7,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBException;
 import ledes.hidra.asset.ClassificationType;
-import ledes.hidra.asset.RelatedAssets;
 import ledes.hidra.asset.SolutionType;
 import ledes.hidra.asset.UsageType;
 import org.xml.sax.SAXException;
-
+import javax.xml.bind.JAXBException;
+import ledes.hidra.asset.RelatedAssets;
+import ledes.hidra.util.Properties;
 
 /**
  *
- *<h1> Classe que provê todas as funcionalidades referentes a biblioteca Hidra.</h1>
+ * <h1> Classe que provê todas as funcionalidades referentes a biblioteca
+ * Hidra.</h1>
  *
  * @author Danielli Urbieta e Pedro Souza Junior
  */
@@ -25,21 +26,24 @@ public class Hidra {
 
     /**
      *
+     * @param repository
+     */
+    private Repository repository;
+    private Properties hidraProperties;
+
+    /**
+     *
      * @param localPath
      */
     public Hidra(String localPath) {
         super();
+        hidraProperties = new Properties();
         repository = new Repository(localPath);
-
     }
 
-    /**
-     *
-     * @param repository
-     */
-    private Repository repository;
-
     public Hidra() {
+        hidraProperties = new Properties();
+        repository = new Repository(hidraProperties.getProperty("localPath"));
     }
 
     /**
@@ -60,6 +64,14 @@ public class Hidra {
         this.repository = repository;
     }
 
+    public Properties getHidraProperties() {
+        return hidraProperties;
+    }
+
+    public void setHidraProperties(Properties hidraProperties) {
+        this.hidraProperties = hidraProperties;
+    }
+
     /**
      * Inicializa um repositório local sem um repositório master associado. Se
      * não existir diretório ele será criado, se já existir um repositório no
@@ -71,10 +83,10 @@ public class Hidra {
      * @throws javax.xml.bind.JAXBException
      *
      */
-    public boolean startRepository(String localPath) throws IOException, JAXBException {
+    public boolean startRepository() throws IOException, JAXBException {
         boolean initialized = false;
 
-        repository = new Repository(localPath);
+        repository = new Repository(hidraProperties.getProperty("localPath"));
 
         if (repository.isRepository()) {
             initialized = true;
@@ -87,12 +99,11 @@ public class Hidra {
         return false;
 
     }
-    
-    
+
     /**
-     * Inicializa um repositório bare para ser utilizado no servidor sem um repositório master associado. Se
-     * não existir diretório ele será criado, se já existir um repositório no
-     * diretório indicado nada será alterado
+     * Inicializa um repositório bare para ser utilizado no servidor sem um
+     * repositório master associado. Se não existir diretório ele será criado,
+     * se já existir um repositório no diretório indicado nada será alterado
      *
      * @param localPath - String com o caminho que o repositório será criado
      * @return - true se não houve problemas
@@ -100,10 +111,10 @@ public class Hidra {
      * @throws javax.xml.bind.JAXBException
      *
      */
-    public boolean startRepositoryBare(String localPath) throws IOException, JAXBException {
+    public boolean startRepositoryBare() throws IOException, JAXBException {
         boolean initialized = false;
 
-        repository = new Repository(localPath);
+        repository = new Repository(hidraProperties.getProperty("localPath"));
 
         if (repository.isRepository()) {
             initialized = true;
@@ -128,13 +139,16 @@ public class Hidra {
      * remoto - ou o caminho do repositorio a ser copiado
      * @return - true caso operação ocorra com sucesso, false caso contrário.
      */
-    public boolean startSynchronizedRepository(String localPath, String remotePath) {
-        repository = new Repository(localPath, remotePath);
+    public boolean startSynchronizedRepository() {
+        
+        repository = new Repository(hidraProperties.getProperty("localPath"), hidraProperties.getProperty("remotePath"));
         boolean ret = repository.cloneRepository();
-        if(ret)try {
-            startRepository(localPath);
-        } catch (IOException | JAXBException ex) {
-            Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+        if (ret) {
+            try {
+                startRepository();
+            } catch (IOException | JAXBException ex) {
+                Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return ret;
     }
@@ -154,16 +168,16 @@ public class Hidra {
      *
      * @return true caso operação ocorra com sucesso, false caso contrário.
      */
-    public boolean startSynchronizedRepository(String localPath, String remotePath, String user, String password) {
+    public boolean startSynchronizedRepositoryAuthentification() {
 
-        repository = new Repository(localPath, remotePath);
-        boolean ret = repository.cloneRepository(user, password);
+        repository = new Repository(hidraProperties.getProperty("localPath"), hidraProperties.getProperty("remotePath"));
+        boolean ret = repository.cloneRepository(hidraProperties.getProperty("user"), hidraProperties.getProperty("password"));
         if (!ret) {
             repository.removeRepository();
             return false;
         }
         try {
-            startRepository(localPath);
+            startRepository();
         } catch (IOException | JAXBException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -185,7 +199,6 @@ public class Hidra {
      */
     public boolean addAsset(String nameAsset) {
         try {
-
             return repository.addAsset(nameAsset);
         } catch (SAXException | IOException | JAXBException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
@@ -253,8 +266,8 @@ public class Hidra {
      * RF-04 A biblioteca Hidra deve possibilitar que todo novo ativo de
      * software seja validado e certificado de acordo com o padrão adotado.
      *
-     * Permite verificar se o manifesto de um ativo é válido de acordo com o padrão RAS
-     * adotado.
+     * Permite verificar se o manifesto de um ativo é válido de acordo com o
+     * padrão RAS adotado.
      *
      * @param assetPath - caminho referente ao ativo que se deseja validar.
      *
@@ -262,7 +275,7 @@ public class Hidra {
      */
     public boolean validateAsset(String assetPath) {
         try {
-            return repository.validateAsset(assetPath+File.separator);
+            return repository.validateAsset(assetPath + File.separator);
         } catch (SAXException | IOException ex) {
             Logger.getLogger(Hidra.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -484,10 +497,11 @@ public class Hidra {
      * @return
      * @throws java.io.FileNotFoundException
      */
-    public boolean downloadAsset(String format, String path, String assetName ) throws FileNotFoundException {
+    public boolean downloadAsset(String format, String path, String assetName) throws FileNotFoundException {
         return repository.retrieveAsset(format, path, assetName);
-        
+
     }
+
     /**
      * Salva todas as alterações realizadas no repositório. É obrigatório o
      * envio de uma mensagem informando as alterações realizadas.
@@ -543,7 +557,6 @@ public class Hidra {
 
     }
 
-   
     /**
      * Define o usuário do repositório.
      *
@@ -583,9 +596,11 @@ public class Hidra {
     }
 
     /**
-     * Verifica se dado o nome do ativo o mesmo se encontra versionado no repositório.
+     * Verifica se dado o nome do ativo o mesmo se encontra versionado no
+     * repositório.
+     *
      * @param assetName
-     * @return 
+     * @return
      */
     public boolean findAsset(String assetName) {
         return repository.findAsset(assetName);
@@ -604,48 +619,58 @@ public class Hidra {
     }
 
     /**
-     * Cria um novo ramo(branch) no repositório 
+     * Cria um novo ramo(branch) no repositório
+     *
      * @param branchName - recebe o nome do novo branch
-     * @return 
+     * @return
      */
-    public String createBranch(String branchName){
+    public String createBranch(String branchName) {
         return repository.createBranch(branchName);
-    
+
     }
-    
+
     /**
-     * Realiza a troca de branch  
+     * Realiza a troca de branch
+     *
      * @param branchName - Recebe o nome do branch que se deseja alternar.
-     * @return 
+     * @return
      */
-    public boolean checkoutBranch(String branchName){
-    
+    public boolean checkoutBranch(String branchName) {
+
         return repository.checkoutBranch(branchName);
     }
+
     /**
-     * Mostra todos os branches disponíveis no repositório e o branch atual de trabalho.
-     * @return 
+     * Mostra todos os branches disponíveis no repositório e o branch atual de
+     * trabalho.
+     *
+     * @return
      */
-    public boolean showBranches(){
+    public boolean showBranches() {
         return repository.showBranches();
     }
+
     /**
-     * Recebe um vetor de Strings contendo os nomes dos branches que se deseja remover do repositório.
+     * Recebe um vetor de Strings contendo os nomes dos branches que se deseja
+     * remover do repositório.
+     *
      * @param branchName
-     * @return 
+     * @return
      */
-    public boolean deleteBranch(String[] branchName){
-    
+    public boolean deleteBranch(String[] branchName) {
+
         return repository.deleteBranch(branchName);
     }
-    
+
     /**
      * Realiza a mesclagem dos branches.
-     * @param branchName - Recebe como parâmetro o nome do branch que se deseja para fazer a mesclagem.
-     * @return 
+     *
+     * @param branchName - Recebe como parâmetro o nome do branch que se deseja
+     * para fazer a mesclagem.
+     * @return
      */
-    public boolean mergeBranch(String branchName){
-        
+    public boolean mergeBranch(String branchName) {
+
         return repository.merge(branchName);
     }
 }

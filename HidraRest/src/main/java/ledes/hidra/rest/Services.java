@@ -88,6 +88,7 @@ public class Services {
         hidra = new Hidra();
         ResultMessage result = new ResultMessage();
         String path = command.getRepositoryPath();
+        hidra.getHidraProperties().setProperty("localPath", path);
 
         if (path.isEmpty()) {
             throw new DataNotFoundException("The absolute path of the repository has not been set");
@@ -98,7 +99,7 @@ public class Services {
 
         try {
 
-            hidra.startRepository(path);
+            hidra.startRepository();
             result.setMessage("repository was created in : " + path);
             result.setStatusMessage(Status.CREATED);
 
@@ -131,6 +132,7 @@ public class Services {
 
         Hidra hidra;
         ResultMessage result = new ResultMessage();
+        
         String path = command.getRepositoryPath();
         String assetName = command.getAssetName();
 
@@ -254,8 +256,12 @@ public class Services {
 
         Hidra hidra = new Hidra();
         ResultMessage result = new ResultMessage();
+
         String remotePath = command.getRemoteRepository();
         String cloneToDirectory = command.getRepositoryLocalCopy();
+
+        hidra.getHidraProperties().setProperty("localPath", cloneToDirectory);
+        hidra.getHidraProperties().setProperty("remotePath", remotePath);
 
         if (remotePath.isEmpty() || cloneToDirectory.isEmpty()) {
             throw new DataNotFoundException("The absolute path of the remote repository Or the destiny has not been set");
@@ -264,7 +270,7 @@ public class Services {
             throw new IOException("Destination already exists");
         }
 
-        if (hidra.startSynchronizedRepository(cloneToDirectory, remotePath)) {
+        if (hidra.startSynchronizedRepository()) {
             result.setMessage("Repository successfully cloned in " + cloneToDirectory);
             result.setStatusMessage(Status.OK);
             return Response
@@ -293,11 +299,17 @@ public class Services {
     public Response startSynchronizedRepositoryAuthentication(Attribute command) throws IOException, Exception {
 
         Hidra hidra = new Hidra();
+        ResultMessage result = new ResultMessage();
+
         String user = command.getUser();
         String password = command.getPassword();
-        ResultMessage result = new ResultMessage();
         String remotePath = command.getRemoteRepository();
         String cloneToDirectory = command.getRepositoryLocalCopy();
+
+        hidra.getHidraProperties().setProperty("user", user);
+        hidra.getHidraProperties().setProperty("password", password);
+        hidra.getHidraProperties().setProperty("localPath", cloneToDirectory);
+        hidra.getHidraProperties().setProperty("remotePath", remotePath);
 
         if (remotePath.isEmpty() || cloneToDirectory.isEmpty()) {
             throw new DataNotFoundException("The absolute path of the remote repository Or the destiny has not been set");
@@ -309,7 +321,7 @@ public class Services {
             throw new IOException("Destination already exists");
         }
 
-        if (hidra.startSynchronizedRepository(cloneToDirectory, remotePath, user, password)) {
+        if (hidra.startSynchronizedRepositoryAuthentification()) {
             result.setMessage("Repository successfully cloned in " + cloneToDirectory);
             result.setStatusMessage(Status.OK);
             return Response

@@ -2,8 +2,11 @@ package ledes.hidra.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +36,7 @@ public class Properties {
      * methods for the first time
      */
     private static Properties properties;
-    
+
     /**
      * Original properties file.
      */
@@ -62,13 +65,30 @@ public class Properties {
     }
 
     /**
+     * *
+     * Contrutor publico
+     */
+    public Properties() {
+
+        props = new java.util.Properties();
+
+        try {
+            FileReader reader = new FileReader("/home/pedro/hidra.properties");
+
+            props.load(reader);
+        } catch (IOException e) {
+            Logger.getLogger(Properties.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    /**
      * Private constructor. Creates a new instance of Properties.
      *
      * @param propertiesFile the properties file name
      */
     private Properties(String propertiesFile) {
         props = new java.util.Properties(props);
-        
+
         File file = new File(propertiesFile);
         if (file.exists()) {
             try {
@@ -86,8 +106,6 @@ public class Properties {
         }
     }
 
-    
-
     /**
      * Returns a properties object with the default properties.
      *
@@ -96,18 +114,12 @@ public class Properties {
      */
     private java.util.Properties getDefaultProps() {
         java.util.Properties defaults = new java.util.Properties();
-        
-        defaults.setProperty("ApplicationType", "Client");
-        defaults.setProperty("LocalDirectory", "");
-        defaults.setProperty("Protocol", "http");
-        defaults.setProperty("RemoteURI", "");
-        defaults.setProperty("UserName", "default");
-        defaults.setProperty("UserEmail", "default@domain.com");
-        defaults.setProperty("Password", "");
+
+        defaults.setProperty("localPath", "");
         defaults.setProperty("ManifestName", "rasset");
         defaults.setProperty("ManifestExtension", "xml");
-        
-       //@task: criar propriedade para conexao com SGBD
+
+        //@task: criar propriedade para conexao com SGBD
         return defaults;
     }
 
@@ -119,5 +131,9 @@ public class Properties {
      */
     public String getProperty(String key) {
         return props.getProperty(key);
+    }
+    
+    public void setProperty(String key, String value){
+        props.setProperty(key, value);
     }
 }
