@@ -140,7 +140,7 @@ public class Hidra {
      * @return - true caso operação ocorra com sucesso, false caso contrário.
      */
     public boolean startSynchronizedRepository() {
-        
+
         repository = new Repository(hidraProperties.getProperty("localPath"), hidraProperties.getProperty("remotePath"));
         boolean ret = repository.cloneRepository();
         if (ret) {
@@ -529,7 +529,10 @@ public class Hidra {
      * @param password - Senha para autenticação no repositório.
      * @return true caso operação ocorra com sucesso, false caso contrário.
      */
-    public boolean receiveUpdates(String user, String password) {
+    public boolean receiveUpdates() {
+
+        String user = hidraProperties.getProperty("user");
+        String password = hidraProperties.getProperty("password");
 
         return repository.synchronizeRepository(user, password);
 
@@ -542,7 +545,10 @@ public class Hidra {
      * @param password - Senha para autenticação no repositório.
      * @return
      */
-    public String sendUpdates(String user, String password) {
+    public String sendUpdates() {
+
+        String user = hidraProperties.getProperty("user");
+        String password = hidraProperties.getProperty("password");
 
         return repository.updateRepository(user, password);
     }

@@ -80,6 +80,15 @@ public class Properties {
             Logger.getLogger(Properties.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    
+    
+    public void loadProperties(){
+    
+        InputStream inputStream;
+        String propFileName = "hidra.properties";
+        inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+        
+    }
 
     /**
      * Private constructor. Creates a new instance of Properties.

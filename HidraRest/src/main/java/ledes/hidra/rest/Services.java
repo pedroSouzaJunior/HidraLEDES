@@ -348,11 +348,19 @@ public class Services {
     public Response sendUpdates(Attribute command) throws Exception {
 
         Hidra hidra;
+        ResultMessage result = new ResultMessage();
+        hidra = new Hidra();
+        
         String update;
         String user = command.getUser();
         String password = command.getPassword();
         String path = command.getRepositoryPath();
-        ResultMessage result = new ResultMessage();
+        
+        hidra.getHidraProperties().setProperty("localPath", path);
+        hidra.getHidraProperties().setProperty("user", user);
+        hidra.getHidraProperties().setProperty("password", password);
+        
+        
 
         if (path.isEmpty()) {
             throw new DataNotFoundException("The absolute path of the repository has not been set");
@@ -364,8 +372,8 @@ public class Services {
             throw new DataNotFoundException("User or Password has not been set");
         }
 
-        hidra = new Hidra(path);
-        update = hidra.sendUpdates(user, password);
+        
+        update = hidra.sendUpdates();
 
         if (update.equals("Repository Updated")) {
             result.setMessage("Repository Updated");
@@ -394,10 +402,16 @@ public class Services {
     public Response receiveUpdates(Attribute command) throws Exception {
 
         Hidra hidra;
+        hidra = new Hidra();
+        ResultMessage result = new ResultMessage();
+        
         String user = command.getUser();
         String password = command.getPassword();
         String path = command.getRepositoryPath();
-        ResultMessage result = new ResultMessage();
+        
+        hidra.getHidraProperties().setProperty("localPath", path);
+        hidra.getHidraProperties().setProperty("user", user);
+        hidra.getHidraProperties().setProperty("password", password);
 
         if (path.isEmpty()) {
             throw new DataNotFoundException("The absolute path of the repository has not been set");
@@ -406,9 +420,9 @@ public class Services {
             throw new IOException("Could not find the informed repository");
         }
 
-        hidra = new Hidra(path);
+        
 
-        if (hidra.receiveUpdates(user, password)) {
+        if (hidra.receiveUpdates()) {
             result.setMessage("Repository Updated");
             result.setStatusMessage(Status.OK);
             return Response
