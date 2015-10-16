@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,27 +69,26 @@ public class Properties {
     public Properties() {
 
         props = new java.util.Properties();
+        File file = new File("hidra.properties");
 
         try {
-            FileReader reader = new FileReader("/home/pedro/hidra.properties");
-
-            props.load(reader);
-        } catch (IOException e) {
-            Logger.getLogger(Properties.class.getName()).log(Level.SEVERE, null, e);
+            FileInputStream fileInput;
+            fileInput = new FileInputStream(file);
+            props.load(fileInput);
+            fileInput.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Properties.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Properties.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
+
     
-    
-    public void loadProperties(){
-    
-        InputStream inputStream;
-        String propFileName = "hidra.properties";
-        inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-        
-    }
 
     /**
      * Private constructor. Creates a new instance of Properties.
+     * And load the file properties hidra.properties from the classpath
      *
      * @param propertiesFile the properties file name
      */
@@ -141,8 +138,8 @@ public class Properties {
     public String getProperty(String key) {
         return props.getProperty(key);
     }
-    
-    public void setProperty(String key, String value){
+
+    public void setProperty(String key, String value) {
         props.setProperty(key, value);
     }
 }
