@@ -73,7 +73,11 @@ public class Properties {
 
         try {
             FileInputStream fileInput;
-            fileInput = new FileInputStream(file);
+            //fileInput = new FileInputStream(file);
+            fileInput = new FileInputStream(Thread.currentThread()
+                    .getContextClassLoader()
+                    .getResource("hidra.properties")
+                    .getPath());
             props.load(fileInput);
             fileInput.close();
         } catch (FileNotFoundException ex) {
@@ -84,11 +88,9 @@ public class Properties {
 
     }
 
-    
-
     /**
-     * Private constructor. Creates a new instance of Properties.
-     * And load the file properties hidra.properties from the classpath
+     * Private constructor. Creates a new instance of Properties. And load the
+     * file properties hidra.properties from the classpath
      *
      * @param propertiesFile the properties file name
      */

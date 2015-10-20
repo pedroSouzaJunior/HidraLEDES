@@ -7,6 +7,8 @@ package ledes.hidra;
 
 import java.io.IOException;
 import javax.xml.bind.JAXBException;
+import ledes.hidra.asset.Asset;
+import ledes.hidra.dao.HidraDataBase;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
@@ -39,7 +41,7 @@ public class HidraTest {
     public void tearDown() {
     }
 
-    //@Test
+    @Test
     public void testStartRepository() throws IOException, JAXBException {
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>start");
 
@@ -134,6 +136,22 @@ public class HidraTest {
         Hidra instance = new Hidra();
         boolean result = instance.removeAsset("hidra");
         assertEquals(true, result);
+    }
+    
+    //@Test
+    public void testInsertAsset(){
+    
+        System.out.println("TEST_INSERT_ASSET");
+        Asset asset = new Asset();
+        asset.setId("hidra_asset_monografia");
+        asset.setName("hidra");
+        asset.setShortDescription("ativo referente a monografia do TCC");
+        asset.setVersion("1.0");
+        asset.setState("em teste");
+        
+        HidraDataBase db = new HidraDataBase();
+        db.insert(asset);
+        
     }
 
 }
