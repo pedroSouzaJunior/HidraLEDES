@@ -6,8 +6,14 @@
 package ledes.hidra;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import ledes.hidra.asset.Asset;
+import ledes.hidra.asset.ProfileType;
 import ledes.hidra.dao.HidraDataBase;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -41,7 +47,7 @@ public class HidraTest {
     public void tearDown() {
     }
 
-    @Test
+    //@Test
     public void testStartRepository() throws IOException, JAXBException {
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>start");
 
@@ -121,37 +127,58 @@ public class HidraTest {
     }
 
     //@Test
-    public void testGetUsage(){
-    
+    public void testGetUsage() {
+
         System.out.println("TestGetUsage");
         Hidra instance = new Hidra();
         String result = instance.getUsage("hidra");
         System.out.println(result);
     }
-    
+
     //@Test
-    public void testRemoveAsset(){
-    
+    public void testRemoveAsset() {
+
         System.out.println("testRemoveAsset");
         Hidra instance = new Hidra();
         boolean result = instance.removeAsset("hidra");
         assertEquals(true, result);
     }
-    
-    //@Test
-    public void testInsertAsset(){
-    
+
+    @Test
+    public void testInsertAsset() throws DatatypeConfigurationException {
+
         System.out.println("TEST_INSERT_ASSET");
+
+        //instancia de HidraDataBase
+        HidraDataBase db = new HidraDataBase();
+
+        //definindo calendário
+        GregorianCalendar c = new GregorianCalendar();
+        DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
+        XMLGregorianCalendar now
+                = datatypeFactory.newXMLGregorianCalendar(c);
+
+        //instancia de Perfil
+        ProfileType profile = new ProfileType();
+        profile.setIdHistory("ID_Default_Profile");
+        profile.setName("Default");
+        profile.setVersionMajor(1);
+        profile.setVersionMinor(1);
+
+        db.insert(profile);
+
+        //instancia de ativo
         Asset asset = new Asset();
         asset.setId("hidra_asset_monografia");
         asset.setName("hidra");
         asset.setShortDescription("ativo referente a monografia do TCC");
-        asset.setVersion("1.0");
+        asset.setDate(now);
         asset.setState("em teste");
-        
-        HidraDataBase db = new HidraDataBase();
+        asset.setVersion("1.0");
+        asset.setProfile(profile);
+
         db.insert(asset);
-        
+
     }
 
 }

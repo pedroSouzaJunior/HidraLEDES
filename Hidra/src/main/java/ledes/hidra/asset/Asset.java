@@ -1,5 +1,19 @@
 package ledes.hidra.asset;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -18,7 +32,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "relatedAssetsList"
 })
 @XmlRootElement(name = "asset")
-public class Asset {
+@Entity
+@Table(name = "ASSET")
+public class Asset implements Serializable {
 
     @XmlElement(required = true)
     protected ProfileType profile;
@@ -28,6 +44,7 @@ public class Asset {
     protected ClassificationType classification;
     @XmlElement(required = true)
     protected UsageType usage;
+
     protected RelatedAssets relatedAssetsList;
 
     @XmlAttribute(name = "name", required = true)
@@ -59,6 +76,7 @@ public class Asset {
      *
      * @return String - a descricao da solucao.
      */
+    @Transient
     public String describeSolution() {
         StringBuilder stb = new StringBuilder().append("\n");
 
@@ -95,7 +113,6 @@ public class Asset {
             stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
         }
 
-
         stb.append("Test:\n");
         for (ArtifactType artfacty : this.solution.getTest().getArtifact()) {
             stb.append("ID: ").append(artfacty.getId()).append("\t");
@@ -114,6 +131,7 @@ public class Asset {
      *
      * @return String - a descricao da Classificacao
      */
+    @Transient
     public String describeClassification() {
         StringBuilder stb = new StringBuilder().append("\n");
 
@@ -141,6 +159,7 @@ public class Asset {
      *
      * @return String - a descricao de Uso.
      */
+    @Transient
     public String describeUsage() {
 
         StringBuilder stb = new StringBuilder().append("\n");
@@ -175,6 +194,7 @@ public class Asset {
      *
      * @return
      */
+    @Transient
     public String describeRelatedAssets() {
 
         StringBuilder stb = new StringBuilder().append("\n");
@@ -198,6 +218,8 @@ public class Asset {
      * @return possible object is {@link ProfileType }
      *
      */
+    @OneToOne(optional = false, mappedBy = "PROFILE")
+    @JoinColumn(name = "id_profile")
     public ProfileType getProfile() {
         return profile;
     }
@@ -218,6 +240,7 @@ public class Asset {
      * @return possible object is {@link SolutionType }
      *
      */
+    @Transient
     public SolutionType getSolution() {
         return solution;
     }
@@ -238,6 +261,7 @@ public class Asset {
      * @return possible object is {@link ClassificationType }
      *
      */
+    @Transient
     public ClassificationType getClassification() {
         return classification;
     }
@@ -258,6 +282,7 @@ public class Asset {
      * @return possible object is {@link UsageType }
      *
      */
+    @Transient
     public UsageType getUsage() {
         return usage;
     }
@@ -278,6 +303,7 @@ public class Asset {
      * @return possible object is {@link RelatedAssets }
      *
      */
+    @Transient
     public RelatedAssets getRelatedAssetsList() {
         return relatedAssetsList;
     }
@@ -298,6 +324,7 @@ public class Asset {
      * @return possible object is {@link String }
      *
      */
+    @Column(name = "name", nullable = false, length = 50)
     public String getName() {
         return name;
     }
@@ -318,6 +345,9 @@ public class Asset {
      * @return possible object is {@link String }
      *
      */
+    @Id
+    @Basic(optional = false)
+    @Column(name = "id", nullable = false)
     public String getId() {
         return id;
     }
@@ -338,8 +368,20 @@ public class Asset {
      * @return possible object is {@link XMLGregorianCalendar }
      *
      */
+    @Transient
     public XMLGregorianCalendar getDate() {
         return date;
+    }
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "modification_date")
+    public Date getDateTimeAsset() {
+
+        return date.toGregorianCalendar().getTime();
+    }
+
+    public void setDateTimeAsset(XMLGregorianCalendar calendar) {
+        this.date = calendar;
     }
 
     /**
@@ -358,6 +400,7 @@ public class Asset {
      * @return possible object is {@link String }
      *
      */
+    @Column(name = "state_asset", nullable = false, length = 50)
     public String getState() {
         return state;
     }
@@ -378,6 +421,7 @@ public class Asset {
      * @return possible object is {@link String }
      *
      */
+    @Column(name = "version", nullable = false, length = 50)
     public String getVersion() {
         return version;
     }
@@ -398,6 +442,7 @@ public class Asset {
      * @return possible object is {@link String }
      *
      */
+    @Column(name = "short_description", nullable = false)
     public String getShortDescription() {
         return shortDescription;
     }
@@ -410,6 +455,28 @@ public class Asset {
      */
     public void setShortDescription(String value) {
         this.shortDescription = value;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Asset other = (Asset) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }

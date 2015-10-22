@@ -1,15 +1,22 @@
-
 package ledes.hidra.asset;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "relatedAssetType")
-public class RelatedAssetType {
+@Entity
+@Table(name = "RELATED_ASSETS_DETAILS")
+public class RelatedAssetType implements Serializable {
 
     @XmlAttribute(name = "name")
     protected String name;
@@ -22,23 +29,20 @@ public class RelatedAssetType {
 
     /**
      * Obtém o valor da propriedade name.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is {@link String }
+     *
      */
+    @Column(name = "name", nullable = false, length = 50)
     public String getName() {
         return name;
     }
 
     /**
      * Define o valor da propriedade name.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is {@link String }
+     *
      */
     public void setName(String value) {
         this.name = value;
@@ -46,23 +50,22 @@ public class RelatedAssetType {
 
     /**
      * Obtém o valor da propriedade id.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is {@link String }
+     *
      */
+    @Id
+    @Basic(optional = false)
+    @Column(name = "id")
     public String getId() {
         return id;
     }
 
     /**
      * Define o valor da propriedade id.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is {@link String }
+     *
      */
     public void setId(String value) {
         this.id = value;
@@ -70,23 +73,20 @@ public class RelatedAssetType {
 
     /**
      * Obtém o valor da propriedade reference.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is {@link String }
+     *
      */
+    @Column(name = "reference", nullable = false, length = 50)
     public String getReference() {
         return reference;
     }
 
     /**
      * Define o valor da propriedade reference.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is {@link String }
+     *
      */
     public void setReference(String value) {
         this.reference = value;
@@ -94,26 +94,45 @@ public class RelatedAssetType {
 
     /**
      * Obtém o valor da propriedade relationshipType.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is {@link String }
+     *
      */
+    @Column(name = "relationship_type", nullable = false, length = 50)
     public String getRelationshipType() {
         return relationshipType;
     }
 
     /**
      * Define o valor da propriedade relationshipType.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is {@link String }
+     *
      */
     public void setRelationshipType(String value) {
         this.relationshipType = value;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RelatedAssetType other = (RelatedAssetType) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }

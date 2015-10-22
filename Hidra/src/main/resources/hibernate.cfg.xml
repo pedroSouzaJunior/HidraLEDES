@@ -13,5 +13,6 @@
         <property name="hibernate.format_sql">true</property>
         
         <mapping class="ledes.hidra.asset.Asset"/>
+        <mapping class="ledes.hidra.asset.ProfileType"/>
     </session-factory>
 </hibernate-configuration>
