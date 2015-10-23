@@ -14,6 +14,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ProfileType;
+import ledes.hidra.asset.RelatedAssetType;
+import ledes.hidra.asset.RelatedAssets;
 import ledes.hidra.dao.HidraDataBase;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -164,8 +166,30 @@ public class HidraTest {
         profile.setName("Default");
         profile.setVersionMajor(1);
         profile.setVersionMinor(1);
+        
+        //inserção e validação de instancia na tabela profile
+        assertEquals(db.insert(profile), true);
 
-        db.insert(profile);
+        //instância de tipo de ativo relacionado
+        RelatedAssetType relatedAssetType = new RelatedAssetType();
+        relatedAssetType.setId("1");
+        relatedAssetType.setName("HidraRest");
+        relatedAssetType.setReference("/relateds/HidraRest");
+        relatedAssetType.setRelationshipType("Similar");
+
+        //inserção e validação da instancia na tabela related asset details
+        assertEquals(db.insert(relatedAssetType), true);
+
+        //instância de ativos relacionados
+        RelatedAssets relatedAssets = new RelatedAssets();
+        relatedAssets.setId("1");
+        relatedAssets.getListOfRelatedAssets().add(relatedAssetType);
+
+        //inserção do id da lista  relatedAssets na tabela related assets details
+        relatedAssetType.setRelatedAssets(relatedAssets);
+        
+        //inserção e validação da instancia na tebala related assets
+        assertEquals(db.insert(relatedAssets), true);
 
         //instancia de ativo
         Asset asset = new Asset();
@@ -176,8 +200,10 @@ public class HidraTest {
         asset.setState("em teste");
         asset.setVersion("1.0");
         asset.setProfile(profile);
-
-        db.insert(asset);
+        asset.setRelatedAssetsList(relatedAssets);
+        
+        //inserção e validação da instancia na tabela asset
+        assertEquals(db.insert(asset), true);
 
     }
 

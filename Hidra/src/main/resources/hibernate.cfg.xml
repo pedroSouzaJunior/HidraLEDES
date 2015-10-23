@@ -14,5 +14,7 @@
         
         <mapping class="ledes.hidra.asset.Asset"/>
         <mapping class="ledes.hidra.asset.ProfileType"/>
+        <mapping class="ledes.hidra.asset.RelatedAssets"/>
+        <mapping class="ledes.hidra.asset.RelatedAssetType"/>
     </session-factory>
 </hibernate-configuration>

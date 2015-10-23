@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -54,7 +53,7 @@ public class RelatedAssets implements Serializable {
      *
      *
      */
-    @OneToMany(mappedBy = "RELATED_ASSETS")
+    @OneToMany
     @OrderBy("id")
     public List<RelatedAssetType> getListOfRelatedAssets() {
         if (listOfRelatedAssets == null) {

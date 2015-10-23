@@ -9,6 +9,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -218,7 +220,7 @@ public class Asset implements Serializable {
      * @return possible object is {@link ProfileType }
      *
      */
-    @OneToOne(optional = false, mappedBy = "PROFILE")
+    @OneToOne(optional = false)
     @JoinColumn(name = "id_profile")
     public ProfileType getProfile() {
         return profile;
@@ -303,7 +305,8 @@ public class Asset implements Serializable {
      * @return possible object is {@link RelatedAssets }
      *
      */
-    @Transient
+    @OneToOne(optional = false)
+    @JoinColumn(name = "id_related_assets")
     public RelatedAssets getRelatedAssetsList() {
         return relatedAssetsList;
     }

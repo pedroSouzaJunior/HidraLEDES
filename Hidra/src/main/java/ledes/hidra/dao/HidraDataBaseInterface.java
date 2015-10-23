@@ -9,7 +9,7 @@ package ledes.hidra.dao;
  *
  * @author pedro
  */
-public interface HidraDataBaseInterface <Object>{
-    
-    public void insert(Object obj);
+public interface HidraDataBaseInterface<Object> {
+
+    public boolean insert(Object obj);
 }

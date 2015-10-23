@@ -6,6 +6,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -26,6 +28,21 @@ public class RelatedAssetType implements Serializable {
     protected String reference;
     @XmlAttribute(name = "relationshipType")
     protected String relationshipType;
+
+    protected RelatedAssets relatedAssets;
+
+    public RelatedAssetType() {
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "related_assets_id")
+    public RelatedAssets getRelatedAssets() {
+        return relatedAssets;
+    }
+
+    public void setRelatedAssets(RelatedAssets relatedAssets) {
+        this.relatedAssets = relatedAssets;
+    }
 
     /**
      * Obtém o valor da propriedade name.
