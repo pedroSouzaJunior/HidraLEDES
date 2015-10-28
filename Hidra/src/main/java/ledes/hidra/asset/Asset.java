@@ -263,7 +263,8 @@ public class Asset implements Serializable {
      * @return possible object is {@link ClassificationType }
      *
      */
-    @Transient
+    @OneToOne(optional = false)
+    @JoinColumn(name = "id_classification")
     public ClassificationType getClassification() {
         return classification;
     }

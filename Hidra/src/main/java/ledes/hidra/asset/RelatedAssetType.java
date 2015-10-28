@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -16,9 +17,8 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "relatedAssetType")
-@Entity
-@Table(name = "RELATED_ASSETS_DETAILS")
-public class RelatedAssetType implements Serializable {
+@Embeddable
+public class RelatedAssetType {
 
     @XmlAttribute(name = "name")
     protected String name;
@@ -32,16 +32,6 @@ public class RelatedAssetType implements Serializable {
     protected RelatedAssets relatedAssets;
 
     public RelatedAssetType() {
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "related_assets_id")
-    public RelatedAssets getRelatedAssets() {
-        return relatedAssets;
-    }
-
-    public void setRelatedAssets(RelatedAssets relatedAssets) {
-        this.relatedAssets = relatedAssets;
     }
 
     /**
@@ -71,9 +61,7 @@ public class RelatedAssetType implements Serializable {
      * @return possible object is {@link String }
      *
      */
-    @Id
-    @Basic(optional = false)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public String getId() {
         return id;
     }
@@ -128,28 +116,6 @@ public class RelatedAssetType implements Serializable {
      */
     public void setRelationshipType(String value) {
         this.relationshipType = value;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 71 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final RelatedAssetType other = (RelatedAssetType) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
     }
 
 }

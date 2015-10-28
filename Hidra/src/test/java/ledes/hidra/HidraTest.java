@@ -6,13 +6,16 @@
 package ledes.hidra;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import ledes.hidra.asset.ArtifactType;
 import ledes.hidra.asset.Asset;
+import ledes.hidra.asset.ClassificationType;
+import ledes.hidra.asset.Context;
+import ledes.hidra.asset.DescriptionGroup;
 import ledes.hidra.asset.ProfileType;
 import ledes.hidra.asset.RelatedAssetType;
 import ledes.hidra.asset.RelatedAssets;
@@ -166,7 +169,7 @@ public class HidraTest {
         profile.setName("Default");
         profile.setVersionMajor(1);
         profile.setVersionMinor(1);
-        
+
         //inserção e validação de instancia na tabela profile
         assertEquals(db.insert(profile), true);
 
@@ -178,7 +181,7 @@ public class HidraTest {
         relatedAssetType.setRelationshipType("Similar");
 
         //inserção e validação da instancia na tabela related asset details
-        assertEquals(db.insert(relatedAssetType), true);
+        //assertEquals(db.insert(relatedAssetType), true);
 
         //instância de ativos relacionados
         RelatedAssets relatedAssets = new RelatedAssets();
@@ -186,10 +189,54 @@ public class HidraTest {
         relatedAssets.getListOfRelatedAssets().add(relatedAssetType);
 
         //inserção do id da lista  relatedAssets na tabela related assets details
-        relatedAssetType.setRelatedAssets(relatedAssets);
-        
+        //relatedAssetType.setRelatedAssets(relatedAssets);
+
         //inserção e validação da instancia na tebala related assets
         assertEquals(db.insert(relatedAssets), true);
+
+        //instancia da classe DescriptorGroup
+        DescriptionGroup descriptionGroup = new DescriptionGroup();
+        descriptionGroup.setId("1");
+        descriptionGroup.setName("Descrições de Ativos");
+        descriptionGroup.setReference("grupo descritor externo default");
+        descriptionGroup.setDescription("Descrição default do ativo");
+
+        //inserção e validação da instancia na tabela DescriptorGroup
+        assertEquals(db.insert(descriptionGroup), true);
+
+        //instancia de Contexto - ContextType
+        Context context = new Context();
+        context.setDescription("biblioteca Java para criação de repositórios");
+        context.getDescriptionGroup().add(descriptionGroup);
+        context.setId("1");
+        context.setName("Desenvolvimento");
+
+        descriptionGroup.setContext(context);
+
+        //inserção e validação da instancia na tabela Contex
+        assertEquals(db.insert(context), true);
+
+        //Instancia de Classificação
+        ClassificationType classificationType = new ClassificationType();
+        classificationType.setId("1");
+        classificationType.getContexts().add(context);
+        classificationType.getDescriptionGroups().add(descriptionGroup);
+
+        descriptionGroup.setClasification(classificationType);
+        context.setClassification(classificationType);
+
+        //inserção e validação da instancia na tabela Classification
+        assertEquals(db.insert(classificationType), true);
+
+        //instancia de um Artefato
+        ArtifactType artifactType = new ArtifactType();
+        artifactType.setId("Artifact_Type_ID");
+        artifactType.setName("Monografia.pdf");
+        artifactType.setReference("/monografia.pdf");
+        artifactType.setType("Development");
+        artifactType.setVersion("00:hidra_12");
+
+        assertEquals(db.insert(artifactType), true);
 
         //instancia de ativo
         Asset asset = new Asset();
@@ -201,7 +248,8 @@ public class HidraTest {
         asset.setVersion("1.0");
         asset.setProfile(profile);
         asset.setRelatedAssetsList(relatedAssets);
-        
+        asset.setClassification(classificationType);
+
         //inserção e validação da instancia na tabela asset
         assertEquals(db.insert(asset), true);
 

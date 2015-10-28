@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -53,8 +56,8 @@ public class RelatedAssets implements Serializable {
      *
      *
      */
-    @OneToMany
-    @OrderBy("id")
+    @ElementCollection
+    @CollectionTable(name = "related_asset_details", joinColumns = @JoinColumn(name = "id_related_asset"))
     public List<RelatedAssetType> getListOfRelatedAssets() {
         if (listOfRelatedAssets == null) {
             listOfRelatedAssets = new ArrayList<RelatedAssetType>();
@@ -68,7 +71,7 @@ public class RelatedAssets implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public String getId() {
         return id;
     }

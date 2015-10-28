@@ -8,7 +8,7 @@
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">hidra</property>
     
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
         
@@ -16,5 +16,9 @@
         <mapping class="ledes.hidra.asset.ProfileType"/>
         <mapping class="ledes.hidra.asset.RelatedAssets"/>
         <mapping class="ledes.hidra.asset.RelatedAssetType"/>
+        <mapping class="ledes.hidra.asset.ArtifactType"/>
+        <mapping class="ledes.hidra.asset.Context"/>
+        <mapping class="ledes.hidra.asset.ClassificationType"/>
+        <mapping class="ledes.hidra.asset.DescriptionGroup"/>
     </session-factory>
 </hibernate-configuration>

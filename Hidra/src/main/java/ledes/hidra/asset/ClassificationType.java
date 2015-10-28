@@ -1,49 +1,63 @@
 package ledes.hidra.asset;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-
-
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "classificationType", propOrder = {
     "contexts",
     "descriptionGroups"
 })
-public class ClassificationType {
+@Entity
+@Table(name = "CLASSIFICATION")
+public class ClassificationType implements Serializable {
 
     @XmlElement(required = true)
     protected List<Context> contexts;
     @XmlElement(required = true)
     protected List<DescriptionGroup> descriptionGroups;
 
+    protected String id;
+
+    public ClassificationType() {
+    }
+
     /**
      * Gets the value of the contexts property.
-     * 
+     *
      * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the contexts property.
-     * 
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the contexts property.
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getContexts().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Context }
-     * 
-     * 
-     * @return 
+     * Objects of the following type(s) are allowed in the list {@link Context }
+     *
+     *
+     * @return
      */
+    @OneToMany
+    @OrderBy("id")
     public List<Context> getContexts() {
         if (contexts == null) {
             contexts = new ArrayList<Context>();
@@ -51,34 +65,76 @@ public class ClassificationType {
         return this.contexts;
     }
 
+    public void setContexts(List<Context> contexts) {
+        this.contexts = contexts;
+    }
+
     /**
      * Gets the value of the descriptionGroups property.
-     * 
+     *
      * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the descriptionGroups property.
-     * 
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the descriptionGroups property.
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getDescriptionGroups().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link DescriptionGroup }
-     * 
-     * 
-     * @return 
+     *
+     *
+     * @return
      */
+    @OneToMany
+    @OrderBy("id")
     public List<DescriptionGroup> getDescriptionGroups() {
         if (descriptionGroups == null) {
             descriptionGroups = new ArrayList<DescriptionGroup>();
         }
         return this.descriptionGroups;
+    }
+
+    public void setDescriptionGroups(List<DescriptionGroup> descriptionGroups) {
+        this.descriptionGroups = descriptionGroups;
+    }
+
+    @Id
+    @Basic(optional = false)
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ClassificationType other = (ClassificationType) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }
