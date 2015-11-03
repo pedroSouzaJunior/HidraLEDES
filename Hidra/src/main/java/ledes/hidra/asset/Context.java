@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -36,10 +37,10 @@ public class Context implements Serializable {
     @XmlAttribute(name = "description")
     protected String description;
 
+    protected ClassificationType classification;
+
     public Context() {
     }
-
-    protected ClassificationType classification;
 
     @ManyToOne
     @JoinColumn(name = "classification_id")
@@ -74,8 +75,7 @@ public class Context implements Serializable {
      *
      * @return
      */
-    @OneToMany
-    @OrderBy("id")
+    @OneToMany(mappedBy = "context", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<DescriptionGroup> getDescriptionGroup() {
         if (descriptionGroup == null) {
             descriptionGroup = new ArrayList<DescriptionGroup>();

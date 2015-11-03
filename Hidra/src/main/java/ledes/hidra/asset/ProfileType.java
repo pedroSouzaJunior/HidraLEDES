@@ -6,6 +6,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -27,7 +29,19 @@ public class ProfileType implements Serializable {
     @XmlAttribute(name = "version-minor", required = true)
     protected int versionMinor;
 
+    protected Asset asset;
+
     public ProfileType() {
+    }
+
+    @OneToOne
+    @JoinColumn(name = "asset_id")
+    public Asset getAsset() {
+        return asset;
+    }
+
+    public void setAsset(Asset asset) {
+        this.asset = asset;
     }
 
     /**

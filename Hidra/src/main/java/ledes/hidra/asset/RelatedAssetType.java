@@ -17,8 +17,9 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "relatedAssetType")
-@Embeddable
-public class RelatedAssetType {
+@Entity
+@Table(name = "RELATED_ASSETS_DETAILS")
+public class RelatedAssetType implements Serializable {
 
     @XmlAttribute(name = "name")
     protected String name;
@@ -32,6 +33,16 @@ public class RelatedAssetType {
     protected RelatedAssets relatedAssets;
 
     public RelatedAssetType() {
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "related_assets_id")
+    public RelatedAssets getRelatedAssets() {
+        return relatedAssets;
+    }
+
+    public void setRelatedAssets(RelatedAssets relatedAssets) {
+        this.relatedAssets = relatedAssets;
     }
 
     /**
@@ -61,6 +72,8 @@ public class RelatedAssetType {
      * @return possible object is {@link String }
      *
      */
+    @Id
+    @Basic(optional = false)
     @Column(name = "id", nullable = false)
     public String getId() {
         return id;
@@ -116,6 +129,28 @@ public class RelatedAssetType {
      */
     public void setRelationshipType(String value) {
         this.relationshipType = value;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RelatedAssetType other = (RelatedAssetType) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }

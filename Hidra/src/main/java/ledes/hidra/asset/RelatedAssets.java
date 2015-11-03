@@ -3,14 +3,18 @@ package ledes.hidra.asset;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -30,9 +34,20 @@ public class RelatedAssets implements Serializable {
     }
 
     protected String id;
+    protected Asset asset;
 
     @XmlElement(required = true)
     protected List<RelatedAssetType> listOfRelatedAssets;
+
+    @OneToOne
+    @JoinColumn(name = "asset_id")
+    public Asset getAsset() {
+        return asset;
+    }
+
+    public void setAsset(Asset asset) {
+        this.asset = asset;
+    }
 
     /**
      * Gets the value of the listOfRelatedAssets property.
@@ -56,8 +71,7 @@ public class RelatedAssets implements Serializable {
      *
      *
      */
-    @ElementCollection
-    @CollectionTable(name = "related_asset_details", joinColumns = @JoinColumn(name = "id_related_asset"))
+    @OneToMany(mappedBy = "relatedAssets", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<RelatedAssetType> getListOfRelatedAssets() {
         if (listOfRelatedAssets == null) {
             listOfRelatedAssets = new ArrayList<RelatedAssetType>();
@@ -78,6 +92,28 @@ public class RelatedAssets implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RelatedAssets other = (RelatedAssets) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }

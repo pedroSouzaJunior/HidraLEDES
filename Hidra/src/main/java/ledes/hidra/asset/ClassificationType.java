@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -30,8 +34,29 @@ public class ClassificationType implements Serializable {
     protected List<DescriptionGroup> descriptionGroups;
 
     protected String id;
+    protected Asset asset;
 
     public ClassificationType() {
+    }
+
+    @OneToOne
+    @JoinColumn(name = "asset_id")
+    public Asset getAsset() {
+        return asset;
+    }
+
+    public void setAsset(Asset asset) {
+        this.asset = asset;
+    }
+
+    @Id
+    @Basic(optional = false)
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -56,8 +81,7 @@ public class ClassificationType implements Serializable {
      *
      * @return
      */
-    @OneToMany
-    @OrderBy("id")
+    @OneToMany(mappedBy = "classification", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<Context> getContexts() {
         if (contexts == null) {
             contexts = new ArrayList<Context>();
@@ -92,8 +116,7 @@ public class ClassificationType implements Serializable {
      *
      * @return
      */
-    @OneToMany
-    @OrderBy("id")
+    @OneToMany(mappedBy = "classificationType", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<DescriptionGroup> getDescriptionGroups() {
         if (descriptionGroups == null) {
             descriptionGroups = new ArrayList<DescriptionGroup>();
@@ -105,20 +128,10 @@ public class ClassificationType implements Serializable {
         this.descriptionGroups = descriptionGroups;
     }
 
-    @Id
-    @Basic(optional = false)
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 47 * hash + Objects.hashCode(this.id);
         return hash;
     }
 

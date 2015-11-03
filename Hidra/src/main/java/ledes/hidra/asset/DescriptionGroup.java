@@ -26,12 +26,13 @@ public class DescriptionGroup implements Serializable {
     protected String reference;
     @XmlAttribute(name = "description")
     protected String description;
+    protected String id;
+
+    protected ClassificationType classificationType;
+    protected Context context;
 
     public DescriptionGroup() {
     }
-
-    protected Context context;
-    protected ClassificationType clasification;
 
     @ManyToOne
     @JoinColumn(name = "context_id")
@@ -45,15 +46,13 @@ public class DescriptionGroup implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "classification_id")
-    public ClassificationType getClasification() {
-        return clasification;
+    public ClassificationType getClassificationType() {
+        return classificationType;
     }
 
-    public void setClasification(ClassificationType clasification) {
-        this.clasification = clasification;
+    public void setClassificationType(ClassificationType classificationType) {
+        this.classificationType = classificationType;
     }
-
-    protected String id;
 
     @Id
     @Basic(optional = false)

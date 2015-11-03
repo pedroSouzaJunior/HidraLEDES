@@ -4,13 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -220,7 +218,10 @@ public class Asset implements Serializable {
      * @return possible object is {@link ProfileType }
      *
      */
-    @OneToOne(optional = false)
+    @OneToOne(orphanRemoval = true,
+            mappedBy = "asset",
+            optional = false,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "id_profile")
     public ProfileType getProfile() {
         return profile;
@@ -263,8 +264,11 @@ public class Asset implements Serializable {
      * @return possible object is {@link ClassificationType }
      *
      */
-    @OneToOne(optional = false)
-    @JoinColumn(name = "id_classification")
+    @OneToOne(orphanRemoval = true,
+            mappedBy = "asset",
+            optional = false,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "classification_id")
     public ClassificationType getClassification() {
         return classification;
     }
@@ -285,7 +289,11 @@ public class Asset implements Serializable {
      * @return possible object is {@link UsageType }
      *
      */
-    @Transient
+    @OneToOne(orphanRemoval = true,
+            mappedBy = "asset",
+            optional = false,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "usage_id")
     public UsageType getUsage() {
         return usage;
     }
@@ -306,8 +314,11 @@ public class Asset implements Serializable {
      * @return possible object is {@link RelatedAssets }
      *
      */
-    @OneToOne(optional = false)
-    @JoinColumn(name = "id_related_assets")
+    @OneToOne(orphanRemoval = true,
+            mappedBy = "asset",
+            optional = false,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "related_assets_id")
     public RelatedAssets getRelatedAssetsList() {
         return relatedAssetsList;
     }
