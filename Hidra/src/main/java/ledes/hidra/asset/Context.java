@@ -75,7 +75,9 @@ public class Context implements Serializable {
      *
      * @return
      */
-    @OneToMany(mappedBy = "context", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true,
+            mappedBy = "context",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<DescriptionGroup> getDescriptionGroup() {
         if (descriptionGroup == null) {
             descriptionGroup = new ArrayList<DescriptionGroup>();

@@ -5,8 +5,6 @@
  */
 package ledes.hidra.dao;
 
-import ledes.hidra.asset.Asset;
-import ledes.hidra.asset.ProfileType;
 import ledes.hidra.util.HibernateUtil;
 import org.hibernate.Session;
 
@@ -29,6 +27,24 @@ public class HidraDataBase implements HidraDataBaseInterface<Object> {
             session.beginTransaction();
             session.save(obj);
             session.getTransaction().commit();
+            session.close();
+            return true;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean update(Object obj) {
+        Session session = getSession();
+
+        try {
+            session.beginTransaction();
+            session.update(obj);
+            session.getTransaction().commit();
+            session.close();
             return true;
         } catch (Exception e) {
             session.getTransaction().rollback();

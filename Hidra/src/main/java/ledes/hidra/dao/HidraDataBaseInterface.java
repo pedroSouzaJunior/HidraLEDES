@@ -8,8 +8,11 @@ package ledes.hidra.dao;
 /**
  *
  * @author pedro
+ * @param <Object>
  */
 public interface HidraDataBaseInterface<Object> {
 
     public boolean insert(Object obj);
+
+    public boolean update(Object obj);
 }

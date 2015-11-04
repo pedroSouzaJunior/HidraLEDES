@@ -90,7 +90,9 @@ public class Activity implements Serializable {
      *
      * @return
      */
-    @OneToMany(mappedBy = "activity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true,
+            mappedBy = "activity",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<VariabilityPointBinding> getVariability() {
         if (variability == null) {
             variability = new ArrayList<VariabilityPointBinding>();

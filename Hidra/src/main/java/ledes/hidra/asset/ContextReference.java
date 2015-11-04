@@ -68,7 +68,9 @@ public class ContextReference implements Serializable {
      *
      *
      */
-    @OneToMany(mappedBy = "contextReference", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true,
+            mappedBy = "contextReference",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<Activity> getActivities() {
         if (activities == null) {
             activities = new ArrayList<Activity>();

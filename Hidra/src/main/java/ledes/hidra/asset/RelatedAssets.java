@@ -6,16 +6,12 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -71,8 +67,11 @@ public class RelatedAssets implements Serializable {
      *
      *
      */
-    @OneToMany(mappedBy = "relatedAssets", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true,
+            mappedBy = "relatedAssets",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<RelatedAssetType> getListOfRelatedAssets() {
+
         if (listOfRelatedAssets == null) {
             listOfRelatedAssets = new ArrayList<RelatedAssetType>();
         }

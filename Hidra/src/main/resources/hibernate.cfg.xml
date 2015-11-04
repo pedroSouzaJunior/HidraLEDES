@@ -7,9 +7,11 @@
     <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/HIDRA</property>
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">hidra</property>
+   
     <property name="hibernate.hbm2ddl.auto">create</property>
     <property name="show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
+    
     <mapping class="ledes.hidra.asset.Asset"/>
     <mapping class="ledes.hidra.asset.ProfileType"/>
     <mapping class="ledes.hidra.asset.RelatedAssets"/>

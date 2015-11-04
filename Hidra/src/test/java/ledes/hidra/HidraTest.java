@@ -311,26 +311,18 @@ public class HidraTest {
         profile.setVersionMajor(1);
         profile.setVersionMinor(1);
 
-        //inserção e validação de instancia na tabela profile
-        assertEquals(db.insert(profile), true);
         //instância de tipo de ativo relacionado
         RelatedAssetType relatedAssetType = new RelatedAssetType();
-        relatedAssetType.setId("1");
+        relatedAssetType.setId("ID related Asset Type");
         relatedAssetType.setName("HidraRest");
         relatedAssetType.setReference("/relateds/HidraRest");
         relatedAssetType.setRelationshipType("Similar");
 
-        //inserção e validação da instancia na tabela related asset details
-        //assertEquals(db.insert(relatedAssetType), true);
         //instância de ativos relacionados
         RelatedAssets relatedAssets = new RelatedAssets();
-        relatedAssets.setId("1");
+        relatedAssets.setId("Id related Asset");
         relatedAssets.getListOfRelatedAssets().add(relatedAssetType);
 
-        //inserção do id da lista  relatedAssets na tabela related assets details
-        relatedAssetType.setRelatedAssets(relatedAssets);
-        //inserção e validação da instancia na tebala related assets
-        //assertEquals(db.insert(relatedAssets), true);
         //instancia da classe DescriptorGroup
         DescriptionGroup descriptionGroup = new DescriptionGroup();
         descriptionGroup.setId("1");
@@ -338,8 +330,6 @@ public class HidraTest {
         descriptionGroup.setReference("grupo descritor externo default");
         descriptionGroup.setDescription("Descrição default do ativo");
 
-        //inserção e validação da instancia na tabela DescriptorGroup
-        //assertEquals(db.insert(descriptionGroup), true);
         //instancia de Contexto - ContextType
         Context context = new Context();
         context.setDescription("biblioteca Java para criação de repositórios");
@@ -347,20 +337,12 @@ public class HidraTest {
         context.setId("1");
         context.setName("Desenvolvimento");
 
-        descriptionGroup.setContext(context);
-
-        //inserção e validação da instancia na tabela Contex
-        //assertEquals(db.insert(context), true);
         //Instancia de Classificação
         ClassificationType classificationType = new ClassificationType();
         classificationType.setId("Default id Classification");
         classificationType.getContexts().add(context);
         classificationType.getDescriptionGroups().add(descriptionGroup);
 
-        //descriptionGroup.setClasification(classificationType);
-        //context.setClassification(classificationType);
-        //inserção e validação da instancia na tabela Classification
-        assertEquals(db.insert(classificationType), true);
         //instancia de um Artefato
         ArtifactType artifactType = new ArtifactType();
         artifactType.setId("Artifact_Type_ID");
@@ -369,12 +351,10 @@ public class HidraTest {
         artifactType.setType("Development");
         artifactType.setVersion("00:hidra_12");
 
-        //assertEquals(db.insert(artifactType), true);
         VariabilityPointBinding variabilityPointBinding = new VariabilityPointBinding();
         variabilityPointBinding.setId("id");
         variabilityPointBinding.setBindingRule("bindingRule");
 
-        //assertEquals(db.insert(variabilityPointBinding), true);
         Activity activity = new Activity();
         activity.setId("1");
         activity.setReference("ref");
@@ -383,24 +363,20 @@ public class HidraTest {
         activity.setTaskRole("taskrole");
         activity.getVariability().add(variabilityPointBinding);
 
-        //assertEquals(db.insert(activity), true);
         ContextReference contextReference = new ContextReference();
         contextReference.setContextId("id");
         contextReference.getActivities().add(activity);
 
-        //assertEquals(db.insert(contextReference), true);
         ArtifactActivy artifactActivy = new ArtifactActivy();
         artifactActivy.setArtifactId("1");
         artifactActivy.setContextId("1");
         artifactActivy.getActivities().add(activity);
 
-        //assertEquals(db.insert(artifactActivy), true);
         UsageType usageType = new UsageType();
         usageType.setId("Default ID usage");
         usageType.getArtifactActivities().add(artifactActivy);
         usageType.getContextReferences().add(contextReference);
 
-        assertEquals(db.insert(usageType), true);
         //instancia de ativo
         Asset asset = new Asset();
         asset.setId("hidra_asset_monografia");
@@ -414,12 +390,75 @@ public class HidraTest {
         asset.setClassification(classificationType);
         asset.setUsage(usageType);
 
-        relatedAssets.setAsset(asset);
-
         //inserção e validação da instancia na tabela asset
         assertEquals(db.insert(asset), true);
 
+        //inserção da chave estrangeira asset na tabela profile
+        profile.setAsset(asset);
+        //inserção e validação de instancia na tabela profile
+        assertEquals(db.insert(profile), true);
+
+        //inserção da chave estrangeira asset na tabela related assets
+        relatedAssets.setAsset(asset);
+        //inserção e validação da instancia na tebala related assets
         assertEquals(db.insert(relatedAssets), true);
+
+        //inserção da chave estrangeira relatedAssets na tabela related assets details
+        relatedAssetType.setRelatedAssets(relatedAssets);
+        //inserção e validação da instancia na tabela related asset details
+        assertEquals(db.insert(relatedAssetType), true);
+
+        //inserção da chave estrangeira asset na tabela classification
+        classificationType.setAsset(asset);
+        //inserção e validação da instancia na tabela Classification
+        assertEquals(db.insert(classificationType), true);
+
+        //inserção da chave estrangeira asset na tabela usage
+        usageType.setAsset(asset);
+        //inserção e validação da instancia usageType
+        assertEquals(db.insert(usageType), true);
+
+        //inserção da chave estrangeira classification na tabela context
+        context.setClassification(classificationType);
+        //inserção e validação da instancia na tabela Contex
+        assertEquals(db.insert(context), true);
+
+        //inserção da chave estrangeira contex na tabela description group
+        descriptionGroup.setContext(context);
+        //inserção da chave estrangeira classification na tabela description group
+        descriptionGroup.setClassificationType(classificationType);
+        //inserção e validação da instancia na tabela DescriptorGroup
+        assertEquals(db.insert(descriptionGroup), true);
+
+        //inserção e validação da instancia artifactType
+        assertEquals(db.insert(artifactType), true);
+
+        //inserção da chave estrangeira usage na tabela artifactActivity
+        artifactActivy.setUsageType(usageType);
+        //inserção e validação da instancia artifactActivity
+        assertEquals(db.insert(artifactActivy), true);
+
+        //inserção da chave estrangeira usage na tabela context reference
+        contextReference.setUsageType(usageType);
+        //inserção e validação da instancia contextReference
+        assertEquals(db.insert(contextReference), true);
+
+        //inserção da chave estrangeira artifactActivity na tabela activity
+        activity.setArtifactActivy(artifactActivy);
+        //inserção da chave estrangeira contextReference na tabela activity
+        activity.setContextReference(contextReference);
+        assertEquals(db.insert(activity), true);
+
+        //inserção da chave estrangeira activity na tabela variabilityPointBinding
+        variabilityPointBinding.setActivity(activity);
+        //inserção e validação da instancia VariabilityPointBinding
+        assertEquals(db.insert(variabilityPointBinding), true);
+        //inserção e validação da instancia Activity
+
+        /**
+         * fazendo a inserção na ordem correta não é necessário utilizar o
+         * método update pa inserção de chave estrangeira. Utilizar método set
+         */
     }
 
 }

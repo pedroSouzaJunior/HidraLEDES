@@ -72,7 +72,9 @@ public class ArtifactActivy implements Serializable {
      *
      * @return
      */
-    @OneToMany(mappedBy = "artifactActivy", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true,
+            mappedBy = "artifactActivy",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<Activity> getActivities() {
         if (activities == null) {
             activities = new ArrayList<Activity>();

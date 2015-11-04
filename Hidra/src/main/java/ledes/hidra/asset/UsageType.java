@@ -80,7 +80,9 @@ public class UsageType implements Serializable {
      *
      *
      */
-    @OneToMany(mappedBy = "usageType", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true,
+            mappedBy = "usageType",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<ArtifactActivy> getArtifactActivities() {
         if (artifactActivities == null) {
             artifactActivities = new ArrayList<ArtifactActivy>();
@@ -114,7 +116,9 @@ public class UsageType implements Serializable {
      *
      *
      */
-    @OneToMany(mappedBy = "usageType", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true,
+            mappedBy = "usageType",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<ContextReference> getContextReferences() {
         if (contextReferences == null) {
             contextReferences = new ArrayList<ContextReference>();

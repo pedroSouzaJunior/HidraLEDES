@@ -81,7 +81,9 @@ public class ClassificationType implements Serializable {
      *
      * @return
      */
-    @OneToMany(mappedBy = "classification", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true,
+            mappedBy = "classification",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<Context> getContexts() {
         if (contexts == null) {
             contexts = new ArrayList<Context>();
@@ -116,7 +118,9 @@ public class ClassificationType implements Serializable {
      *
      * @return
      */
-    @OneToMany(mappedBy = "classificationType", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(orphanRemoval = true,
+            mappedBy = "classificationType",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<DescriptionGroup> getDescriptionGroups() {
         if (descriptionGroups == null) {
             descriptionGroups = new ArrayList<DescriptionGroup>();
