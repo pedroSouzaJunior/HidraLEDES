@@ -53,4 +53,21 @@ public class HidraDataBase implements HidraDataBaseInterface<Object> {
         return false;
     }
 
+    @Override
+    public boolean remove(Object obj) {
+        Session session = getSession();
+
+        try {
+            session.beginTransaction();
+            session.delete(obj);
+            session.getTransaction().commit();
+            session.close();
+            return true;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

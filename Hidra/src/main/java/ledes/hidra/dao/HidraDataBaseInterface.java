@@ -8,6 +8,10 @@ package ledes.hidra.dao;
 /**
  *
  * @author pedro
+ * 
+ * 
+ * Interface responsável por definir métodos utilizados pelo Banco de dados Hidra.
+ * Versão inicial contendo métodos CRUD.
  * @param <Object>
  */
 public interface HidraDataBaseInterface<Object> {
@@ -15,4 +19,7 @@ public interface HidraDataBaseInterface<Object> {
     public boolean insert(Object obj);
 
     public boolean update(Object obj);
+
+    public boolean remove(Object obj);
+
 }

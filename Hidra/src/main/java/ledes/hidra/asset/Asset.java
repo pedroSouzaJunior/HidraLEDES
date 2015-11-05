@@ -83,7 +83,7 @@ public class Asset implements Serializable {
         stb.append("Artifacts:\n");
 
         for (ArtifactType artfacty : this.solution.getArtifacts().getArtifact()) {
-            stb.append("<iD>: ").append(artfacty.getId()).append("\t");
+            stb.append("id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
             stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
@@ -91,7 +91,7 @@ public class Asset implements Serializable {
 
         stb.append("Requirements:\n");
         for (ArtifactType artfacty : this.solution.getRequirements().getArtifact()) {
-            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
             stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
@@ -99,7 +99,7 @@ public class Asset implements Serializable {
 
         stb.append("Design:\n");
         for (ArtifactType artfacty : this.solution.getDesign().getArtifact()) {
-            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
             stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
@@ -107,7 +107,7 @@ public class Asset implements Serializable {
 
         stb.append("Implementation:\n");
         for (ArtifactType artfacty : this.solution.getImplementation().getArtifact()) {
-            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
             stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
@@ -115,7 +115,7 @@ public class Asset implements Serializable {
 
         stb.append("Test:\n");
         for (ArtifactType artfacty : this.solution.getTest().getArtifact()) {
-            stb.append("ID: ").append(artfacty.getId()).append("\t");
+            stb.append("Id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
             stb.append("Reference: ").append(artfacty.getReference()).append("\n\n");
@@ -138,7 +138,7 @@ public class Asset implements Serializable {
         stb.append("the asset is classified by:\n\n");
         stb.append("Contexts:\n");
         for (Context context : this.getClassification().getContexts()) {
-            stb.append("ID: ").append(context.getId()).append("\t");
+            stb.append("Id: ").append(context.getId()).append("\t");
             stb.append("Name: ").append(context.getName()).append("\t");
             stb.append("Description: ").append(context.getDescription()).append("\n\n");
         }
@@ -166,8 +166,8 @@ public class Asset implements Serializable {
         stb.append("the use of the asset is given by:\n\n");
         stb.append("artifact Activities:\n");
         for (ArtifactActivy activy : this.getUsage().getArtifactActivities()) {
-            stb.append("ID: ").append(activy.getArtifactId()).append("\t");
-            stb.append("Contex ID: ").append(activy.getContextId()).append("\n\n");
+            stb.append("Id: ").append(activy.getArtifactId()).append("\t");
+            stb.append("Contex Id: ").append(activy.getContextId()).append("\n\n");
 
             for (Activity ac : activy.getActivities()) {
                 stb.append("Activity ID: ").append(ac.getId()).append("\t");
@@ -202,7 +202,7 @@ public class Asset implements Serializable {
 
         for (RelatedAssetType related : this.getRelatedAssetsList().getListOfRelatedAssets()) {
 
-            stb.append("Asset ID: ").append(related.getId()).append("\t");
+            stb.append("Asset Id: ").append(related.getId()).append("\t");
             stb.append("Asset Name: ").append(related.getName()).append("\t");
             stb.append("Asset Reference: ").append(related.getReference()).append("\t");
             stb.append("Asset Relationship Type: ").append(related.getRelationshipType()).append("\n\n");

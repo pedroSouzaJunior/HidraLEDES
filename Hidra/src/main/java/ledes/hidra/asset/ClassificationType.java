@@ -39,7 +39,7 @@ public class ClassificationType implements Serializable {
     public ClassificationType() {
     }
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "asset_id")
     public Asset getAsset() {
         return asset;

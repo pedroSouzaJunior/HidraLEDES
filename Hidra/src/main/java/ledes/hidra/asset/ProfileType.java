@@ -34,7 +34,7 @@ public class ProfileType implements Serializable {
     public ProfileType() {
     }
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "asset_id")
     public Asset getAsset() {
         return asset;
