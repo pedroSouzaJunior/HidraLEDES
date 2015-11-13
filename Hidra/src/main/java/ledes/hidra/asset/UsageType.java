@@ -17,6 +17,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "usageType", propOrder = {
@@ -40,6 +42,7 @@ public class UsageType implements Serializable {
 
     @OneToOne(optional = false)
     @JoinColumn(name = "asset_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Asset getAsset() {
         return asset;
     }

@@ -3,6 +3,7 @@ package ledes.hidra.asset;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +14,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "relatedAssetType")
@@ -36,6 +39,7 @@ public class RelatedAssetType implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "related_assets_id")
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     public RelatedAssets getRelatedAssets() {
         return relatedAssets;
     }

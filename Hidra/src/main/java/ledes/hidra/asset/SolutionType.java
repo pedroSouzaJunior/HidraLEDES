@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "solutionType", propOrder = {
     "artifacts",
@@ -33,16 +32,11 @@ public class SolutionType {
         test = new Test();
     }
 
-    
-    
-    
     /**
      * Obtém o valor da propriedade artifacts.
-     * 
-     * @return
-     *     possible object is
-     *     {@link SolutionType.Artifacts }
-     *     
+     *
+     * @return possible object is {@link SolutionType.Artifacts }
+     *
      */
     public SolutionType.Artifacts getArtifacts() {
         return artifacts;
@@ -50,11 +44,9 @@ public class SolutionType {
 
     /**
      * Define o valor da propriedade artifacts.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link SolutionType.Artifacts }
-     *     
+     *
+     * @param value allowed object is {@link SolutionType.Artifacts }
+     *
      */
     public void setArtifacts(SolutionType.Artifacts value) {
         this.artifacts = value;
@@ -62,11 +54,9 @@ public class SolutionType {
 
     /**
      * Obtém o valor da propriedade requirements.
-     * 
-     * @return
-     *     possible object is
-     *     {@link SolutionType.Requirements }
-     *     
+     *
+     * @return possible object is {@link SolutionType.Requirements }
+     *
      */
     public SolutionType.Requirements getRequirements() {
         return requirements;
@@ -74,11 +64,9 @@ public class SolutionType {
 
     /**
      * Define o valor da propriedade requirements.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link SolutionType.Requirements }
-     *     
+     *
+     * @param value allowed object is {@link SolutionType.Requirements }
+     *
      */
     public void setRequirements(SolutionType.Requirements value) {
         this.requirements = value;
@@ -86,11 +74,9 @@ public class SolutionType {
 
     /**
      * Obtém o valor da propriedade design.
-     * 
-     * @return
-     *     possible object is
-     *     {@link SolutionType.Design }
-     *     
+     *
+     * @return possible object is {@link SolutionType.Design }
+     *
      */
     public SolutionType.Design getDesign() {
         return design;
@@ -98,11 +84,9 @@ public class SolutionType {
 
     /**
      * Define o valor da propriedade design.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link SolutionType.Design }
-     *     
+     *
+     * @param value allowed object is {@link SolutionType.Design }
+     *
      */
     public void setDesign(SolutionType.Design value) {
         this.design = value;
@@ -110,11 +94,9 @@ public class SolutionType {
 
     /**
      * Obtém o valor da propriedade implementation.
-     * 
-     * @return
-     *     possible object is
-     *     {@link SolutionType.Implementation }
-     *     
+     *
+     * @return possible object is {@link SolutionType.Implementation }
+     *
      */
     public SolutionType.Implementation getImplementation() {
         return implementation;
@@ -122,11 +104,9 @@ public class SolutionType {
 
     /**
      * Define o valor da propriedade implementation.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link SolutionType.Implementation }
-     *     
+     *
+     * @param value allowed object is {@link SolutionType.Implementation }
+     *
      */
     public void setImplementation(SolutionType.Implementation value) {
         this.implementation = value;
@@ -134,11 +114,9 @@ public class SolutionType {
 
     /**
      * Obtém o valor da propriedade test.
-     * 
-     * @return
-     *     possible object is
-     *     {@link SolutionType.Test }
-     *     
+     *
+     * @return possible object is {@link SolutionType.Test }
+     *
      */
     public SolutionType.Test getTest() {
         return test;
@@ -146,22 +124,22 @@ public class SolutionType {
 
     /**
      * Define o valor da propriedade test.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link SolutionType.Test }
-     *     
+     *
+     * @param value allowed object is {@link SolutionType.Test }
+     *
      */
     public void setTest(SolutionType.Test value) {
         this.test = value;
     }
 
-
     /**
-     * <p>Classe Java de anonymous complex type.
-     * 
-     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
-     * 
+     * <p>
+     * Classe Java de anonymous complex type.
+     *
+     * <p>
+     * O seguinte fragmento do esquema especifica o conteúdo esperado contido
+     * dentro desta classe.
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -173,8 +151,8 @@ public class SolutionType {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -188,25 +166,25 @@ public class SolutionType {
 
         /**
          * Gets the value of the artifact property.
-         * 
+         *
          * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the artifact property.
-         * 
+         * This accessor method returns a reference to the live list, not a
+         * snapshot. Therefore any modification you make to the returned list
+         * will be present inside the JAXB object. This is why there is not a
+         * <CODE>set</CODE> method for the artifact property.
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getArtifact().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link ArtifactType }
-         * 
-         * 
+         *
+         *
          */
         public List<ArtifactType> getArtifact() {
             if (artifact == null) {
@@ -217,12 +195,14 @@ public class SolutionType {
 
     }
 
-
     /**
-     * <p>Classe Java de anonymous complex type.
-     * 
-     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
-     * 
+     * <p>
+     * Classe Java de anonymous complex type.
+     *
+     * <p>
+     * O seguinte fragmento do esquema especifica o conteúdo esperado contido
+     * dentro desta classe.
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -234,8 +214,8 @@ public class SolutionType {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -248,25 +228,25 @@ public class SolutionType {
 
         /**
          * Gets the value of the artifact property.
-         * 
+         *
          * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the artifact property.
-         * 
+         * This accessor method returns a reference to the live list, not a
+         * snapshot. Therefore any modification you make to the returned list
+         * will be present inside the JAXB object. This is why there is not a
+         * <CODE>set</CODE> method for the artifact property.
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getArtifact().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link ArtifactType }
-         * 
-         * 
+         *
+         *
          */
         public List<ArtifactType> getArtifact() {
             if (artifact == null) {
@@ -277,12 +257,14 @@ public class SolutionType {
 
     }
 
-
     /**
-     * <p>Classe Java de anonymous complex type.
-     * 
-     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
-     * 
+     * <p>
+     * Classe Java de anonymous complex type.
+     *
+     * <p>
+     * O seguinte fragmento do esquema especifica o conteúdo esperado contido
+     * dentro desta classe.
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -294,8 +276,8 @@ public class SolutionType {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -308,25 +290,25 @@ public class SolutionType {
 
         /**
          * Gets the value of the artifact property.
-         * 
+         *
          * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the artifact property.
-         * 
+         * This accessor method returns a reference to the live list, not a
+         * snapshot. Therefore any modification you make to the returned list
+         * will be present inside the JAXB object. This is why there is not a
+         * <CODE>set</CODE> method for the artifact property.
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getArtifact().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link ArtifactType }
-         * 
-         * 
+         *
+         *
          */
         public List<ArtifactType> getArtifact() {
             if (artifact == null) {
@@ -337,12 +319,14 @@ public class SolutionType {
 
     }
 
-
     /**
-     * <p>Classe Java de anonymous complex type.
-     * 
-     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
-     * 
+     * <p>
+     * Classe Java de anonymous complex type.
+     *
+     * <p>
+     * O seguinte fragmento do esquema especifica o conteúdo esperado contido
+     * dentro desta classe.
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -354,8 +338,8 @@ public class SolutionType {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -368,25 +352,25 @@ public class SolutionType {
 
         /**
          * Gets the value of the artifact property.
-         * 
+         *
          * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the artifact property.
-         * 
+         * This accessor method returns a reference to the live list, not a
+         * snapshot. Therefore any modification you make to the returned list
+         * will be present inside the JAXB object. This is why there is not a
+         * <CODE>set</CODE> method for the artifact property.
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getArtifact().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link ArtifactType }
-         * 
-         * 
+         *
+         *
          */
         public List<ArtifactType> getArtifact() {
             if (artifact == null) {
@@ -397,12 +381,14 @@ public class SolutionType {
 
     }
 
-
     /**
-     * <p>Classe Java de anonymous complex type.
-     * 
-     * <p>O seguinte fragmento do esquema especifica o conteúdo esperado contido dentro desta classe.
-     * 
+     * <p>
+     * Classe Java de anonymous complex type.
+     *
+     * <p>
+     * O seguinte fragmento do esquema especifica o conteúdo esperado contido
+     * dentro desta classe.
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -414,8 +400,8 @@ public class SolutionType {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -428,25 +414,25 @@ public class SolutionType {
 
         /**
          * Gets the value of the artifact property.
-         * 
+         *
          * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the artifact property.
-         * 
+         * This accessor method returns a reference to the live list, not a
+         * snapshot. Therefore any modification you make to the returned list
+         * will be present inside the JAXB object. This is why there is not a
+         * <CODE>set</CODE> method for the artifact property.
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getArtifact().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link ArtifactType }
-         * 
-         * 
+         *
+         *
          */
         public List<ArtifactType> getArtifact() {
             if (artifact == null) {

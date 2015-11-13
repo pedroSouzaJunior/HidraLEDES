@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -13,6 +14,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "profileType")
@@ -34,8 +37,9 @@ public class ProfileType implements Serializable {
     public ProfileType() {
     }
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "asset_id")
+    @OneToOne(optional = false, orphanRemoval = true)
+    @JoinColumn(name = "asset_id", foreignKey = @ForeignKey(name = "fk_asset"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Asset getAsset() {
         return asset;
     }

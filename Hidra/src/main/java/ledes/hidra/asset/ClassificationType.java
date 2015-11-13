@@ -18,6 +18,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.junit.ClassRule;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "classificationType", propOrder = {
@@ -41,6 +45,7 @@ public class ClassificationType implements Serializable {
 
     @OneToOne(optional = false)
     @JoinColumn(name = "asset_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Asset getAsset() {
         return asset;
     }

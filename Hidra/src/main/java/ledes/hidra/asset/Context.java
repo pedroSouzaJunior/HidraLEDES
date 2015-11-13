@@ -19,6 +19,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "context", propOrder = {
@@ -44,6 +46,7 @@ public class Context implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "classification_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public ClassificationType getClassification() {
         return classification;
     }

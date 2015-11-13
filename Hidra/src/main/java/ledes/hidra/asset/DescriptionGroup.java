@@ -13,6 +13,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "descriptionGroup")
@@ -35,7 +37,7 @@ public class DescriptionGroup implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "context_id")
+    @JoinColumn(name = "context_id" )
     public Context getContext() {
         return context;
     }
@@ -46,6 +48,7 @@ public class DescriptionGroup implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "classification_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public ClassificationType getClassificationType() {
         return classificationType;
     }
