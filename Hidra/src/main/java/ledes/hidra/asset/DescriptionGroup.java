@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -37,7 +38,8 @@ public class DescriptionGroup implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "context_id" )
+    @JoinColumn(name = "context_id",
+            foreignKey = @ForeignKey(name = "fk_context"))
     public Context getContext() {
         return context;
     }
@@ -47,7 +49,8 @@ public class DescriptionGroup implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "classification_id")
+    @JoinColumn(name = "classification_id",
+            foreignKey = @ForeignKey(name = "fk_classification"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     public ClassificationType getClassificationType() {
         return classificationType;

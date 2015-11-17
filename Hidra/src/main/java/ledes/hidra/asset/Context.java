@@ -8,11 +8,11 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -45,7 +45,7 @@ public class Context implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "classification_id")
+    @JoinColumn(name = "classification_id", foreignKey = @ForeignKey(name = "fk_classification"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     public ClassificationType getClassification() {
         return classification;

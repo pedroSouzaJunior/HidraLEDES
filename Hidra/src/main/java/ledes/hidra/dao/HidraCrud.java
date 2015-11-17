@@ -14,7 +14,7 @@ package ledes.hidra.dao;
  * Versão inicial contendo métodos CRUD.
  * @param <Object>
  */
-public interface HidraDataBaseInterface<Object> {
+public interface HidraCrud<Object> {
 
     public boolean insert(Object obj);
 

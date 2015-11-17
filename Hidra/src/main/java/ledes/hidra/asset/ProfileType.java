@@ -38,7 +38,8 @@ public class ProfileType implements Serializable {
     }
 
     @OneToOne(optional = false, orphanRemoval = true)
-    @JoinColumn(name = "asset_id", foreignKey = @ForeignKey(name = "fk_asset"))
+    @JoinColumn(name = "asset_id",
+            foreignKey = @ForeignKey(name = "fk_asset"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     public Asset getAsset() {
         return asset;

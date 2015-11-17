@@ -48,7 +48,8 @@ public class Activity implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "artifact_activity_id")
+    @JoinColumn(name = "artifact_activity_id",
+            foreignKey = @ForeignKey(name = "fk_artifact_activity"))
     public ArtifactActivy getArtifactActivy() {
         return artifactActivy;
     }
@@ -58,7 +59,8 @@ public class Activity implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "context_reference_id")
+    @JoinColumn(name = "context_reference_id",
+            foreignKey = @ForeignKey(name = "fk_context_reference"))
     public ContextReference getContextReference() {
         return contextReference;
     }

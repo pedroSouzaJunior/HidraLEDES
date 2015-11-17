@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -26,7 +26,7 @@ import org.hibernate.annotations.OnDeleteAction;
     "contextReferences"
 })
 @Entity
-@Table(name = "Usage")
+@Table(name = "USAGE_ASSET")
 public class UsageType implements Serializable {
 
     @XmlElement(required = true)
@@ -41,7 +41,8 @@ public class UsageType implements Serializable {
     }
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "asset_id")
+    @JoinColumn(name = "asset_id",
+            foreignKey = @ForeignKey(name = "fk_asset"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     public Asset getAsset() {
         return asset;

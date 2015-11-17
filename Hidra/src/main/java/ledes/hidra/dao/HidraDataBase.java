@@ -22,9 +22,17 @@ import org.hibernate.Session;
 /**
  *
  * @author pedro
+ *
+ * Classe responsavel por implementar metodos responsavel pela manipulacao do
+ * banco de dados. Implementa a Inteface HidraCrud.
  */
-public class HidraDataBase implements HidraDataBaseInterface<Object> {
+public class HidraDataBase implements HidraCrud<Object> {
 
+    /**
+     * Uma sessao com o banco de dados sera obtida por meio deste metodo.
+     *
+     * @return Session
+     */
     private Session getSession() {
 
         return (Session) HibernateUtil.getSession();
@@ -81,6 +89,15 @@ public class HidraDataBase implements HidraDataBaseInterface<Object> {
         return false;
     }
 
+    /**
+     * *
+     * Conjunto de metetodos reponsavel por remover os componentes de um ativo
+     * em forma de cascata.
+     *
+     * @param asset
+     * @return true os metodos delegados executem corretamente. false caso
+     * contrario
+     */
     public boolean removeAsset(Asset asset) {
 
         return removeRelatedAssets(asset.getRelatedAssetsList())
@@ -89,25 +106,15 @@ public class HidraDataBase implements HidraDataBaseInterface<Object> {
                 && remove(asset.getProfile());
     }
 
-    private boolean removeClassification(ClassificationType classification) {
-
-        try {
-            for (DescriptionGroup description
-                    : classification.getDescriptionGroups()) {
-                remove(description);
-            }
-            for (Context context : classification.getContexts()) {
-                remove(context);
-            }
-            remove(classification);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            //throw new Exception(e.getMessage());
-        }
-        return false;
-    }
-
+    /**
+     * *
+     * Um ativo possui uma lista de componentes que representam seus ativos
+     * relacionados. Percorre a lista de ativos relacionados e remove cada um
+     * deles.
+     *
+     * @param relatedAssetsList
+     * @return
+     */
     private boolean removeRelatedAssets(RelatedAssets relatedAssetsList) {
 
         try {
@@ -122,6 +129,14 @@ public class HidraDataBase implements HidraDataBaseInterface<Object> {
         return false;
     }
 
+    /**
+     * *
+     * Um ativo possiu um componente que representa os metadados relacionados ao
+     * seu uso. Percorre a lista de artifactActivities removendo cada uma delas.
+     *
+     * @param usage
+     * @return
+     */
     private boolean removeUsage(UsageType usage) {
 
         try {
@@ -135,6 +150,14 @@ public class HidraDataBase implements HidraDataBaseInterface<Object> {
         return false;
     }
 
+    /**
+     * *
+     * Percorre a lista de atividades relacionadas ao ativo e remove cada um de
+     * seus elementos.
+     *
+     * @param activities
+     * @return
+     */
     private boolean removeActivity(List<Activity> activities) {
 
         try {
@@ -144,6 +167,34 @@ public class HidraDataBase implements HidraDataBaseInterface<Object> {
                 }
                 remove(activity);
             }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * *
+     * Um ativo possui um componente que representa a sua classificação. O
+     * metodo removeClassification() percorre a lista de componentes que
+     * representam os grupos descritores e a lista de Contextos, removendo cada
+     * um destes.
+     *
+     * @param classification
+     * @return
+     */
+    private boolean removeClassification(ClassificationType classification) {
+
+        try {
+            for (DescriptionGroup description
+                    : classification.getDescriptionGroups()) {
+                remove(description);
+            }
+            for (Context context : classification.getContexts()) {
+                remove(context);
+            }
+            remove(classification);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

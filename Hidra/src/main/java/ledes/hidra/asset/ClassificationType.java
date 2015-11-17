@@ -8,6 +8,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -44,7 +45,8 @@ public class ClassificationType implements Serializable {
     }
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "asset_id")
+    @JoinColumn(name = "asset_id",
+            foreignKey = @ForeignKey(name = "fk_asset"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     public Asset getAsset() {
         return asset;

@@ -17,8 +17,14 @@ import org.junit.Test;
 /**
  *
  * @author pedro
- * 
+ *
  * Classe responsável por efetuar testes relacionados a persistência de ativos.
+ *
+ * dataBase: instancia responsavel por fornecer interacao com o BD. Possui
+ * recursos para insersao, e remocao de ativos.
+ *
+ * assetMock: instancia responsavel por simular o comportamento de um ativo.
+ * assetMock representa um ativo preenchido com todos os metadados necessarios.
  */
 public class HidraTest {
 
@@ -46,6 +52,13 @@ public class HidraTest {
     public void tearDown() {
     }
 
+    /**
+     * Metodo responsavel por persistir um ativo com todos os metadados
+     * necessarios. O metodo buildAsset() e responsavel por simular a
+     * instanciacao de um ativo completo, a assertiva espera que o metodo insert
+     * do banco de dados retorne true, informando que a operacao foi bem
+     * sucedida.
+     */
     @Test
     public void devePersistirAsset() {
 
@@ -66,7 +79,14 @@ public class HidraTest {
 
     }
 
-    @Test
+    /**
+     * *
+     * Metodo responsavel por remover um ativo do banco de dados, utilizando a
+     * remocao em cascata. O metodo buildAsset() e responsavel por simular a
+     * instanciacao de um ativo completo. A assertiva espera que o resultado da
+     * operacao seja true.
+     */
+    //@Test
     public void deveRemoverAssetEmCastaca() {
 
         assetMock.buildAsset();

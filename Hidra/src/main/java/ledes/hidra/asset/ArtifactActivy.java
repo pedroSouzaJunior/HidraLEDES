@@ -8,6 +8,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -40,7 +41,8 @@ public class ArtifactActivy implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "usage_id")
+    @JoinColumn(name = "usage_id",
+            foreignKey = @ForeignKey(name = "fk_usage"))
     public UsageType getUsageType() {
         return usageType;
     }
