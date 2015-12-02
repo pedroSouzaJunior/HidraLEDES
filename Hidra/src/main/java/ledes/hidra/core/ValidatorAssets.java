@@ -6,7 +6,6 @@
 package ledes.hidra.core;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.List;
 import ledes.hidra.asset.ArtifactType;
@@ -57,21 +56,19 @@ public class ValidatorAssets {
 
         if (reference.equals("/")) {
 
-          
             path = new File(localAsset + reference);
             pathAux = localAsset + reference + fileName;
-            
 
         } else {
             path = new File(localAsset + separator + reference);
             String aux = localAsset + reference;
             pathAux = aux + separator + fileName;
-               if (!isValidDirectory(aux.replace("/", separator))) {
+            if (!isValidDirectory(aux.replace("/", separator))) {
                 return false;
             }
         }
         File f = new File(pathAux);
-        return f.exists()&& !f.isDirectory();
+        return f.exists() && !f.isDirectory();
     }
 
     public void isValidAsset(Asset asset) {
@@ -85,7 +82,7 @@ public class ValidatorAssets {
             if ("Folder".equalsIgnoreCase(art.getType())) {
 
                 aux = localAsset + art.getReference() + art.getName();
-            
+
                 if (!isValidDirectory(aux.replace("/", separator))) {
                     invalidAssets.add(aux + " is not folder or folder is empty.\n");
                 } else {
@@ -94,7 +91,6 @@ public class ValidatorAssets {
                 }
 
             } else if ("File".equalsIgnoreCase(art.getType())) {
-
 
                 if (!isValidFile(art.getName(), art.getReference())) {
 
@@ -111,24 +107,20 @@ public class ValidatorAssets {
 
             if ("Folder".equalsIgnoreCase(req.getType())) {
 
-               
-
                 if (!isValidDirectory(localAsset + req.getReference().replace("/", separator) + separator + req.getName())) {
-                
+
                     invalidAssets.add(localAsset + req.getReference().replace("/", separator) + separator + req.getName() + " is not folder or folder is empty.\n");
                 } else {
 
-                    validAssets.add( req.getReference().replace("/", separator) + separator + req.getName());
+                    validAssets.add(req.getReference().replace("/", separator) + separator + req.getName());
                 }
             } else if ("File".equalsIgnoreCase(req.getType())) {
 
-
                 if (!isValidFile(req.getName(), req.getReference())) {
-                 
+
                     invalidAssets.add(pathAux + " is not found\n");
                 } else {
-                       
-                    
+
                     validAssets.add(pathAux.substring(localAsset.length()));
                 }
 
@@ -145,13 +137,13 @@ public class ValidatorAssets {
                     invalidAssets.add(localAsset + des.getReference().replace("/", separator) + separator + des.getName() + " is not folder or folder is empty.\n");
                 } else {
 
-                    validAssets.add( des.getReference().replace("/", separator) + separator + des.getName());
+                    validAssets.add(des.getReference().replace("/", separator) + separator + des.getName());
                 }
             } else if ("File".equalsIgnoreCase(des.getType())) {
 
                 result = isValidFile(des.getName(), des.getReference());
 
-                if (!result) {                
+                if (!result) {
                     invalidAssets.add(pathAux + " is not found\n");
                 } else {
 
@@ -164,17 +156,15 @@ public class ValidatorAssets {
         for (ArtifactType imp : asset.getSolution().getImplementation().getArtifact()) {
 
             if ("Folder".equalsIgnoreCase(imp.getType())) {
-               
 
                 if (!isValidDirectory(localAsset + imp.getReference().replace("/", separator) + separator + imp.getName())) {
                     invalidAssets.add(localAsset + imp.getReference().replace("/", separator) + separator + imp.getName() + " is not folder or folder is empty.\n");
                 } else {
 
-                    validAssets.add( imp.getReference().replace("/", separator) + separator + imp.getName());
+                    validAssets.add(imp.getReference().replace("/", separator) + separator + imp.getName());
                 }
             } else if ("File".equalsIgnoreCase(imp.getType())) {
 
-         
                 if (!isValidFile(imp.getName(), imp.getReference())) {
                     invalidAssets.add(pathAux + " is not found\n");
                 } else {
@@ -185,11 +175,7 @@ public class ValidatorAssets {
             }
 
         }
-        
-        
-       
 
-      
     }
 
     public List<String> getValidAssets() {

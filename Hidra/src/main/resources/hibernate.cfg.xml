@@ -8,7 +8,8 @@
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">hidra</property>
    
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <!--Propriedade utilizada para exibir no terminal o SQL sendo executado-->
         <property name="show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
     
