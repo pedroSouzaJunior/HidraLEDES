@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.OnDelete;
@@ -33,7 +34,8 @@ public class UsageType implements Serializable {
     protected List<ArtifactActivy> artifactActivities;
     @XmlElement(required = true)
     protected List<ContextReference> contextReferences;
-
+    @XmlAttribute(name = "reference")
+    protected String reference;
     protected String id;
     protected Asset asset;
 

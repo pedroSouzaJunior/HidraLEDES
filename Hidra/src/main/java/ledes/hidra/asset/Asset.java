@@ -58,6 +58,8 @@ public class Asset implements Serializable {
     protected String state;
     @XmlAttribute(name = "version")
     protected String version;
+    @XmlAttribute(name = "access-rights")
+    protected String accessRights;
     @XmlAttribute(name = "short-description")
     protected String shortDescription;
 
