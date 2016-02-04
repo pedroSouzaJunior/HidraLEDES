@@ -20,7 +20,7 @@ import javax.xml.bind.JAXBException;
 import ledes.hidra.Hidra;
 import ledes.hidra.asset.Activity;
 import ledes.hidra.asset.ArtifactActivy;
-import ledes.hidra.asset.ArtifactType;
+import ledes.hidra.asset.Artifact;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.Context;
 import ledes.hidra.asset.ContextReference;
@@ -33,7 +33,7 @@ import ledes.hidra.asset.VariabilityPointBinding;
 import ledes.hidra.exception.DataNotFoundException;
 import ledes.hidra.resources.Zipper;
 import ledes.hidra.rest.model.Activities;
-import ledes.hidra.rest.model.Artifact;
+import ledes.hidra.rest.model.ArtifactType;
 import ledes.hidra.rest.model.ArtifactActivys;
 import ledes.hidra.rest.model.Classification;
 import ledes.hidra.rest.model.Attribute;
@@ -466,33 +466,33 @@ public class Services {
         SolutionType solutionType = hidra.describeSolution(assetName);
         if (solutionType != null) {
 
-            List<ArtifactType> artifacts = solutionType.getArtifacts().getArtifact();
-            List<ArtifactType> design = solutionType.getDesign().getArtifact();
-            List<ArtifactType> implementation = solutionType.getImplementation().getArtifact();
-            List<ArtifactType> requirements = solutionType.getRequirements().getArtifact();
-            List<ArtifactType> tests = solutionType.getTest().getArtifact();
+            List<Artifact> artifacts = solutionType.getArtifacts().getArtifact();
+            List<Artifact> design = solutionType.getDesign().getArtifact();
+            List<Artifact> implementation = solutionType.getImplementation().getArtifact();
+            List<Artifact> requirements = solutionType.getRequirements().getArtifact();
+            List<Artifact> tests = solutionType.getTest().getArtifact();
 
-            for (ArtifactType artifact : artifacts) {
+            for (Artifact artifact : artifacts) {
                 solution.getArtifacts()
-                        .add(new Artifact(
+                        .add(new ArtifactType(
                                         artifact.getName(),
                                         artifact.getType(),
                                         artifact.getReference(),
                                         artifact.getId(),
                                         artifact.getVersion()));
             }
-            for (ArtifactType artfact : design) {
+            for (Artifact artfact : design) {
                 solution.getDesign()
-                        .add(new Artifact(
+                        .add(new ArtifactType(
                                         artfact.getName(),
                                         artfact.getType(),
                                         artfact.getReference(),
                                         artfact.getId(),
                                         artfact.getVersion()));
             }
-            for (ArtifactType artifact : implementation) {
+            for (Artifact artifact : implementation) {
                 solution.getImplementation()
-                        .add(new Artifact(
+                        .add(new ArtifactType(
                                         artifact.getName(),
                                         artifact.getType(),
                                         artifact.getReference(),
@@ -500,18 +500,18 @@ public class Services {
                                         artifact.getVersion()));
             }
 
-            for (ArtifactType artifact : requirements) {
+            for (Artifact artifact : requirements) {
                 solution.getRequirements()
-                        .add(new Artifact(
+                        .add(new ArtifactType(
                                         artifact.getName(),
                                         artifact.getType(),
                                         artifact.getReference(),
                                         artifact.getId(),
                                         artifact.getVersion()));
             }
-            for (ArtifactType artifact : tests) {
+            for (Artifact artifact : tests) {
                 solution.getTest()
-                        .add(new Artifact(
+                        .add(new ArtifactType(
                                         artifact.getName(),
                                         artifact.getType(),
                                         artifact.getReference(),

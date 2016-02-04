@@ -21,7 +21,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @XmlType(name = "descriptionGroup")
 @Entity
 @Table(name = "DESCRIPTOR_GROUP")
-public class DescriptionGroup implements Serializable {
+public class DescriptionGroup extends Description implements Serializable {
 
     @XmlAttribute(name = "name")
     protected String name;
@@ -35,6 +35,11 @@ public class DescriptionGroup implements Serializable {
     protected Context context;
 
     public DescriptionGroup() {
+        super(null);
+    }
+
+    public DescriptionGroup(String description) {
+        super(description);
     }
 
     @ManyToOne

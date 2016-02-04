@@ -17,7 +17,7 @@
         <mapping class="ledes.hidra.asset.ProfileType"/>
         <mapping class="ledes.hidra.asset.RelatedAssets"/>
         <mapping class="ledes.hidra.asset.RelatedAssetType"/>
-        <mapping class="ledes.hidra.asset.ArtifactType"/>
+        <mapping class="ledes.hidra.asset.Artifact"/>
         <mapping class="ledes.hidra.asset.Context"/>
         <mapping class="ledes.hidra.asset.ClassificationType"/>
         <mapping class="ledes.hidra.asset.DescriptionGroup"/>

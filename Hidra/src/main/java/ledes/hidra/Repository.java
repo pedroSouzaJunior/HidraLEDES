@@ -29,7 +29,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import ledes.hidra.asset.ArtifactActivy;
-import ledes.hidra.asset.ArtifactType;
+import ledes.hidra.asset.Artifact;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.Context;
@@ -693,23 +693,23 @@ public class Repository {
         try {
             Asset asset = readAsset(assetId);
 
-            for (ArtifactType a : solution.getArtifacts().getArtifact()) {
+            for (Artifact a : solution.getArtifacts().getArtifact()) {
                 asset.getSolution().getArtifacts().getArtifact().add(a);
             }
 
-            for (ArtifactType a : solution.getRequirements().getArtifact()) {
+            for (Artifact a : solution.getRequirements().getArtifact()) {
                 asset.getSolution().getRequirements().getArtifact().add(a);
             }
 
-            for (ArtifactType a : solution.getDesign().getArtifact()) {
+            for (Artifact a : solution.getDesign().getArtifact()) {
                 asset.getSolution().getDesign().getArtifact().add(a);
             }
 
-            for (ArtifactType a : solution.getImplementation().getArtifact()) {
+            for (Artifact a : solution.getImplementation().getArtifact()) {
                 asset.getSolution().getImplementation().getArtifact().add(a);
             }
 
-            for (ArtifactType a : solution.getTest().getArtifact()) {
+            for (Artifact a : solution.getTest().getArtifact()) {
                 asset.getSolution().getTest().getArtifact().add(a);
             }
 

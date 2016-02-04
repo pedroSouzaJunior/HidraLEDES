@@ -8,7 +8,7 @@ package ledes.hidra.core;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import ledes.hidra.asset.ArtifactType;
+import ledes.hidra.asset.Artifact;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.SolutionType;
 
@@ -77,7 +77,7 @@ public class ValidatorAssets {
         boolean result;
         String path;
         SolutionType.Artifacts artifacts = asset.getSolution().getArtifacts();
-        for (ArtifactType art : artifacts.getArtifact()) {
+        for (Artifact art : artifacts.getArtifact()) {
 
             if ("Folder".equalsIgnoreCase(art.getType())) {
 
@@ -103,7 +103,7 @@ public class ValidatorAssets {
             }
 
         }
-        for (ArtifactType req : asset.getSolution().getRequirements().getArtifact()) {
+        for (Artifact req : asset.getSolution().getRequirements().getArtifact()) {
 
             if ("Folder".equalsIgnoreCase(req.getType())) {
 
@@ -128,7 +128,7 @@ public class ValidatorAssets {
 
         }
 
-        for (ArtifactType des : asset.getSolution().getDesign().getArtifact()) {
+        for (Artifact des : asset.getSolution().getDesign().getArtifact()) {
 
             if ("Folder".equalsIgnoreCase(des.getType())) {
                 result = isValidDirectory(localAsset + des.getReference().replace("/", separator) + des.getName());
@@ -153,7 +153,7 @@ public class ValidatorAssets {
 
         }
 
-        for (ArtifactType imp : asset.getSolution().getImplementation().getArtifact()) {
+        for (Artifact imp : asset.getSolution().getImplementation().getArtifact()) {
 
             if ("Folder".equalsIgnoreCase(imp.getType())) {
 

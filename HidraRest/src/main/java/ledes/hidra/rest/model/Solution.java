@@ -21,11 +21,11 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="artifacts" type="{}Artifact" maxOccurs="unbounded"/>
- *         &lt;element name="requirements" type="{}Artifact" maxOccurs="unbounded"/>
- *         &lt;element name="design" type="{}Artifact" maxOccurs="unbounded"/>
- *         &lt;element name="implementation" type="{}Artifact" maxOccurs="unbounded"/>
- *         &lt;element name="test" type="{}Artifact" maxOccurs="unbounded"/>
+ *         &lt;element name="artifacts" type="{}ArtifactType" maxOccurs="unbounded"/>
+ *         &lt;element name="requirements" type="{}ArtifactType" maxOccurs="unbounded"/>
+ *         &lt;element name="design" type="{}ArtifactType" maxOccurs="unbounded"/>
+ *         &lt;element name="implementation" type="{}ArtifactType" maxOccurs="unbounded"/>
+ *         &lt;element name="test" type="{}ArtifactType" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -46,15 +46,15 @@ import javax.xml.bind.annotation.XmlType;
 public class Solution {
 
     @XmlElement(required = true)
-    protected List<Artifact> artifacts;
+    protected List<ArtifactType> artifacts;
     @XmlElement(required = true)
-    protected List<Artifact> requirements;
+    protected List<ArtifactType> requirements;
     @XmlElement(required = true)
-    protected List<Artifact> design;
+    protected List<ArtifactType> design;
     @XmlElement(required = true)
-    protected List<Artifact> implementation;
+    protected List<ArtifactType> implementation;
     @XmlElement(required = true)
-    protected List<Artifact> test;
+    protected List<ArtifactType> test;
 
     /**
      * Gets the value of the artifacts property.
@@ -74,13 +74,13 @@ public class Solution {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Artifact }
+     * {@link ArtifactType }
      * 
      * 
      */
-    public List<Artifact> getArtifacts() {
+    public List<ArtifactType> getArtifacts() {
         if (artifacts == null) {
-            artifacts = new ArrayList<Artifact>();
+            artifacts = new ArrayList<ArtifactType>();
         }
         return this.artifacts;
     }
@@ -103,13 +103,13 @@ public class Solution {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Artifact }
+     * {@link ArtifactType }
      * 
      * 
      */
-    public List<Artifact> getRequirements() {
+    public List<ArtifactType> getRequirements() {
         if (requirements == null) {
-            requirements = new ArrayList<Artifact>();
+            requirements = new ArrayList<ArtifactType>();
         }
         return this.requirements;
     }
@@ -132,13 +132,13 @@ public class Solution {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Artifact }
+     * {@link ArtifactType }
      * 
      * 
      */
-    public List<Artifact> getDesign() {
+    public List<ArtifactType> getDesign() {
         if (design == null) {
-            design = new ArrayList<Artifact>();
+            design = new ArrayList<ArtifactType>();
         }
         return this.design;
     }
@@ -161,13 +161,13 @@ public class Solution {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Artifact }
+     * {@link ArtifactType }
      * 
      * 
      */
-    public List<Artifact> getImplementation() {
+    public List<ArtifactType> getImplementation() {
         if (implementation == null) {
-            implementation = new ArrayList<Artifact>();
+            implementation = new ArrayList<ArtifactType>();
         }
         return this.implementation;
     }
@@ -190,13 +190,13 @@ public class Solution {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Artifact }
+     * {@link ArtifactType }
      * 
      * 
      */
-    public List<Artifact> getTest() {
+    public List<ArtifactType> getTest() {
         if (test == null) {
-            test = new ArrayList<Artifact>();
+            test = new ArrayList<ArtifactType>();
         }
         return this.test;
     }

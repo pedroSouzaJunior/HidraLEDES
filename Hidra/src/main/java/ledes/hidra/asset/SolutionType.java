@@ -161,7 +161,7 @@ public class SolutionType {
     public static class Artifacts {
 
         @XmlElement(required = true)
-        protected List<ArtifactType> artifact;
+        protected List<Artifact> artifact;
         //protected List<ArtifactType> artifact;
 
         /**
@@ -182,13 +182,13 @@ public class SolutionType {
          *
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link ArtifactType }
+         * {@link Artifact }
          *
          *
          */
-        public List<ArtifactType> getArtifact() {
+        public List<Artifact> getArtifact() {
             if (artifact == null) {
-                artifact = new ArrayList<ArtifactType>();
+                artifact = new ArrayList<Artifact>();
             }
             return this.artifact;
         }
@@ -224,7 +224,7 @@ public class SolutionType {
     public static class Design {
 
         @XmlElement(required = true)
-        protected List<ArtifactType> artifact;
+        protected List<Artifact> artifact;
 
         /**
          * Gets the value of the artifact property.
@@ -244,13 +244,13 @@ public class SolutionType {
          *
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link ArtifactType }
+         * {@link Artifact }
          *
          *
          */
-        public List<ArtifactType> getArtifact() {
+        public List<Artifact> getArtifact() {
             if (artifact == null) {
-                artifact = new ArrayList<ArtifactType>();
+                artifact = new ArrayList<Artifact>();
             }
             return this.artifact;
         }
@@ -286,7 +286,7 @@ public class SolutionType {
     public static class Implementation {
 
         @XmlElement(required = true)
-        protected List<ArtifactType> artifact;
+        protected List<Artifact> artifact;
 
         /**
          * Gets the value of the artifact property.
@@ -306,13 +306,13 @@ public class SolutionType {
          *
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link ArtifactType }
+         * {@link Artifact }
          *
          *
          */
-        public List<ArtifactType> getArtifact() {
+        public List<Artifact> getArtifact() {
             if (artifact == null) {
-                artifact = new ArrayList<ArtifactType>();
+                artifact = new ArrayList<Artifact>();
             }
             return this.artifact;
         }
@@ -348,7 +348,7 @@ public class SolutionType {
     public static class Requirements {
 
         @XmlElement(required = true)
-        protected List<ArtifactType> artifact;
+        protected List<Artifact> artifact;
 
         /**
          * Gets the value of the artifact property.
@@ -368,13 +368,13 @@ public class SolutionType {
          *
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link ArtifactType }
+         * {@link Artifact }
          *
          *
          */
-        public List<ArtifactType> getArtifact() {
+        public List<Artifact> getArtifact() {
             if (artifact == null) {
-                artifact = new ArrayList<ArtifactType>();
+                artifact = new ArrayList<Artifact>();
             }
             return this.artifact;
         }
@@ -410,7 +410,7 @@ public class SolutionType {
     public static class Test {
 
         @XmlElement(required = true)
-        protected List<ArtifactType> artifact;
+        protected List<Artifact> artifact;
 
         /**
          * Gets the value of the artifact property.
@@ -430,13 +430,13 @@ public class SolutionType {
          *
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link ArtifactType }
+         * {@link Artifact }
          *
          *
          */
-        public List<ArtifactType> getArtifact() {
+        public List<Artifact> getArtifact() {
             if (artifact == null) {
-                artifact = new ArrayList<ArtifactType>();
+                artifact = new ArrayList<Artifact>();
             }
             return this.artifact;
         }

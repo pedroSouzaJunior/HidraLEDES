@@ -28,7 +28,7 @@ import org.hibernate.annotations.OnDeleteAction;
 })
 @Entity
 @Table(name = "CONTEXT")
-public class Context implements Serializable {
+public class Context extends Description implements Serializable {
 
     @XmlElement(required = true)
     protected List<DescriptionGroup> descriptionGroup;
@@ -42,6 +42,11 @@ public class Context implements Serializable {
     protected ClassificationType classification;
 
     public Context() {
+        super(null);
+    }
+
+    public Context(String description) {
+        super(description);
     }
 
     @ManyToOne

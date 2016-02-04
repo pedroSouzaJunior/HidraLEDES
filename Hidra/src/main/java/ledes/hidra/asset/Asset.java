@@ -34,7 +34,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlRootElement(name = "asset")
 @Entity
 @Table(name = "ASSET")
-public class Asset implements Serializable {
+public class Asset extends Description implements Serializable {
 
     @XmlElement(required = true)
     protected ProfileType profile;
@@ -63,7 +63,17 @@ public class Asset implements Serializable {
     @XmlAttribute(name = "short-description")
     protected String shortDescription;
 
+    public Asset(String description) {
+        super(description);
+        profile = new ProfileType();
+        solution = new SolutionType();
+        classification = new ClassificationType();
+        usage = new UsageType();
+        relatedAssetsList = new RelatedAssets();
+    }
+
     public Asset() {
+        super(null);
         profile = new ProfileType();
         solution = new SolutionType();
         classification = new ClassificationType();
@@ -84,7 +94,7 @@ public class Asset implements Serializable {
 
         stb.append("Artifacts:\n");
 
-        for (ArtifactType artfacty : this.solution.getArtifacts().getArtifact()) {
+        for (Artifact artfacty : this.solution.getArtifacts().getArtifact()) {
             stb.append("id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
@@ -92,7 +102,7 @@ public class Asset implements Serializable {
         }
 
         stb.append("Requirements:\n");
-        for (ArtifactType artfacty : this.solution.getRequirements().getArtifact()) {
+        for (Artifact artfacty : this.solution.getRequirements().getArtifact()) {
             stb.append("Id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
@@ -100,7 +110,7 @@ public class Asset implements Serializable {
         }
 
         stb.append("Design:\n");
-        for (ArtifactType artfacty : this.solution.getDesign().getArtifact()) {
+        for (Artifact artfacty : this.solution.getDesign().getArtifact()) {
             stb.append("Id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
@@ -108,7 +118,7 @@ public class Asset implements Serializable {
         }
 
         stb.append("Implementation:\n");
-        for (ArtifactType artfacty : this.solution.getImplementation().getArtifact()) {
+        for (Artifact artfacty : this.solution.getImplementation().getArtifact()) {
             stb.append("Id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");
@@ -116,7 +126,7 @@ public class Asset implements Serializable {
         }
 
         stb.append("Test:\n");
-        for (ArtifactType artfacty : this.solution.getTest().getArtifact()) {
+        for (Artifact artfacty : this.solution.getTest().getArtifact()) {
             stb.append("Id: ").append(artfacty.getId()).append("\t");
             stb.append("Name: ").append(artfacty.getName()).append("\t");
             stb.append("Type: ").append(artfacty.getType()).append("\t");

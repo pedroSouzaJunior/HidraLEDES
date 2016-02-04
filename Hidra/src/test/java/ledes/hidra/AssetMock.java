@@ -11,7 +11,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import ledes.hidra.asset.Activity;
 import ledes.hidra.asset.ArtifactActivy;
-import ledes.hidra.asset.ArtifactType;
+import ledes.hidra.asset.Artifact;
 import ledes.hidra.asset.Asset;
 import ledes.hidra.asset.ClassificationType;
 import ledes.hidra.asset.Context;
@@ -36,7 +36,7 @@ public class AssetMock {
     private DescriptionGroup descriptionGroup;
     private Context context;
     private ClassificationType classificationType;
-    private ArtifactType artifactType;
+    private Artifact artifactType;
     private VariabilityPointBinding variabilityPointBinding;
     private Activity activity;
     private ContextReference contextReference;
@@ -55,7 +55,7 @@ public class AssetMock {
         this.descriptionGroup = new DescriptionGroup();
         this.context = new Context();
         this.classificationType = new ClassificationType();
-        this.artifactType = new ArtifactType();
+        this.artifactType = new Artifact();
         this.variabilityPointBinding = new VariabilityPointBinding();
         this.activity = new Activity();
         this.contextReference = new ContextReference();
@@ -204,11 +204,11 @@ public class AssetMock {
         this.classificationType = classificationType;
     }
 
-    public ArtifactType getArtifactType() {
+    public Artifact getArtifactType() {
         return artifactType;
     }
 
-    public void setArtifactType(ArtifactType artifactType) {
+    public void setArtifactType(Artifact artifactType) {
         this.artifactType = artifactType;
     }
 

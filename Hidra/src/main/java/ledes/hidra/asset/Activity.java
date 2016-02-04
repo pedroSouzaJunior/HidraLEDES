@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
 })
 @Entity
 @Table(name = "ACTIVITY")
-public class Activity implements Serializable {
+public class Activity extends Description implements Serializable {
 
     @XmlElement(required = true)
     protected List<VariabilityPointBinding> variability;
@@ -45,6 +45,11 @@ public class Activity implements Serializable {
     protected ContextReference contextReference;
 
     public Activity() {
+        super(null);
+    }
+
+    public Activity(String description) {
+        super(description);
     }
 
     @ManyToOne
