@@ -9,6 +9,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import ledes.hidra.dao.HidraDataBase;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -59,8 +60,8 @@ public class HidraTest {
      * do banco de dados retorne true, informando que a operacao foi bem
      * sucedida.
      */
-    //@Test
-    public void devePersistirAsset() {
+    @Test
+    public void toPersistAsset() {
 
         assetMock.buildAsset();
 
@@ -77,6 +78,7 @@ public class HidraTest {
         assertEquals(true, dataBase.insert(assetMock.getActivity()));
         assertEquals(true, dataBase.insert(assetMock.getVariabilityPointBinding()));
 
+        
     }
 
     /**
@@ -87,10 +89,12 @@ public class HidraTest {
      * operacao seja true.
      */
     //@Test
-    public void deveRemoverAssetEmCastaca() {
+    public void toRemoveAssetOnCascade() {
 
         assetMock.buildAsset();
         assertEquals(true, dataBase.removeAsset(assetMock.getAsset()));
     }
+    
+    
 
 }
