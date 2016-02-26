@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "contextReference", propOrder = {
-    "activities"
+    "activities","usageType"
 })
 @Entity
 @Table(name = "CONTEXT_REFERENCE")

@@ -24,7 +24,9 @@ import org.hibernate.annotations.OnDeleteAction;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "usageType", propOrder = {
     "artifactActivities",
-    "contextReferences"
+    "contextReferences",
+    "id",
+    "asset"
 })
 @Entity
 @Table(name = "USAGE_ASSET")

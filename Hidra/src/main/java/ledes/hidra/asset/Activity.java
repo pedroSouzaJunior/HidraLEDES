@@ -22,11 +22,13 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "activity", propOrder = {
-    "variability"
+    "variability",
+    "artifactActivy",
+    "contextReference"
 })
 @Entity
 @Table(name = "ACTIVITY")
-public class Activity extends Description implements Serializable {
+public class Activity implements Serializable {
 
     @XmlElement(required = true)
     protected List<VariabilityPointBinding> variability;
@@ -45,11 +47,7 @@ public class Activity extends Description implements Serializable {
     protected ContextReference contextReference;
 
     public Activity() {
-        super(null);
-    }
 
-    public Activity(String description) {
-        super(description);
     }
 
     @ManyToOne

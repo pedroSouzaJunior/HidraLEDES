@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "artifact")
 @Entity
 @Table(name = "ARTIFACT")
-public class Artifact extends Description implements Serializable {
+public class Artifact implements Serializable {
 
     @XmlAttribute(name = "name", required = true)
     protected String name;
@@ -32,11 +32,7 @@ public class Artifact extends Description implements Serializable {
     protected String accessRights;
 
     public Artifact() {
-        super(null);
-    }
 
-    public Artifact(String description) {
-        super(description);
     }
 
     /**

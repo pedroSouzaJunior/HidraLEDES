@@ -27,7 +27,9 @@ import org.junit.ClassRule;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "classificationType", propOrder = {
     "contexts",
-    "descriptionGroups"
+    "descriptionGroups",
+    "id",
+    "asset"
 })
 @Entity
 @Table(name = "CLASSIFICATION")

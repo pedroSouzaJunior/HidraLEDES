@@ -24,11 +24,12 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "context", propOrder = {
-    "descriptionGroup"
+    "descriptionGroup",
+    "classification"
 })
 @Entity
 @Table(name = "CONTEXT")
-public class Context extends Description implements Serializable {
+public class Context implements Serializable {
 
     @XmlElement(required = true)
     protected List<DescriptionGroup> descriptionGroup;
@@ -42,11 +43,7 @@ public class Context extends Description implements Serializable {
     protected ClassificationType classification;
 
     public Context() {
-        super(null);
-    }
 
-    public Context(String description) {
-        super(description);
     }
 
     @ManyToOne

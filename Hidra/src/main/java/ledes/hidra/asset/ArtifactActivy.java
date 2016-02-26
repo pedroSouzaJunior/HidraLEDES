@@ -22,7 +22,8 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "artifactActivy", propOrder = {
-    "activities"
+    "activities",
+    "usageType"
 })
 @Entity
 @Table(name = "ARTIFACT_ACTIVITY")

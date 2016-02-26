@@ -23,7 +23,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "relatedAssets", propOrder = {
-    "listOfRelatedAssets"
+    "listOfRelatedAssets",
+    "id",
+    "asset"
 })
 @Entity
 @Table(name = "RELATED_ASSETS")

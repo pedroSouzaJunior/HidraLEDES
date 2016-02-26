@@ -21,7 +21,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @XmlType(name = "profileType")
 @Entity
 @Table(name = "PROFILE")
-public class ProfileType extends Description implements Serializable {
+public class ProfileType implements Serializable {
 
     @XmlAttribute(name = "name", required = true)
     protected String name;
@@ -34,13 +34,10 @@ public class ProfileType extends Description implements Serializable {
 
     protected Asset asset;
 
-    public ProfileType(String description) {
-        super(description);
+    public ProfileType() {
+        
     }
 
-    public ProfileType() {
-        super(null);
-    }
 
     @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name = "asset_id",

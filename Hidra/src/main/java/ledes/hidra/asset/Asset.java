@@ -34,7 +34,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlRootElement(name = "asset")
 @Entity
 @Table(name = "ASSET")
-public class Asset extends Description implements Serializable {
+public class Asset implements Serializable {
 
     @XmlElement(required = true)
     protected ProfileType profile;
@@ -63,17 +63,7 @@ public class Asset extends Description implements Serializable {
     @XmlAttribute(name = "short-description")
     protected String shortDescription;
 
-    public Asset(String description) {
-        super(description);
-        profile = new ProfileType();
-        solution = new SolutionType();
-        classification = new ClassificationType();
-        usage = new UsageType();
-        relatedAssetsList = new RelatedAssets();
-    }
-
     public Asset() {
-        super(null);
         profile = new ProfileType();
         solution = new SolutionType();
         classification = new ClassificationType();
